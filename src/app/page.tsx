@@ -5,7 +5,7 @@ import { SubscriptionForm } from '@/components/landing/SubscriptionForm';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CheckCircle, Eye, FileText, Globe, Rocket, Sparkles, ThumbsUp, UploadCloud, Zap, Briefcase, Users, Star } from 'lucide-react';
+import { Eye, Sparkles, ThumbsUp, UploadCloud, Briefcase, Users, Star, Wand2 } from 'lucide-react';
 import Link from 'next/link';
 
 const benefits = [
@@ -20,7 +20,7 @@ const benefits = [
     description: "Destaca entre la multitud y llega a reclutadores que buscan tu perfil único.",
   },
   {
-    icon: <Zap className="h-8 w-8 text-primary mb-4" />,
+    icon: <Users className="h-8 w-8 text-primary mb-4" />,
     title: "Nuevas Oportunidades",
     description: "Conéctate con ofertas laborales relevantes sin esfuerzo adicional.",
   },
@@ -36,19 +36,19 @@ const howItWorksSteps = [
     icon: <UploadCloud className="h-10 w-10 text-primary" />,
     title: "1. Sube tu CV",
     description: "Arrastra o selecciona tu currículum actual. Nosotros nos encargamos del resto.",
-    imageHint: "cv upload document"
+    imageHint: "cv document upload interface"
   },
   {
-    icon: <Globe className="h-10 w-10 text-primary" />,
+    icon: <Wand2 className="h-10 w-10 text-primary" />,
     title: "2. Magia Automática",
     description: "Nuestra IA transforma tu información en un perfil profesional público, elegante y profesional.",
-    imageHint: "website preview portfolio"
+    imageHint: "cv transformed website mockup"
   },
   {
     icon: <Briefcase className="h-10 w-10 text-primary" />,
     title: "3. Conecta y Crece",
     description: "Tu nuevo sitio te abrirá puertas a oportunidades laborales que se ajustan a ti.",
-    imageHint: "networking connection job"
+    imageHint: "professional connecting job opportunity"
   },
 ];
 
@@ -98,7 +98,7 @@ export default function HomePage() {
               Job Magnetic te conecta con nuevas oportunidades laborales mientras tú te enfocas en lo que mejor sabes hacer.
             </p>
             <div className="flex justify-center">
-              <SubscriptionForm buttonText="Únete y sé un early adopter 🚀" />
+              <SubscriptionForm buttonText="Crear mi Perfil Ahora 🚀" />
             </div>
             <div className="mt-16">
               <Image
