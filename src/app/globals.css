@@ -54,7 +54,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 
   .dark {
-    /* Define dark theme colors if needed, for now, focus on light theme */
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -69,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
     --muted-foreground: 0 0% 63.9%;
     --accent: 160 100% 50%; /* Lighter Mint Green */
     --accent-foreground: 0 0% 10%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 72.2% 50.6%; /* Adjusted for better visibility */
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
