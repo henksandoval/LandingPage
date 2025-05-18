@@ -40,7 +40,7 @@ const howItWorksSteps = [
   {
     icon: <Globe className="h-10 w-10 text-primary" />,
     title: "2. Magia Automática",
-    description: "Nuestra IA transforma tu información en un CV-Viewer público, elegante y profesional.",
+    description: "Nuestra IA transforma tu información en un perfil profesional público, elegante y profesional.",
     imageHint: "website preview portfolio"
   },
   {
@@ -72,7 +72,7 @@ export default function HomePage() {
             <div className="mt-16">
               <Image
                 src="https://placehold.co/1200x600.png"
-                alt="Job Magnetic CV Viewer example"
+                alt="Ejemplo de perfil profesional público creado con Job Magnetic"
                 width={1200}
                 height={600}
                 className="rounded-xl shadow-2xl mx-auto"
@@ -158,3 +158,4 @@ export default function HomePage() {
     </div>
   );
 }
+
