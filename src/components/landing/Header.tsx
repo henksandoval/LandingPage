@@ -1,5 +1,13 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Menu } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 
 export function Header() {
   return (
@@ -15,15 +23,36 @@ export function Header() {
           <Link href="/#beneficios" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Beneficios
           </Link>
+          <Link href="/#testimonios" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+            Testimonios
+          </Link>
           <Button asChild size="sm">
             <Link href="/#cta">Únete Ahora</Link>
           </Button>
         </nav>
         <div className="md:hidden">
-          {/* TODO: Mobile menu button can be added here */}
-          <Button asChild size="sm">
-            <Link href="/#cta">Únete</Link>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Abrir menú</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link href="/#como-funciona">Cómo Funciona</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/#beneficios">Beneficios</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/#testimonios">Testimonios</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/#cta">Únete Ahora</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>

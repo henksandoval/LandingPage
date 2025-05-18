@@ -4,7 +4,8 @@ import { Footer } from '@/components/landing/Footer';
 import { SubscriptionForm } from '@/components/landing/SubscriptionForm';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, Eye, FileText, Globe, Rocket, Sparkles, ThumbsUp, UploadCloud, Zap, Briefcase, Users } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { CheckCircle, Eye, FileText, Globe, Rocket, Sparkles, ThumbsUp, UploadCloud, Zap, Briefcase, Users, Star } from 'lucide-react';
 import Link from 'next/link';
 
 const benefits = [
@@ -51,6 +52,36 @@ const howItWorksSteps = [
   },
 ];
 
+const testimonials = [
+  {
+    name: "Ana Pérez",
+    role: "Diseñadora UX/UI",
+    quote: "¡Job Magnetic transformó mi búsqueda de empleo! En minutos tenía un perfil profesional online que realmente destaca. ¡Ya he recibido dos ofertas!",
+    avatar: "https://placehold.co/100x100.png",
+    avatarFallback: "AP",
+    rating: 5,
+    imageHint: "woman professional"
+  },
+  {
+    name: "Carlos López",
+    role: "Desarrollador Full-Stack",
+    quote: "Estaba cansado de enviar CVs genéricos. Con Job Magnetic, mi perfil tiene personalidad y es mucho más fácil para los reclutadores ver mi potencial.",
+    avatar: "https://placehold.co/100x100.png",
+    avatarFallback: "CL",
+    rating: 5,
+    imageHint: "man smiling"
+  },
+  {
+    name: "Sofía Rodríguez",
+    role: "Especialista en Marketing Digital",
+    quote: "La simplicidad y rapidez para crear un sitio profesional es increíble. Definitivamente una herramienta que recomiendo a todos mis colegas.",
+    avatar: "https://placehold.co/100x100.png",
+    avatarFallback: "SR",
+    rating: 4,
+    imageHint: "woman working"
+  },
+];
+
 
 export default function HomePage() {
   return (
@@ -61,7 +92,7 @@ export default function HomePage() {
         <section className="py-20 md:py-32 bg-gradient-to-br from-secondary via-background to-background">
           <div className="container mx-auto px-4 md:px-6 text-center">
             <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 text-foreground leading-tight">
-              ¡Transforma tu CV en un <span className="text-primary">Sitio Web Público</span> en Minutos!
+              ¡Transforma tu CV en un <span className="text-primary">Perfil Profesional Público</span> en Minutos!
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
               Job Magnetic te conecta con nuevas oportunidades laborales mientras tú te enfocas en lo que mejor sabes hacer.
@@ -136,6 +167,49 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Testimonials Section */}
+        <section id="testimonios" className="py-16 md:py-24">
+          <div className="container mx-auto px-4 md:px-6">
+            <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-4">
+              Lo que dicen <span className="text-primary">nuestros usuarios</span>
+            </h2>
+            <p className="text-center text-muted-foreground mb-12 md:mb-16 max-w-2xl mx-auto">
+              Descubre cómo Job Magnetic está ayudando a profesionales como tú a alcanzar sus metas.
+            </p>
+            <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <Card key={index} className="flex flex-col bg-card shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <CardContent className="pt-6 flex-grow flex flex-col">
+                    <div className="flex items-center mb-4">
+                      <Avatar className="h-12 w-12 mr-4">
+                        <AvatarImage src={testimonial.avatar} alt={testimonial.name} data-ai-hint={testimonial.imageHint} />
+                        <AvatarFallback>{testimonial.avatarFallback}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <CardTitle className="text-lg font-heading">{testimonial.name}</CardTitle>
+                        <CardDescription>{testimonial.role}</CardDescription>
+                      </div>
+                    </div>
+                    <blockquote className="text-muted-foreground italic border-l-4 border-primary pl-4 mb-4 flex-grow">
+                      "{testimonial.quote}"
+                    </blockquote>
+                    <div className="flex items-center">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-5 w-5 ${
+                            i < testimonial.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground/50'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Final CTA Section */}
         <section id="cta" className="py-20 md:py-32 bg-gradient-to-br from-primary to-accent">
           <div className="container mx-auto px-4 md:px-6 text-center">
@@ -158,4 +232,3 @@ export default function HomePage() {
     </div>
   );
 }
-
