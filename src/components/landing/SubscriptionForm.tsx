@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,28 +44,55 @@ export function SubscriptionForm({
 
   async function onSubmit(data: SubscriptionFormValues) {
     setIsLoading(true);
-    console.log("Subscribing email:", data.email);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsLoading(false);
     
-    // Example:
-    // const success = Math.random() > 0.2; // Simulate success/failure
-    const success = true; // Assume success for now
-
-    if (success) {
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!apiBaseUrl) {
+      console.error("Error: NEXT_PUBLIC_API_BASE_URL no está configurada.");
       toast({
-        title: "¡Suscripción exitosa!",
-        description: "Gracias por unirte. Te mantendremos informado.",
-        variant: "default",
-      });
-      form.reset();
-    } else {
-      toast({
-        title: "Error en la suscripción",
-        description: "Hubo un problema al procesar tu solicitud. Inténtalo de nuevo.",
+        title: "Error de Configuración",
+        description: "La URL de la API no está configurada correctamente. Contacta al administrador.",
         variant: "destructive",
       });
+      setIsLoading(false);
+      return;
+    }
+
+    const endpoint = `${apiBaseUrl.replace(/\/$/, '')}/user/earlyaccesor`;
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: data.email }),
+      });
+
+      if (response.ok) {
+        // const responseData = await response.json(); // Opcional, si tu API devuelve datos
+        toast({
+          title: "¡Suscripción exitosa!",
+          description: "Gracias por unirte. Te mantendremos informado.",
+          variant: "default",
+        });
+        form.reset();
+      } else {
+        // const errorData = await response.json(); // Opcional, si tu API devuelve un error específico
+        toast({
+          title: "Error en la suscripción",
+          description: `Hubo un problema al procesar tu solicitud (Estado: ${response.status}). Inténtalo de nuevo.`,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error en la llamada a la API:", error);
+      toast({
+        title: "Error de Red",
+        description: "No se pudo conectar con el servidor. Verifica tu conexión o inténtalo más tarde.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   }
 
