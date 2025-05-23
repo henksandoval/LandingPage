@@ -1,9 +1,9 @@
 
 import type { Metadata, Viewport } from 'next';
 import { Inter, Roboto } from 'next/font/google';
-import '../globals.css'; 
+import '../globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import { getDictionary, Dictionary } from '@/lib/translations'; 
+import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
 
 const inter = Inter({
@@ -19,7 +19,12 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }): Promise<Metadata> {
+interface LayoutAndPageProps {
+  params: { locale: Locale };
+}
+
+export async function generateMetadata({ params }: LayoutAndPageProps): Promise<Metadata> {
+  const { locale } = params; // Destructure locale from params
   const dict: Dictionary = await getDictionary(locale);
   return {
     title: dict.metadata.title,
@@ -32,18 +37,20 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F5F5F5" }, 
-    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" }, 
+    { media: "(prefers-color-scheme: light)", color: "#F5F5F5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" },
   ],
+};
+
+interface LocaleLayoutProps extends LayoutAndPageProps {
+  children: React.ReactNode;
 }
 
-export default async function LocaleLayout({ // Made this function async
+export default async function LocaleLayout({
   children,
-  params: { locale },
-}: Readonly<{
-  children: React.ReactNode;
-  params: { locale: Locale };
-}>) {
+  params, // Pass params as a whole object
+}: LocaleLayoutProps) {
+  const { locale } = params; // Destructure locale from params here
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${inter.variable} ${roboto.variable} font-sans antialiased`}>
