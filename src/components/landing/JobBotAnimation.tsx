@@ -27,38 +27,39 @@ export function JobBotAnimation(props: SVGProps<SVGSVGElement>) {
             to { fill-opacity: 1; r: 3.5px; }
           }
           .job-bot-arm-right {
-             animation: job-bot-arm-processing 1.2s infinite ease-in-out; /* Nueva animación */
-             transform-origin: 99px 60px; 
+            animation: job-bot-wave 2.5s infinite ease-in-out; /* Animación de saludo */
+            transform-origin: 99px 60px; /* Punto de rotación para el saludo */
           }
-           @keyframes job-bot-arm-processing { /* Animación de procesamiento */
-            0%   { transform: rotate(-2deg) translateY(0.5px); }
-            25%  { transform: rotate(0deg) translateY(-1px); }
-            50%  { transform: rotate(2deg) translateY(0px); }
-            75%  { transform: rotate(0deg) translateY(-1px); }
-            100% { transform: rotate(-2deg) translateY(0.5px); }
+          @keyframes job-bot-wave { /* Animación de saludo */
+            0%, 100% { transform: rotate(0deg); }
+            20%, 60% { transform: rotate(-25deg); }
+            40%, 80% { transform: rotate(10deg); }
           }
-          .job-bot-body-light-panel { /* Renombrado para evitar confusión con luces individuales */
+          .job-bot-body-light-panel { /* Panel de luces del cuerpo */
             animation: job-bot-body-glow 2s infinite ease-in-out alternate;
           }
           @keyframes job-bot-body-glow {
             from { opacity: 0.5; }
             to { opacity: 0.9; }
           }
-          .job-bot-panel-light {
+          .job-bot-panel-light { /* Luces individuales del panel */
             animation-name: job-bot-panel-blink;
-            animation-duration: 1.2s;
+            animation-duration: 1.8s; /* Duración más larga para un parpadeo más espaciado */
             animation-iteration-count: infinite;
             animation-timing-function: ease-in-out;
           }
-          .job-bot-panel-light.light-2 {
-            animation-delay: 0.3s;
+          .job-bot-panel-light.light-1 {
+            animation-delay: 0s;
           }
-          .job-bot-panel-light.light-3 {
+          .job-bot-panel-light.light-2 {
             animation-delay: 0.6s;
           }
-          @keyframes job-bot-panel-blink {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+          .job-bot-panel-light.light-3 {
+            animation-delay: 1.2s;
+          }
+          @keyframes job-bot-panel-blink { /* Parpadeo de luces del panel */
+            0%, 40%, 100% { opacity: 0.3; }
+            20% { opacity: 1; }
           }
         `}
       </style>
@@ -84,7 +85,7 @@ export function JobBotAnimation(props: SVGProps<SVGSVGElement>) {
       <rect x="15" y="58" width="12" height="35" rx="5" ry="5" fill="currentColor" />
       <circle cx="21" cy="95" r="7" fill="hsl(var(--secondary))" /> {/* Mano */}
 
-      {/* Brazo Derecho (animado procesando) */}
+      {/* Brazo Derecho (animado saludando) */}
       <g className="job-bot-arm-right">
         <rect x="93" y="58" width="12" height="35" rx="5" ry="5" fill="currentColor" />
         <circle cx="99" cy="95" r="7" fill="hsl(var(--secondary))" /> {/* Mano */}
