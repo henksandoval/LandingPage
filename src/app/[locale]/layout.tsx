@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Roboto } from 'next/font/google';
-import '../globals.css'; // Adjusted path
+import '../globals.css'; 
 import { Toaster } from "@/components/ui/toaster";
-import { getDictionary, Dictionary } from '@/lib/translations'; // Adjusted path
+import { getDictionary, Dictionary } from '@/lib/translations'; 
 
 const inter = Inter({
   subsets: ['latin'],
@@ -22,13 +22,16 @@ export async function generateMetadata({ params: { locale } }: { params: { local
   return {
     title: dict.metadata.title,
     description: dict.metadata.description,
+    icons: {
+      icon: '/job-magnetic-icon.svg', // Path relative to public folder
+    },
   };
 }
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F5F5F5" }, // primary light background
-    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" }, // primary dark background
+    { media: "(prefers-color-scheme: light)", color: "#F5F5F5" }, 
+    { media: "(prefers-color-scheme: dark)", color: "#0A0A0A" }, 
   ],
 }
 

@@ -29,14 +29,14 @@ interface HeaderProps {
 }
 
 const SpainFlagIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="20" height="15">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="20" height="15" className="mr-2">
     <rect width="3" height="2" fill="#c60b1e"/>
     <rect width="3" height="1" y="0.5" fill="#ffc400"/>
   </svg>
 );
 
 const UKFlagIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15" className="mr-2">
     <clipPath id="t">
       <path d="M30,15h30v15z v15h-30z h-30v-15z v-15h30z"/>
     </clipPath>
@@ -48,15 +48,13 @@ const UKFlagIcon = () => (
   </svg>
 );
 
-const LocaleFlag: React.FC<{ locale: string, className?: string }> = ({ locale, className }) => {
-  if (locale === 'es') {
-    return <SpainFlagIcon />;
-  }
-  if (locale === 'en') {
-    return <UKFlagIcon />;
-  }
-  return <span className={className}>{locale.toUpperCase()}</span>;
-};
+const JobMagneticIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <rect x="5" y="5" width="16" height="22" rx="2" stroke="currentColor" strokeWidth="2.5"/>
+    <path d="M22 11C25.3137 11 28 13.6863 28 17C28 20.3137 25.3137 23 22 23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    <path d="M22 13.5C24.2091 13.5 26 15.2909 26 17.5C26 19.7091 24.2091 21.5 22 21.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+  </svg>
+);
 
 
 export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
@@ -84,7 +82,7 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
           {locales.map((loc) => (
             <DropdownMenuItem key={loc} asChild className={locale === loc ? "bg-accent font-semibold" : ""}>
               <Link href={getLocalizedPath(loc)} className="flex items-center gap-2">
-                <LocaleFlag locale={loc} />
+                {loc === 'es' ? <SpainFlagIcon /> : <UKFlagIcon />}
                 <span>{loc.toUpperCase()}</span>
                 {locale === loc && <span className="ml-auto text-xs text-muted-foreground">({tHeader.currentLanguage || "Current"})</span>}
               </Link>
@@ -92,8 +90,7 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
           ))}
         </DropdownMenuSubContent>
       </DropdownMenuSub>
-
-      {/* Theme toggle directly as a menu item */}
+      
       <ThemeToggleButton translations={tThemeToggle} asMenuItem={true} />
 
     </DropdownMenuContent>
@@ -102,8 +99,9 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
   return (
     <header className="py-6 sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        <Link href={`/${locale}/`} className="text-2xl md:text-3xl font-bold font-heading text-primary hover:opacity-80 transition-opacity">
-          {tHeader.appName}
+        <Link href={`/${locale}/`} className="flex items-center text-2xl md:text-3xl font-bold font-heading text-primary hover:opacity-80 transition-opacity">
+          <JobMagneticIcon className="h-7 w-7 md:h-8 md:w-8 mr-2 text-primary" />
+          <span>{tHeader.appName}</span>
         </Link>
         <nav className="hidden md:flex gap-4 items-center">
           <Link href={`/${locale}/#como-funciona`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
