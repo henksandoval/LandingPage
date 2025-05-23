@@ -133,7 +133,10 @@ export default function HomePage() {
             </p>
             <div className="grid md:grid-cols-3 gap-8">
               {howItWorksSteps.map((step, index) => (
-                <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card flex flex-col">
+                <Card 
+                  key={index} 
+                  className="text-center shadow-lg hover:shadow-xl hover:border-primary transform hover:-translate-y-1 transition-all duration-300 ease-out bg-card flex flex-col"
+                >
                   <CardHeader className="items-center">
                     <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
                       {step.icon}
@@ -165,7 +168,10 @@ export default function HomePage() {
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {benefits.map((benefit, index) => (
-                <Card key={index} className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card">
+                <Card 
+                  key={index} 
+                  className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-xl hover:border-primary transform hover:-translate-y-1 transition-all duration-300 ease-out bg-card"
+                >
                   {benefit.icon}
                   <h3 className="text-xl font-semibold font-heading mb-2">{benefit.title}</h3>
                   <p className="text-muted-foreground text-sm">{benefit.description}</p>
@@ -186,7 +192,10 @@ export default function HomePage() {
             </p>
             <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
               {testimonials.map((testimonial, index) => (
-                <Card key={index} className="flex flex-col bg-card shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <Card 
+                  key={index} 
+                  className="flex flex-col bg-card shadow-lg hover:shadow-xl hover:border-primary transform hover:-translate-y-1 transition-all duration-300 ease-out"
+                >
                   <CardContent className="pt-6 flex-grow flex flex-col">
                     <div className="flex items-center mb-4">
                       <Avatar className="h-12 w-12 mr-4">
