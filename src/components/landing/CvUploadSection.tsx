@@ -24,7 +24,7 @@ export function CvUploadSection() {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"];
+      const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain", "application/msword"];
       if (!allowedTypes.includes(file.type)) {
         toast({
           title: "Tipo de archivo no soportado",
@@ -108,12 +108,17 @@ export function CvUploadSection() {
       setStatus("error");
       toast({
         title: "Error Crítico",
-        description: "Hubo un problema inesperado. Por favor, contacta a soporte si el problema persiste.",
+        description: `Hubo un problema inesperado: ${errorMsg}. Por favor, contacta a soporte si el problema persiste.`,
         variant: "destructive",
       });
     } finally {
+      // No limpiar el selectedFile aquí para permitir reintentos si es un error no crítico.
+      // Limpiar fileInputRef para que el usuario pueda volver a seleccionar el mismo archivo si es necesario.
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
+      }
+      if (status !== "error") { // Solo limpiar el selectedFile si no es un error que permita reintentar
+          setSelectedFile(null);
       }
     }
   };
@@ -132,7 +137,7 @@ export function CvUploadSection() {
         </>
       );
     }
-    if (selectedFile && (status === "fileSelected" || status === "error")) {
+    if (selectedFile && (status === "fileSelected" || status === "error" || status === "success")) { // Incluir success para que muestre el archivo mientras el mensaje de éxito está activo
       return (
         <>
           <FileText className="h-12 w-12 text-primary mx-auto mb-4" />
@@ -211,7 +216,7 @@ export function CvUploadSection() {
                 <Link href={generatedSiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-medium underline hover:text-primary/80 break-all">
                   {generatedSiteUrl}
                 </Link>
-                 <Button onClick={() => { setStatus("idle"); setSelectedFile(null); setGeneratedSiteUrl(null); }} className="mt-4 w-full md:w-auto">
+                 <Button onClick={() => { setStatus("idle"); setSelectedFile(null); setGeneratedSiteUrl(null); if (fileInputRef.current) fileInputRef.current.value = ""; }} className="mt-4 w-full md:w-auto">
                   Subir otro CV
                 </Button>
               </div>
@@ -224,10 +229,10 @@ export function CvUploadSection() {
                   Error al Procesar
                 </h3>
                 <p className="text-red-600 text-sm">{errorMessage}</p>
-                <Button variant="outline" onClick={() => { setStatus("fileSelected"); /* Keep file selected */ }} className="mt-4 mr-2">
+                <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile} className="mt-4 mr-2">
                   Intentar de Nuevo
                 </Button>
-                 <Button variant="secondary" onClick={() => { setStatus("idle"); setSelectedFile(null); setErrorMessage(null);}} className="mt-4">
+                 <Button variant="secondary" onClick={() => { setStatus("idle"); setSelectedFile(null); setErrorMessage(null); if (fileInputRef.current) fileInputRef.current.value = "";}} className="mt-4">
                   Seleccionar otro archivo
                 </Button>
               </div>
@@ -238,14 +243,10 @@ export function CvUploadSection() {
                 size="lg"
                 className="py-7 px-10 text-lg rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 w-full md:w-auto"
                 onClick={handleUploadAndProcess}
-                disabled={!selectedFile || status === "processing"}
+                disabled={!selectedFile}
               >
-                {status === "processing" ? (
-                  <Bot className="mr-3 h-6 w-6 animate-spin" /> 
-                ) : (
-                  <UploadCloud className="mr-3 h-6 w-6" />
-                )}
-                {status === "processing" ? "Procesando..." : (selectedFile ? "Crear Perfil con este CV" : "Selecciona un CV primero")}
+                <UploadCloud className="mr-3 h-6 w-6" />
+                {selectedFile ? "Crear Perfil con este CV" : "Selecciona un CV primero"}
               </Button>
             )}
 
