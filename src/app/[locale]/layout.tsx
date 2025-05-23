@@ -1,8 +1,10 @@
+
 import type { Metadata, Viewport } from 'next';
 import { Inter, Roboto } from 'next/font/google';
 import '../globals.css'; 
 import { Toaster } from "@/components/ui/toaster";
 import { getDictionary, Dictionary } from '@/lib/translations'; 
+import type { Locale } from '@/lib/i18n-config';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -17,7 +19,7 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params: { locale } }: { params: { locale: Locale } }): Promise<Metadata> {
   const dict: Dictionary = await getDictionary(locale);
   return {
     title: dict.metadata.title,
@@ -35,12 +37,12 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function LocaleLayout({
+export default async function LocaleLayout({ // Made this function async
   children,
   params: { locale },
 }: Readonly<{
   children: React.ReactNode;
-  params: { locale: string };
+  params: { locale: Locale };
 }>) {
   return (
     <html lang={locale} suppressHydrationWarning>
