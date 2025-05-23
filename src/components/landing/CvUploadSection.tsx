@@ -6,9 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { UploadCloud, Loader2, Link as LinkIcon, FileText, AlertTriangle } from "lucide-react";
+import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle, Bot } from "lucide-react"; // Removed Loader2, Added Bot
 import Link from 'next/link';
-import { processCvAndGenerateSite, type ProcessCvOutput } from "@/ai/flows/process-cv-flow"; // Asegúrate que la ruta sea correcta
+import { processCvAndGenerateSite, type ProcessCvOutput } from "@/ai/flows/process-cv-flow";
 
 type UploadStatus = "idle" | "fileSelected" | "processing" | "success" | "error";
 
@@ -23,7 +23,6 @@ export function CvUploadSection() {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validación simple de tipo y tamaño (ejemplo)
       const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"];
       if (!allowedTypes.includes(file.type)) {
         toast({
@@ -33,7 +32,7 @@ export function CvUploadSection() {
         });
         setSelectedFile(null);
         setStatus("idle");
-        if (fileInputRef.current) fileInputRef.current.value = ""; // Reset input
+        if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
       if (file.size > 5 * 1024 * 1024) { // 5MB
@@ -44,7 +43,7 @@ export function CvUploadSection() {
         });
         setSelectedFile(null);
         setStatus("idle");
-        if (fileInputRef.current) fileInputRef.current.value = ""; // Reset input
+        if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
       setSelectedFile(file);
@@ -112,13 +111,9 @@ export function CvUploadSection() {
         variant: "destructive",
       });
     } finally {
-      // Reset file input para permitir subir el mismo archivo de nuevo si es necesario
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-      // No reseteamos selectedFile aquí para que el usuario vea qué archivo subió si hay error
-      // setSelectedFile(null); 
-      // Podrías resetearlo si quieres forzar una nueva selección siempre
     }
   };
 
@@ -130,9 +125,9 @@ export function CvUploadSection() {
     if (status === "processing") {
       return (
         <>
-          <Loader2 className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
-          <p className="text-primary font-medium text-lg">Procesando tu CV...</p>
-          <p className="text-muted-foreground/80">Nuestra IA está trabajando.</p>
+          <Bot className="h-16 w-16 text-primary mx-auto mb-4 animate-pulse" />
+          <p className="text-primary font-medium text-lg">Nuestro JobBot está en acción...</p>
+          <p className="text-muted-foreground/80">Creando tu perfil profesional único.</p>
         </>
       );
     }
@@ -245,7 +240,7 @@ export function CvUploadSection() {
                 disabled={!selectedFile || status === "processing"}
               >
                 {status === "processing" ? (
-                  <Loader2 className="mr-3 h-6 w-6 animate-spin" />
+                  <Bot className="mr-3 h-6 w-6 animate-pulse" /> 
                 ) : (
                   <UploadCloud className="mr-3 h-6 w-6" />
                 )}
@@ -262,5 +257,3 @@ export function CvUploadSection() {
     </section>
   );
 }
-
-    
