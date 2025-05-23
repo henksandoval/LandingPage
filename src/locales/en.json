@@ -1,3 +1,4 @@
+
 {
   "metadata": {
     "title": "Job Magnetic - Transform Your CV into a Professional Website",
@@ -12,7 +13,9 @@
       "uploadCv": "Upload CV",
       "joinNow": "Join Now"
     },
-    "mobileMenuTitle": "Open menu"
+    "mobileMenuTitle": "Open menu",
+    "languageSelectorTooltip": "Change language",
+    "currentLanguage": "Current"
   },
   "footer": {
     "copyright": "© {year} Job Magnetic. All rights reserved."

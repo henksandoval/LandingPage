@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu } from 'lucide-react';
+import { Menu, Languages } from 'lucide-react'; // Added Languages icon
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,41 +12,48 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggleButton } from './ThemeToggleButton';
-import { Dictionary } from '@/lib/translations';
+import type { Dictionary } from '@/lib/translations';
 import { usePathname } from 'next/navigation';
 import type { Locale } from '@/lib/i18n-config';
+import { i18n } from '@/lib/i18n-config'; // Import i18n config
 
 interface HeaderProps {
   locale: Locale;
-  tHeader: Dictionary; 
+  tHeader: Dictionary;
   tThemeToggle: Dictionary;
 }
 
-function LanguageSwitcher({ currentLocale }: { currentLocale: string }) {
+// New Language Switcher Dropdown component
+function LanguageSwitcherDropdown({ currentLocale, tHeader }: { currentLocale: Locale; tHeader: Dictionary }) {
   const pathname = usePathname();
+  const { locales } = i18n;
 
   const getLocalizedPath = (targetLocale: string) => {
     if (!pathname) return `/${targetLocale}`;
     const segments = pathname.split('/');
-    segments[1] = targetLocale;
+    segments[1] = targetLocale; // Assumes locale is always the first segment after /
     return segments.join('/');
   };
 
   return (
-    <div className="flex items-center gap-2 ml-2">
-      {(['es', 'en'] as Locale[]).map((loc) => (
-        <Button key={loc} variant={currentLocale === loc ? "default" : "ghost"} size="sm" asChild>
-          <Link
-            href={getLocalizedPath(loc)}
-            className={`text-xs font-medium ${
-              currentLocale === loc ? "text-primary-foreground" : "text-muted-foreground hover:text-primary"
-            }`}
-          >
-            {loc.toUpperCase()}
-          </Link>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon" className="ml-2">
+          <Languages className="h-5 w-5" />
+          <span className="sr-only">{tHeader.languageSelectorTooltip || "Change language"}</span>
         </Button>
-      ))}
-    </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {locales.map((loc) => (
+          <DropdownMenuItem key={loc} asChild className={currentLocale === loc ? "bg-accent font-semibold" : ""}>
+            <Link href={getLocalizedPath(loc)}>
+              {loc.toUpperCase()}
+              {currentLocale === loc && <span className="ml-2 text-xs text-muted-foreground">({tHeader.currentLanguage || "Current"})</span>}
+            </Link>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
@@ -73,11 +81,11 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
             <Link href={`/${locale}/#cta`}>{tHeader.nav.joinNow}</Link>
           </Button>
           <ThemeToggleButton translations={tThemeToggle} />
-          <LanguageSwitcher currentLocale={locale} />
+          <LanguageSwitcherDropdown currentLocale={locale} tHeader={tHeader} />
         </nav>
         <div className="md:hidden flex items-center">
           <ThemeToggleButton translations={tThemeToggle} />
-          <LanguageSwitcher currentLocale={locale} />
+          <LanguageSwitcherDropdown currentLocale={locale} tHeader={tHeader} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" className="ml-2">
