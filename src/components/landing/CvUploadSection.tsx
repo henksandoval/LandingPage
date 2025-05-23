@@ -112,11 +112,13 @@ export function CvUploadSection() {
         variant: "destructive",
       });
     } finally {
+      // Don't clear selectedFile if there was an error, so user can retry
+      if (status !== "error") {
+          setSelectedFile(null); 
+      }
+      // Always clear the file input so the same file can be re-selected if needed
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
-      }
-      if (status !== "error" && status !== "success") { 
-          setSelectedFile(null);
       }
     }
   };
@@ -146,7 +148,7 @@ export function CvUploadSection() {
             ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
           </p>
            {status === "fileSelected" && (
-             <p className="text-sm text-green-600 mt-2">¡Listo para procesar!</p>
+             <p className="text-sm text-green-600 dark:text-green-400 mt-2">¡Listo para procesar!</p>
            )}
         </>
       );
@@ -203,12 +205,12 @@ export function CvUploadSection() {
             </div>
 
             {status === "success" && generatedSiteUrl && (
-              <div className="mt-6 mb-8 p-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg text-left">
+              <div className="mt-6 mb-8 p-6 bg-green-50 dark:bg-green-800/30 border border-green-300 dark:border-green-700 rounded-lg text-left">
                 <h3 className="text-xl font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center">
                   <LinkIcon className="h-6 w-6 mr-2 text-green-600 dark:text-green-400" />
                   ¡Tu Perfil está Listo!
                 </h3>
-                <p className="text-green-600 dark:text-green-300/90 mb-3">
+                <p className="text-green-600 dark:text-green-400/90 mb-3">
                   Hemos generado tu perfil profesional. Puedes verlo aquí:
                 </p>
                 <Link href={generatedSiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-medium underline hover:text-primary/80 break-all">
@@ -221,13 +223,13 @@ export function CvUploadSection() {
             )}
 
             {status === "error" && errorMessage && (
-              <div className="mt-6 mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg text-left">
+              <div className="mt-6 mb-8 p-4 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg text-left">
                 <h3 className="text-lg font-semibold text-red-700 dark:text-red-300 mb-2 flex items-center">
                   <AlertTriangle className="h-5 w-5 mr-2 text-red-600 dark:text-red-400" />
                   Error al Procesar
                 </h3>
-                <p className="text-red-600 dark:text-red-300/90 text-sm">{errorMessage}</p>
-                <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile || status === "processing"} className="mt-4 mr-2">
+                <p className="text-red-600 dark:text-red-400/90 text-sm">{errorMessage}</p>
+                <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile} className="mt-4 mr-2">
                   Intentar de Nuevo
                 </Button>
                  <Button variant="secondary" onClick={() => { setStatus("idle"); setSelectedFile(null); setErrorMessage(null); if (fileInputRef.current) fileInputRef.current.value = "";}} className="mt-4">
