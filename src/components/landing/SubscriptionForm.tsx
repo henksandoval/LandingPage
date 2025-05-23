@@ -1,4 +1,3 @@
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,24 +15,26 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Rocket, Loader2 } from "lucide-react";
 import { useState } from "react";
-
-const subscriptionSchema = z.object({
-  email: z.string().email({ message: "Por favor, introduce un correo electrónico válido." }),
-});
-
-type SubscriptionFormValues = z.infer<typeof subscriptionSchema>;
+import { Dictionary } from '@/lib/translations';
 
 interface SubscriptionFormProps {
   buttonText?: string;
   placeholderText?: string;
+  translations: Dictionary; // For validation messages and toast
 }
 
 export function SubscriptionForm({ 
   buttonText = "Únete a nuestra lista de early adopters", 
-  placeholderText = "tu@email.com" 
+  placeholderText = "tu@email.com",
+  translations 
 }: SubscriptionFormProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+
+  const subscriptionSchema = z.object({
+    email: z.string().email({ message: translations.emailValidation || "Please enter a valid email." }),
+  });
+  type SubscriptionFormValues = z.infer<typeof subscriptionSchema>;
 
   const form = useForm<SubscriptionFormValues>({
     resolver: zodResolver(subscriptionSchema),
@@ -49,8 +50,8 @@ export function SubscriptionForm({
     if (!apiBaseUrl) {
       console.error("Error: NEXT_PUBLIC_API_BASE_URL no está configurada.");
       toast({
-        title: "Error de Configuración",
-        description: "La URL de la API no está configurada correctamente. Contacta al administrador.",
+        title: translations.toastConfigErrorTitle || "Configuration Error",
+        description: translations.toastConfigErrorDescription || "API URL not configured.",
         variant: "destructive",
       });
       setIsLoading(false);
@@ -69,26 +70,24 @@ export function SubscriptionForm({
       });
 
       if (response.ok) {
-        // const responseData = await response.json(); // Opcional, si tu API devuelve datos
         toast({
-          title: "¡Suscripción exitosa!",
-          description: "Gracias por unirte. Te mantendremos informado.",
+          title: translations.toastSuccessTitle || "Subscription successful!",
+          description: translations.toastSuccessDescription || "Thanks for joining.",
           variant: "default",
         });
         form.reset();
       } else {
-        // const errorData = await response.json(); // Opcional, si tu API devuelve un error específico
         toast({
-          title: "Error en la suscripción",
-          description: `Hubo un problema al procesar tu solicitud (Estado: ${response.status}). Inténtalo de nuevo.`,
+          title: translations.toastErrorTitle || "Subscription error",
+          description: (translations.toastErrorDescription || "Request failed (Status: {status}).").replace('{status}', response.status.toString()),
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error("Error en la llamada a la API:", error);
       toast({
-        title: "Error de Red",
-        description: "No se pudo conectar con el servidor. Verifica tu conexión o inténtalo más tarde.",
+        title: translations.toastNetworkErrorTitle || "Network Error",
+        description: translations.toastNetworkErrorDescription || "Could not connect to server.",
         variant: "destructive",
       });
     } finally {

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, ChangeEvent, useRef } from "react";
@@ -10,10 +9,17 @@ import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle } from "lucide-r
 import Link from 'next/link';
 import { processCvAndGenerateSite, type ProcessCvOutput } from "@/ai/flows/process-cv-flow";
 import { JobBotAnimation } from "./JobBotAnimation"; 
+import { Dictionary } from '@/lib/translations';
+import type { Locale } from '@/lib/i18n-config';
 
 type UploadStatus = "idle" | "fileSelected" | "processing" | "success" | "error";
 
-export function CvUploadSection() {
+interface CvUploadSectionProps {
+  translations: Dictionary;
+  locale: Locale;
+}
+
+export function CvUploadSection({ translations: t, locale }: CvUploadSectionProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [status, setStatus] = useState<UploadStatus>("idle");
   const [generatedSiteUrl, setGeneratedSiteUrl] = useState<string | null>(null);
@@ -27,8 +33,8 @@ export function CvUploadSection() {
       const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain", "application/msword"];
       if (!allowedTypes.includes(file.type)) {
         toast({
-          title: "Tipo de archivo no soportado",
-          description: "Por favor, sube un PDF, DOCX o archivo de texto.",
+          title: t.toast?.unsupportedTypeTitle || "Unsupported file type",
+          description: t.toast?.unsupportedTypeDescription || "Please upload a PDF, DOCX, or text file.",
           variant: "destructive",
         });
         setSelectedFile(null);
@@ -38,8 +44,8 @@ export function CvUploadSection() {
       }
       if (file.size > 5 * 1024 * 1024) { // 5MB
         toast({
-          title: "Archivo demasiado grande",
-          description: "El tamaño máximo permitido es 5MB.",
+          title: t.toast?.fileTooLargeTitle || "File too large",
+          description: t.toast?.fileTooLargeDescription || "Maximum allowed size is 5MB.",
           variant: "destructive",
         });
         setSelectedFile(null);
@@ -66,8 +72,8 @@ export function CvUploadSection() {
   const handleUploadAndProcess = async () => {
     if (!selectedFile) {
       toast({
-        title: "Ningún archivo seleccionado",
-        description: "Por favor, selecciona un archivo para continuar.",
+        title: t.toast?.noFileSelectedTitle || "No file selected",
+        description: t.toast?.noFileSelectedDescription || "Please select a file to continue.",
         variant: "destructive",
       });
       return;
@@ -79,6 +85,7 @@ export function CvUploadSection() {
 
     try {
       const cvDataUri = await convertFileToDataURL(selectedFile);
+      // Note: processCvAndGenerateSite might need to be locale-aware for its feedback messages in the future
       const result: ProcessCvOutput = await processCvAndGenerateSite({
         cvDataUri,
         fileName: selectedFile.name,
@@ -88,15 +95,15 @@ export function CvUploadSection() {
         setGeneratedSiteUrl(result.generatedSiteUrl);
         setStatus("success");
         toast({
-          title: "¡Perfil Creado Exitosamente!",
-          description: result.feedbackMessage,
+          title: t.toast?.profileCreatedSuccessTitle || "Profile Created Successfully!",
+          description: result.feedbackMessage, // This message comes from AI, may need localization in flow
           variant: "default",
         });
       } else {
         setErrorMessage(result.feedbackMessage || "Ocurrió un error al procesar tu CV.");
         setStatus("error");
         toast({
-          title: "Error en el Procesamiento",
+          title: t.toast?.processingErrorTitle || "Processing Error",
           description: result.feedbackMessage || "No se pudo generar tu perfil. Intenta de nuevo.",
           variant: "destructive",
         });
@@ -107,16 +114,14 @@ export function CvUploadSection() {
       setErrorMessage(errorMsg);
       setStatus("error");
       toast({
-        title: "Error Crítico",
-        description: `Hubo un problema inesperado: ${errorMsg}. Por favor, contacta a soporte si el problema persiste.`,
+        title: t.toast?.criticalErrorTitle || "Critical Error",
+        description: (t.toast?.criticalErrorDescription || "An unexpected issue occurred: {errorMsg}.").replace('{errorMsg}', errorMsg),
         variant: "destructive",
       });
     } finally {
-      // Don't clear selectedFile if there was an error, so user can retry
       if (status !== "error") {
           setSelectedFile(null); 
       }
-      // Always clear the file input so the same file can be re-selected if needed
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -132,8 +137,8 @@ export function CvUploadSection() {
       return (
         <>
           <JobBotAnimation className="h-32 w-32 text-primary mx-auto mb-4" />
-          <p className="text-primary font-medium text-lg">Nuestro JobBot está en acción...</p>
-          <p className="text-muted-foreground/80">Creando tu perfil profesional único.</p>
+          <p className="text-primary font-medium text-lg">{t.status?.processingTitle || "Our JobBot is in action..."}</p>
+          <p className="text-muted-foreground/80">{t.status?.processingDescription || "Creating your unique professional profile."}</p>
         </>
       );
     }
@@ -142,13 +147,13 @@ export function CvUploadSection() {
         <>
           <FileText className="h-12 w-12 text-primary mx-auto mb-4" />
           <p className="text-foreground font-medium text-lg truncate max-w-full px-4" title={selectedFile.name}>
-            Archivo: {selectedFile.name}
+            {(t.dropzone?.fileSelected || "File: {fileName}").replace('{fileName}', selectedFile.name)}
           </p>
           <p className="text-xs text-muted-foreground/60 mt-1">
-            ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+            {(t.dropzone?.fileSize || "({fileSize} MB)").replace('{fileSize}', (selectedFile.size / 1024 / 1024).toFixed(2))}
           </p>
            {status === "fileSelected" && (
-             <p className="text-sm text-green-600 dark:text-green-400 mt-2">¡Listo para procesar!</p>
+             <p className="text-sm text-green-600 dark:text-green-400 mt-2">{t.dropzone?.readyToProcess || "Ready to process!"}</p>
            )}
         </>
       );
@@ -157,15 +162,22 @@ export function CvUploadSection() {
       <>
         <UploadCloud className="h-12 w-12 text-muted-foreground/70 mx-auto mb-4 group-hover:text-primary transition-colors duration-300" />
         <p className="text-muted-foreground font-medium text-lg">
-          Arrastra y suelta tu CV aquí
+          {t.dropzone?.dragAndDrop || "Drag and drop your CV here"}
         </p>
-        <p className="text-muted-foreground/80">o haz clic para seleccionar</p>
+        <p className="text-muted-foreground/80">{t.dropzone?.clickToSelect || "or click to select"}</p>
         <p className="text-xs text-muted-foreground/60 mt-3">
-          (PDF, DOCX, TXT - Máx. 5MB)
+          {t.dropzone?.fileTypes || "(PDF, DOCX, TXT - Max 5MB)"}
         </p>
       </>
     );
   };
+  
+  const termsLinkText = t.termsLink || "Terms of Service";
+  const privacyLinkText = t.privacyLink || "Privacy Policy";
+  const termsAndPrivacyNotice = (t.termsAndPrivacyNotice || "By uploading your CV, you agree to our {termsLink} and {privacyLink}.")
+    .replace('{termsLink}', `<a href="/${locale}/terminos" class="underline hover:text-primary">${termsLinkText}</a>`)
+    .replace('{privacyLink}', `<a href="/${locale}/privacidad" class="underline hover:text-primary">${privacyLinkText}</a>`);
+
 
   return (
     <section id="upload-cv" className="py-16 md:py-24 bg-gradient-to-br from-background via-secondary/20 to-background">
@@ -176,11 +188,10 @@ export function CvUploadSection() {
               <UploadCloud className="h-16 w-16 text-primary" strokeWidth={1.5} />
             </div>
             <CardTitle className="text-3xl md:text-4xl font-bold font-heading mb-3 text-foreground">
-              Impulsa tu Futuro: <span className="text-primary">Carga tu CV y Crea tu Perfil</span>
+              {t.title}
             </CardTitle>
-            <CardDescription className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto">
-              Nuestra <span className="font-semibold text-primary">inteligencia artificial</span> analizará tu experiencia y creará un perfil profesional <span className="font-semibold text-accent">dinámico y optimizado</span> en minutos. ¡El primer paso hacia nuevas oportunidades está a un clic!
-            </CardDescription>
+            <CardDescription className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto"
+              dangerouslySetInnerHTML={{ __html: t.description }}/>
           </CardHeader>
           <CardContent className="pt-2 pb-8 px-6 md:px-10">
             <Input
@@ -208,16 +219,16 @@ export function CvUploadSection() {
               <div className="mt-6 mb-8 p-6 bg-green-50 dark:bg-green-800/30 border border-green-300 dark:border-green-700 rounded-lg text-left">
                 <h3 className="text-xl font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center">
                   <LinkIcon className="h-6 w-6 mr-2 text-green-600 dark:text-green-400" />
-                  ¡Tu Perfil está Listo!
+                  {t.status?.successTitle || "Your Profile is Ready!"}
                 </h3>
                 <p className="text-green-600 dark:text-green-400/90 mb-3">
-                  Hemos generado tu perfil profesional. Puedes verlo aquí:
+                  {t.status?.successMessage || "We have generated your professional profile. You can view it here:"}
                 </p>
                 <Link href={generatedSiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-medium underline hover:text-primary/80 break-all">
                   {generatedSiteUrl}
                 </Link>
                  <Button onClick={() => { setStatus("idle"); setSelectedFile(null); setGeneratedSiteUrl(null); if (fileInputRef.current) fileInputRef.current.value = ""; }} className="mt-4 w-full md:w-auto">
-                  Subir otro CV
+                  {t.button?.uploadAnother || "Upload another CV"}
                 </Button>
               </div>
             )}
@@ -226,14 +237,14 @@ export function CvUploadSection() {
               <div className="mt-6 mb-8 p-4 bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg text-left">
                 <h3 className="text-lg font-semibold text-red-700 dark:text-red-300 mb-2 flex items-center">
                   <AlertTriangle className="h-5 w-5 mr-2 text-red-600 dark:text-red-400" />
-                  Error al Procesar
+                  {t.status?.errorTitle || "Processing Error"}
                 </h3>
                 <p className="text-red-600 dark:text-red-400/90 text-sm">{errorMessage}</p>
                 <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile} className="mt-4 mr-2">
-                  Intentar de Nuevo
+                  {t.status?.tryAgainButton || "Try Again"}
                 </Button>
                  <Button variant="secondary" onClick={() => { setStatus("idle"); setSelectedFile(null); setErrorMessage(null); if (fileInputRef.current) fileInputRef.current.value = "";}} className="mt-4">
-                  Seleccionar otro archivo
+                  {t.status?.selectAnotherFileButton || "Select another file"}
                 </Button>
               </div>
             )}
@@ -246,13 +257,12 @@ export function CvUploadSection() {
                 disabled={!selectedFile}
               >
                 <UploadCloud className="mr-3 h-6 w-6" />
-                {selectedFile ? "Crear Perfil con este CV" : "Selecciona un CV primero"}
+                {selectedFile ? (t.button?.createProfile || "Create Profile with this CV") : (t.button?.selectFirst || "Select a CV first")}
               </Button>
             )}
 
-            <p className="mt-8 text-xs text-muted-foreground/80">
-              Al subir tu CV, aceptas nuestros <Link href="/terminos" className="underline hover:text-primary">Términos de Servicio</Link> y <Link href="/privacidad" className="underline hover:text-primary">Política de Privacidad</Link>.
-            </p>
+            <p className="mt-8 text-xs text-muted-foreground/80"
+              dangerouslySetInnerHTML={{ __html: termsAndPrivacyNotice }} />
           </CardContent>
         </Card>
       </div>

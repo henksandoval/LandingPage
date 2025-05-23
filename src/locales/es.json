@@ -1,0 +1,147 @@
+{
+  "metadata": {
+    "title": "Job Magnetic - Transforma tu CV en un sitio web profesional",
+    "description": "Job Magnetic te conecta con nuevas oportunidades laborales mientras tú te enfocas en lo que mejor sabes hacer."
+  },
+  "header": {
+    "appName": "Job Magnetic",
+    "nav": {
+      "howItWorks": "Cómo Funciona",
+      "benefits": "Beneficios",
+      "testimonials": "Testimonios",
+      "uploadCv": "Cargar CV",
+      "joinNow": "Únete Ahora"
+    },
+    "mobileMenuTitle": "Abrir menú"
+  },
+  "footer": {
+    "copyright": "© {year} Job Magnetic. Todos los derechos reservados."
+  },
+  "themeToggle": {
+    "activateDarkMode": "Activar modo oscuro",
+    "activateLightMode": "Activar modo claro",
+    "toggleTheme": "Cambiar tema"
+  },
+  "subscriptionForm": {
+    "emailValidation": "Por favor, introduce un correo electrónico válido.",
+    "buttonSubmit": "Suscribirme",
+    "toastSuccessTitle": "¡Suscripción exitosa!",
+    "toastSuccessDescription": "Gracias por unirte. Te mantendremos informado.",
+    "toastErrorTitle": "Error en la suscripción",
+    "toastErrorDescription": "Hubo un problema al procesar tu solicitud (Estado: {status}). Inténtalo de nuevo.",
+    "toastConfigErrorTitle": "Error de Configuración",
+    "toastConfigErrorDescription": "La URL de la API no está configurada. Contacta al administrador.",
+    "toastNetworkErrorTitle": "Error de Red",
+    "toastNetworkErrorDescription": "No se pudo conectar con el servidor. Verifica tu conexión."
+  },
+  "hero": {
+    "titlePart1": "¡Transforma tu CV en un ",
+    "titleHighlight": "Perfil Profesional Público",
+    "titlePart2": " en Minutos!",
+    "description": "Job Magnetic te conecta con nuevas oportunidades laborales mientras tú te enfocas en lo que mejor sabes hacer.",
+    "imageAlt": "Ejemplo de perfil profesional público creado con Job Magnetic",
+    "subscriptionButton": "Ser Notificado del Lanzamiento 🚀",
+    "subscriptionPlaceholder": "Tu correo para acceso prioritario"
+  },
+  "cvUpload": {
+    "title": "Impulsa tu Futuro: Carga tu CV y Crea tu Perfil",
+    "description": "Nuestra <span class=\"font-semibold text-primary\">inteligencia artificial</span> analizará tu experiencia y creará un perfil profesional <span class=\"font-semibold text-accent\">dinámico y optimizado</span> en minutos. ¡El primer paso hacia nuevas oportunidades está a un clic!",
+    "dropzone": {
+      "dragAndDrop": "Arrastra y suelta tu CV aquí",
+      "clickToSelect": "o haz clic para seleccionar",
+      "fileTypes": "(PDF, DOCX, TXT - Máx. 5MB)",
+      "fileSelected": "Archivo: {fileName}",
+      "fileSize": "({fileSize} MB)",
+      "readyToProcess": "¡Listo para procesar!"
+    },
+    "button": {
+      "createProfile": "Crear Perfil con este CV",
+      "selectFirst": "Selecciona un CV primero",
+      "uploadAnother": "Subir otro CV"
+    },
+    "termsLink": "Términos de Servicio",
+    "privacyLink": "Política de Privacidad",
+    "termsAndPrivacyNotice": "Al subir tu CV, aceptas nuestros {termsLink} y {privacyLink}.",
+    "status": {
+      "processingTitle": "Nuestro JobBot está en acción...",
+      "processingDescription": "Creando tu perfil profesional único.",
+      "successTitle": "¡Tu Perfil está Listo!",
+      "successMessage": "Hemos generado tu perfil profesional. Puedes verlo aquí:",
+      "errorTitle": "Error al Procesar",
+      "tryAgainButton": "Intentar de Nuevo",
+      "selectAnotherFileButton": "Seleccionar otro archivo"
+    },
+    "toast": {
+      "unsupportedTypeTitle": "Tipo de archivo no soportado",
+      "unsupportedTypeDescription": "Por favor, sube un PDF, DOCX o archivo de texto.",
+      "fileTooLargeTitle": "Archivo demasiado grande",
+      "fileTooLargeDescription": "El tamaño máximo permitido es 5MB.",
+      "noFileSelectedTitle": "Ningún archivo seleccionado",
+      "noFileSelectedDescription": "Por favor, selecciona un archivo para continuar.",
+      "profileCreatedSuccessTitle": "¡Perfil Creado Exitosamente!",
+      "processingErrorTitle": "Error en el Procesamiento",
+      "criticalErrorTitle": "Error Crítico",
+      "criticalErrorDescription": "Hubo un problema inesperado: {errorMsg}. Por favor, contacta a soporte si el problema persiste."
+    }
+  },
+  "howItWorks": {
+    "sectionTitle": "Cómo Funciona <span class=\"text-primary\">Job Magnetic</span>",
+    "sectionDescription": "En solo tres simples pasos, estarás listo para impresionar a reclutadores y descubrir nuevas oportunidades.",
+    "step1": {
+      "title": "1. Tu CV, la Base de Todo",
+      "description": "Proporciona tu CV y nuestra IA extraerá la información clave para construir tu perfil único."
+    },
+    "step2": {
+      "title": "2. Magia Automática",
+      "description": "Nuestra IA transforma tu información en un perfil profesional público, elegante y optimizado."
+    },
+    "step3": {
+      "title": "3. Conecta y Crece",
+      "description": "Tu nuevo sitio te abrirá puertas a oportunidades laborales que se ajustan a ti."
+    }
+  },
+  "benefits": {
+    "sectionTitle": "Beneficios Clave de <span class=\"text-primary\">Job Magnetic</span>",
+    "benefit1": {
+      "title": "Sitio Web Profesional al Instante",
+      "description": "Convierte tu CV en un micrositio atractivo y moderno en cuestión de minutos."
+    },
+    "benefit2": {
+      "title": "Aumenta tu Visibilidad",
+      "description": "Destaca entre la multitud y llega a reclutadores que buscan tu perfil único."
+    },
+    "benefit3": {
+      "title": "Nuevas Oportunidades",
+      "description": "Conéctate con ofertas laborales relevantes sin esfuerzo adicional."
+    },
+    "benefit4": {
+      "title": "Fácil de Usar",
+      "description": "Una interfaz intuitiva diseñada para que te enfoques en lo importante: tu carrera."
+    }
+  },
+  "testimonials": {
+    "sectionTitle": "Lo que dicen <span class=\"text-primary\">nuestros usuarios</span>",
+    "sectionDescription": "Descubre cómo Job Magnetic está ayudando a profesionales como tú a alcanzar sus metas.",
+    "user1": {
+      "name": "Ana Pérez",
+      "role": "Diseñadora UX/UI",
+      "quote": "¡Job Magnetic transformó mi búsqueda de empleo! En minutos tenía un perfil profesional online que realmente destaca. ¡Ya he recibido dos ofertas!"
+    },
+    "user2": {
+      "name": "Carlos López",
+      "role": "Desarrollador Full-Stack",
+      "quote": "Estaba cansado de enviar CVs genéricos. Con Job Magnetic, mi perfil tiene personalidad y es mucho más fácil para los reclutadores ver mi potencial."
+    },
+    "user3": {
+      "name": "Sofía Rodríguez",
+      "role": "Especialista en Marketing Digital",
+      "quote": "La simplicidad y rapidez para crear un sitio profesional es increíble. Definitivamente una herramienta que recomiendo a todos mis colegas."
+    }
+  },
+  "cta": {
+    "title": "¿Listo para Potenciar tu Carrera?",
+    "description": "Únete a nuestra comunidad de early adopters y sé el primero en experimentar la revolución de la búsqueda de empleo con Job Magnetic.",
+    "button": "¡Quiero ser Early Adopter! 🚀",
+    "placeholder": "Tu mejor correo electrónico"
+  }
+}
