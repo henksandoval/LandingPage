@@ -135,7 +135,7 @@ export default function HomePage() {
               {howItWorksSteps.map((step, index) => (
                 <Card 
                   key={index} 
-                  className="text-center shadow-lg hover:shadow-xl hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card flex flex-col"
+                  className="text-center shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card flex flex-col"
                 >
                   <CardHeader className="items-center">
                     <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
@@ -170,7 +170,7 @@ export default function HomePage() {
               {benefits.map((benefit, index) => (
                 <Card 
                   key={index} 
-                  className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-xl hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card"
+                  className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card"
                 >
                   {benefit.icon}
                   <h3 className="text-xl font-semibold font-heading mb-2">{benefit.title}</h3>
@@ -194,7 +194,7 @@ export default function HomePage() {
               {testimonials.map((testimonial, index) => (
                 <Card 
                   key={index} 
-                  className="flex flex-col bg-card shadow-lg hover:shadow-xl hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out"
+                  className="flex flex-col bg-card shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out"
                 >
                   <CardContent className="pt-6 flex-grow flex flex-col">
                     <div className="flex items-center mb-4">

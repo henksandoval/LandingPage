@@ -56,10 +56,10 @@ h1, h2, h3, h4, h5, h6 {
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --card: 0 0% 8%; /* Ligeramente más claro que el fondo para diferenciación */
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 8%; /* Ligeramente más claro que el fondo */
+    --popover-foreground: 0 0% 95%;
     --primary: 233 47% 58%; /* Lighter Blue-violet for dark mode */
     --primary-foreground: 0 0% 10%; 
     --secondary: 220 33% 20%; /* Darker Desaturated grayish blue */

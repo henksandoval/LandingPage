@@ -6,10 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle, Bot } from "lucide-react";
+import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle } from "lucide-react";
 import Link from 'next/link';
 import { processCvAndGenerateSite, type ProcessCvOutput } from "@/ai/flows/process-cv-flow";
-import { JobBotAnimation } from "./JobBotAnimation"; // Importar el nuevo robot animado
+import { JobBotAnimation } from "./JobBotAnimation"; 
 
 type UploadStatus = "idle" | "fileSelected" | "processing" | "success" | "error";
 
@@ -112,12 +112,10 @@ export function CvUploadSection() {
         variant: "destructive",
       });
     } finally {
-      // No limpiar el selectedFile aquí para permitir reintentos si es un error no crítico.
-      // Limpiar fileInputRef para que el usuario pueda volver a seleccionar el mismo archivo si es necesario.
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-      if (status !== "error") { // Solo limpiar el selectedFile si no es un error que permita reintentar
+      if (status !== "error" && status !== "success") { 
           setSelectedFile(null);
       }
     }
@@ -137,7 +135,7 @@ export function CvUploadSection() {
         </>
       );
     }
-    if (selectedFile && (status === "fileSelected" || status === "error" || status === "success")) { // Incluir success para que muestre el archivo mientras el mensaje de éxito está activo
+    if (selectedFile && (status === "fileSelected" || status === "error" || status === "success")) {
       return (
         <>
           <FileText className="h-12 w-12 text-primary mx-auto mb-4" />
@@ -170,7 +168,7 @@ export function CvUploadSection() {
   return (
     <section id="upload-cv" className="py-16 md:py-24 bg-gradient-to-br from-background via-secondary/20 to-background">
       <div className="container mx-auto px-4 md:px-6">
-        <Card className="max-w-3xl mx-auto text-center shadow-2xl border-2 border-primary/10 hover:border-primary/30 transition-all duration-300 transform hover:scale-[1.01]">
+        <Card className="max-w-3xl mx-auto text-center shadow-2xl dark:hover:shadow-dark-accent-glow-xl border-2 border-primary/10 hover:border-primary/30 transition-all duration-300 transform hover:scale-[1.01]">
           <CardHeader className="pb-4">
             <div className="mx-auto bg-primary/10 p-5 rounded-full w-fit mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
               <UploadCloud className="h-16 w-16 text-primary" strokeWidth={1.5} />
@@ -205,12 +203,12 @@ export function CvUploadSection() {
             </div>
 
             {status === "success" && generatedSiteUrl && (
-              <div className="mt-6 mb-8 p-6 bg-green-50 border border-green-200 rounded-lg text-left">
-                <h3 className="text-xl font-semibold text-green-700 mb-2 flex items-center">
-                  <LinkIcon className="h-6 w-6 mr-2 text-green-600" />
+              <div className="mt-6 mb-8 p-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg text-left">
+                <h3 className="text-xl font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center">
+                  <LinkIcon className="h-6 w-6 mr-2 text-green-600 dark:text-green-400" />
                   ¡Tu Perfil está Listo!
                 </h3>
-                <p className="text-green-600 mb-3">
+                <p className="text-green-600 dark:text-green-300/90 mb-3">
                   Hemos generado tu perfil profesional. Puedes verlo aquí:
                 </p>
                 <Link href={generatedSiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-medium underline hover:text-primary/80 break-all">
@@ -223,13 +221,13 @@ export function CvUploadSection() {
             )}
 
             {status === "error" && errorMessage && (
-              <div className="mt-6 mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-left">
-                <h3 className="text-lg font-semibold text-red-700 mb-2 flex items-center">
-                  <AlertTriangle className="h-5 w-5 mr-2 text-red-600" />
+              <div className="mt-6 mb-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 rounded-lg text-left">
+                <h3 className="text-lg font-semibold text-red-700 dark:text-red-300 mb-2 flex items-center">
+                  <AlertTriangle className="h-5 w-5 mr-2 text-red-600 dark:text-red-400" />
                   Error al Procesar
                 </h3>
-                <p className="text-red-600 text-sm">{errorMessage}</p>
-                <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile} className="mt-4 mr-2">
+                <p className="text-red-600 dark:text-red-300/90 text-sm">{errorMessage}</p>
+                <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile || status === "processing"} className="mt-4 mr-2">
                   Intentar de Nuevo
                 </Button>
                  <Button variant="secondary" onClick={() => { setStatus("idle"); setSelectedFile(null); setErrorMessage(null); if (fileInputRef.current) fileInputRef.current.value = "";}} className="mt-4">
@@ -241,7 +239,7 @@ export function CvUploadSection() {
             {(status === "idle" || status === "fileSelected") && (
               <Button
                 size="lg"
-                className="py-7 px-10 text-lg rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 w-full md:w-auto"
+                className="py-7 px-10 text-lg rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md transition-shadow duration-300 w-full md:w-auto"
                 onClick={handleUploadAndProcess}
                 disabled={!selectedFile}
               >
