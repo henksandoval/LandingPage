@@ -3,19 +3,24 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Languages } from 'lucide-react'; // Added Languages icon
+import { Menu, Languages, Settings, Sun, Moon } from 'lucide-react'; // Added Settings, Sun, Moon
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggleButton } from './ThemeToggleButton';
 import type { Dictionary } from '@/lib/translations';
 import { usePathname } from 'next/navigation';
 import type { Locale } from '@/lib/i18n-config';
-import { i18n } from '@/lib/i18n-config'; // Import i18n config
+import { i18n } from '@/lib/i18n-config';
+import * as React from 'react';
 
 interface HeaderProps {
   locale: Locale;
@@ -23,10 +28,9 @@ interface HeaderProps {
   tThemeToggle: Dictionary;
 }
 
-// New Language Switcher Dropdown component
-function LanguageSwitcherDropdown({ currentLocale, tHeader }: { currentLocale: Locale; tHeader: Dictionary }) {
+export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
   const pathname = usePathname();
-  const { locales } = i18n;
+  const { locales, defaultLocale } = i18n;
 
   const getLocalizedPath = (targetLocale: string) => {
     if (!pathname) return `/${targetLocale}`;
@@ -35,29 +39,67 @@ function LanguageSwitcherDropdown({ currentLocale, tHeader }: { currentLocale: L
     return segments.join('/');
   };
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="ml-2">
-          <Languages className="h-5 w-5" />
-          <span className="sr-only">{tHeader.languageSelectorTooltip || "Change language"}</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        {locales.map((loc) => (
-          <DropdownMenuItem key={loc} asChild className={currentLocale === loc ? "bg-accent font-semibold" : ""}>
-            <Link href={getLocalizedPath(loc)}>
-              {loc.toUpperCase()}
-              {currentLocale === loc && <span className="ml-2 text-xs text-muted-foreground">({tHeader.currentLanguage || "Current"})</span>}
-            </Link>
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
+  // Logic from ThemeToggleButton to display current theme status in menu (optional)
+  // This is simplified; ThemeToggleButton itself handles the actual toggling.
+  const [mounted, setMounted] = React.useState(false);
+  const [currentTheme, setCurrentTheme] = React.useState<'light' | 'dark'>('light');
 
-export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
+  React.useEffect(() => {
+    setMounted(true);
+    const storedTheme = localStorage.getItem("theme") as 'light' | 'dark' | null;
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (storedTheme) {
+      setCurrentTheme(storedTheme);
+    } else if (systemPrefersDark) {
+      setCurrentTheme("dark");
+    } else {
+      setCurrentTheme("light");
+    }
+     // Listen for custom event if ThemeToggleButton dispatches one, or re-check localStorage
+    const handleThemeChange = () => {
+      const newStoredTheme = localStorage.getItem("theme") as 'light' | 'dark' | null;
+      if (newStoredTheme) setCurrentTheme(newStoredTheme);
+    };
+    window.addEventListener('themeChanged', handleThemeChange); // Assuming ThemeToggleButton might dispatch such an event
+    return () => window.removeEventListener('themeChanged', handleThemeChange);
+  }, []);
+
+
+  const settingsMenuContent = (
+    <DropdownMenuContent align="end">
+      <DropdownMenuLabel>{tHeader.settingsDropdownTitle || "Settings"}</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger>
+          <Languages className="mr-2 h-4 w-4" />
+          <span>{tHeader.languageDropdownLabel || "Language"}</span>
+        </DropdownMenuSubTrigger>
+        <DropdownMenuSubContent>
+          {locales.map((loc) => (
+            <DropdownMenuItem key={loc} asChild className={locale === loc ? "bg-accent font-semibold" : ""}>
+              <Link href={getLocalizedPath(loc)}>
+                {loc.toUpperCase()}
+                {locale === loc && <span className="ml-2 text-xs text-muted-foreground">({tHeader.currentLanguage || "Current"})</span>}
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuSubContent>
+      </DropdownMenuSub>
+
+      <DropdownMenuSub>
+        <DropdownMenuSubTrigger>
+          {currentTheme === 'light' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
+          <span>{tHeader.themeDropdownLabel || "Theme"}</span>
+        </DropdownMenuSubTrigger>
+        <DropdownMenuSubContent>
+          <ThemeToggleButton translations={tThemeToggle} />
+        </DropdownMenuSubContent>
+      </DropdownMenuSub>
+
+    </DropdownMenuContent>
+  );
+
   return (
     <header className="py-6 sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
@@ -80,12 +122,27 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
           <Button asChild size="sm">
             <Link href={`/${locale}/#cta`}>{tHeader.nav.joinNow}</Link>
           </Button>
-          <ThemeToggleButton translations={tThemeToggle} />
-          <LanguageSwitcherDropdown currentLocale={locale} tHeader={tHeader} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="ml-2">
+                <Settings className="h-5 w-5" />
+                <span className="sr-only">{tHeader.settingsDropdownTitle || "Open settings"}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            {settingsMenuContent}
+          </DropdownMenu>
         </nav>
         <div className="md:hidden flex items-center">
-          <ThemeToggleButton translations={tThemeToggle} />
-          <LanguageSwitcherDropdown currentLocale={locale} tHeader={tHeader} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="ml-2">
+                <Settings className="h-5 w-5" />
+                <span className="sr-only">{tHeader.settingsDropdownTitle || "Open settings"}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            {settingsMenuContent}
+          </DropdownMenu>
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" className="ml-2">

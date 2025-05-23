@@ -15,7 +15,10 @@
     },
     "mobileMenuTitle": "Abrir menú",
     "languageSelectorTooltip": "Cambiar idioma",
-    "currentLanguage": "Actual"
+    "currentLanguage": "Actual",
+    "settingsDropdownTitle": "Configuración",
+    "languageDropdownLabel": "Idioma",
+    "themeDropdownLabel": "Tema"
   },
   "footer": {
     "copyright": "© {year} Job Magnetic. Todos los derechos reservados."

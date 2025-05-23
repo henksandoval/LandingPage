@@ -1,15 +1,18 @@
+
 "use client";
 
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dictionary } from '@/lib/translations';
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu"; // Import DropdownMenuItem
 
 interface ThemeToggleButtonProps {
   translations: Dictionary;
+  asMenuItem?: boolean; // New prop
 }
 
-export function ThemeToggleButton({ translations: t }: ThemeToggleButtonProps) {
+export function ThemeToggleButton({ translations: t, asMenuItem = false }: ThemeToggleButtonProps) {
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = React.useState(false);
 
@@ -38,6 +41,8 @@ export function ThemeToggleButton({ translations: t }: ThemeToggleButtonProps) {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("theme", "light");
       }
+      // Dispatch a custom event to notify other components (like Header) of theme change
+      window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
     }
   }, [theme, mounted]);
 
@@ -45,8 +50,37 @@ export function ThemeToggleButton({ translations: t }: ThemeToggleButtonProps) {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
-  if (!mounted) {
-    return <Button variant="outline" size="icon" disabled className="w-9 h-9 ml-2"><Sun className="h-[1.2rem] w-[1.2rem]" /></Button>;
+  if (!mounted && !asMenuItem) {
+    return <Button variant="outline" size="icon" disabled className="w-9 h-9"><Sun className="h-[1.2rem] w-[1.2rem]" /></Button>;
+  }
+  if (!mounted && asMenuItem) {
+     return (
+      <DropdownMenuItem disabled>
+        <Sun className="mr-2 h-4 w-4" />
+        <span>{t.activateDarkMode || "Activate dark mode"}</span>
+      </DropdownMenuItem>
+    );
+  }
+
+  const content = (
+    <>
+      {theme === 'light' ? (
+        <Sun className="mr-2 h-4 w-4" />
+      ) : (
+        <Moon className="mr-2 h-4 w-4" />
+      )}
+      <span>
+        {theme === "light" ? (t.activateDarkMode || "Activate dark mode") : (t.activateLightMode || "Activate light mode")}
+      </span>
+    </>
+  );
+
+  if (asMenuItem) {
+    return (
+      <DropdownMenuItem onClick={toggleTheme}>
+        {content}
+      </DropdownMenuItem>
+    );
   }
 
   return (
@@ -55,7 +89,7 @@ export function ThemeToggleButton({ translations: t }: ThemeToggleButtonProps) {
       size="icon"
       onClick={toggleTheme}
       aria-label={theme === "light" ? (t.activateDarkMode || "Activate dark mode") : (t.activateLightMode || "Activate light mode")}
-      className="w-9 h-9" // Removed ml-2 to be controlled by parent
+      className="w-9 h-9"
     >
       {theme === 'light' ? (
         <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
