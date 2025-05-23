@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Languages, Settings, Sun, Moon } from 'lucide-react'; // Added Settings, Sun, Moon
+import { Menu, Languages, Settings, Sun, Moon } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,7 +30,7 @@ interface HeaderProps {
 
 export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
   const pathname = usePathname();
-  const { locales, defaultLocale } = i18n;
+  const { locales } = i18n;
 
   const getLocalizedPath = (targetLocale: string) => {
     if (!pathname) return `/${targetLocale}`;
@@ -38,32 +38,6 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
     segments[1] = targetLocale; // Assumes locale is always the first segment after /
     return segments.join('/');
   };
-
-  // Logic from ThemeToggleButton to display current theme status in menu (optional)
-  // This is simplified; ThemeToggleButton itself handles the actual toggling.
-  const [mounted, setMounted] = React.useState(false);
-  const [currentTheme, setCurrentTheme] = React.useState<'light' | 'dark'>('light');
-
-  React.useEffect(() => {
-    setMounted(true);
-    const storedTheme = localStorage.getItem("theme") as 'light' | 'dark' | null;
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (storedTheme) {
-      setCurrentTheme(storedTheme);
-    } else if (systemPrefersDark) {
-      setCurrentTheme("dark");
-    } else {
-      setCurrentTheme("light");
-    }
-     // Listen for custom event if ThemeToggleButton dispatches one, or re-check localStorage
-    const handleThemeChange = () => {
-      const newStoredTheme = localStorage.getItem("theme") as 'light' | 'dark' | null;
-      if (newStoredTheme) setCurrentTheme(newStoredTheme);
-    };
-    window.addEventListener('themeChanged', handleThemeChange); // Assuming ThemeToggleButton might dispatch such an event
-    return () => window.removeEventListener('themeChanged', handleThemeChange);
-  }, []);
-
 
   const settingsMenuContent = (
     <DropdownMenuContent align="end">
@@ -87,15 +61,8 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
         </DropdownMenuSubContent>
       </DropdownMenuSub>
 
-      <DropdownMenuSub>
-        <DropdownMenuSubTrigger>
-          {currentTheme === 'light' ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
-          <span>{tHeader.themeDropdownLabel || "Theme"}</span>
-        </DropdownMenuSubTrigger>
-        <DropdownMenuSubContent>
-          <ThemeToggleButton translations={tThemeToggle} />
-        </DropdownMenuSubContent>
-      </DropdownMenuSub>
+      {/* Theme toggle directly as a menu item */}
+      <ThemeToggleButton translations={tThemeToggle} asMenuItem={true} />
 
     </DropdownMenuContent>
   );
