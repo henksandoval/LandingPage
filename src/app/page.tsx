@@ -1,11 +1,13 @@
+
 import Image from 'next/image';
 import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Footer';
 import { SubscriptionForm } from '@/components/landing/SubscriptionForm';
+import { CvUploadSection } from '@/components/landing/CvUploadSection'; // Importar el nuevo componente
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Eye, Sparkles, ThumbsUp, UploadCloud, Briefcase, Users, Star, Wand2 } from 'lucide-react';
+import { Eye, Sparkles, ThumbsUp, Briefcase, Users, Star, Wand2, FileText, UploadCloud } from 'lucide-react'; // Añadido FileText y UploadCloud
 import Link from 'next/link';
 
 const benefits = [
@@ -33,22 +35,22 @@ const benefits = [
 
 const howItWorksSteps = [
   {
-    icon: <UploadCloud className="h-10 w-10 text-primary" />,
-    title: "1. Sube tu CV",
-    description: "Arrastra o selecciona tu currículum actual. Nosotros nos encargamos del resto.",
-    imageHint: "cv document upload interface"
+    icon: <FileText className="h-10 w-10 text-primary" />, // Icono actualizado
+    title: "1. Tu CV, la Base de Todo", // Título actualizado
+    description: "Proporciona tu CV y nuestra IA extraerá la información clave para construir tu perfil único.", // Descripción actualizada
+    imageHint: "cv data extraction process" // Hint actualizado
   },
   {
     icon: <Wand2 className="h-10 w-10 text-primary" />,
     title: "2. Magia Automática",
-    description: "Nuestra IA transforma tu información en un perfil profesional público, elegante y profesional.",
-    imageHint: "cv transformed website mockup"
+    description: "Nuestra IA transforma tu información en un perfil profesional público, elegante y optimizado.",
+    imageHint: "ai transforming cv website mockup"
   },
   {
     icon: <Briefcase className="h-10 w-10 text-primary" />,
     title: "3. Conecta y Crece",
     description: "Tu nuevo sitio te abrirá puertas a oportunidades laborales que se ajustan a ti.",
-    imageHint: "professional connecting job opportunity"
+    imageHint: "professional networking job connections"
   },
 ];
 
@@ -98,7 +100,10 @@ export default function HomePage() {
               Job Magnetic te conecta con nuevas oportunidades laborales mientras tú te enfocas en lo que mejor sabes hacer.
             </p>
             <div className="flex justify-center">
-              <SubscriptionForm buttonText="Crear mi Perfil Ahora 🚀" />
+              <SubscriptionForm 
+                buttonText="Ser Notificado del Lanzamiento 🚀"  // Texto del botón actualizado
+                placeholderText="Tu correo para acceso prioritario" // Placeholder actualizado
+              />
             </div>
             <div className="mt-16">
               <Image
@@ -114,6 +119,9 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* CV Upload Section - NUEVA SECCIÓN */}
+        <CvUploadSection />
+
         {/* How It Works Section */}
         <section id="como-funciona" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
@@ -125,21 +133,21 @@ export default function HomePage() {
             </p>
             <div className="grid md:grid-cols-3 gap-8">
               {howItWorksSteps.map((step, index) => (
-                <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card">
-                  <CardHeader>
+                <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300 bg-card flex flex-col">
+                  <CardHeader className="items-center">
                     <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
                       {step.icon}
                     </div>
                     <CardTitle className="font-heading text-2xl">{step.title}</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{step.description}</p>
+                  <CardContent className="flex-grow flex flex-col justify-between">
+                    <p className="text-muted-foreground mb-6">{step.description}</p>
                     <Image 
                       src={`https://placehold.co/400x300.png`} 
                       alt={step.title}
                       width={400}
                       height={300}
-                      className="mt-6 rounded-md mx-auto"
+                      className="mt-auto rounded-md mx-auto"
                       data-ai-hint={step.imageHint}
                     />
                   </CardContent>
@@ -232,3 +240,4 @@ export default function HomePage() {
     </div>
   );
 }
+
