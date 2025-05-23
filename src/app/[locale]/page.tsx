@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Eye, Sparkles, ThumbsUp, Briefcase, Users, Star, Wand2, FileText } from 'lucide-react';
 import { getDictionary, Dictionary } from '@/lib/translations';
-import type { Locale } from '@/lib/i18n-config'; // Assuming you'll create this type
+import type { Locale } from '@/lib/i18n-config';
 
 interface HomePageProps {
   params: {
@@ -68,7 +68,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
       role: t.testimonials.user1.role,
       quote: t.testimonials.user1.quote,
       avatar: "https://placehold.co/100x100.png",
-      avatarFallback: t.testimonials.user1.name.substring(0,1) + t.testimonials.user1.name.split(' ')[1]?.substring(0,1) || t.testimonials.user1.name.substring(0,2),
+      avatarFallback: t.testimonials.user1.name.substring(0,1) + (t.testimonials.user1.name.split(' ')[1]?.substring(0,1) || t.testimonials.user1.name.substring(1,2)),
       rating: 5,
       imageHint: "woman professional"
     },
@@ -77,7 +77,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
       role: t.testimonials.user2.role,
       quote: t.testimonials.user2.quote,
       avatar: "https://placehold.co/100x100.png",
-      avatarFallback: t.testimonials.user2.name.substring(0,1) + t.testimonials.user2.name.split(' ')[1]?.substring(0,1) || t.testimonials.user2.name.substring(0,2),
+      avatarFallback: t.testimonials.user2.name.substring(0,1) + (t.testimonials.user2.name.split(' ')[1]?.substring(0,1) || t.testimonials.user2.name.substring(1,2)),
       rating: 5,
       imageHint: "man smiling"
     },
@@ -86,7 +86,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
       role: t.testimonials.user3.role,
       quote: t.testimonials.user3.quote,
       avatar: "https://placehold.co/100x100.png",
-      avatarFallback: t.testimonials.user3.name.substring(0,1) + t.testimonials.user3.name.split(' ')[1]?.substring(0,1) || t.testimonials.user3.name.substring(0,2),
+      avatarFallback: t.testimonials.user3.name.substring(0,1) + (t.testimonials.user3.name.split(' ')[1]?.substring(0,1) || t.testimonials.user3.name.substring(1,2)),
       rating: 4,
       imageHint: "woman working"
     },
@@ -94,7 +94,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header locale={locale} t={t.header} />
+      <Header locale={locale} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-20 md:py-32 bg-gradient-to-br from-secondary via-background to-background">
