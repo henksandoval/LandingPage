@@ -6,9 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle, Bot } from "lucide-react"; // Removed Loader2, Added Bot
+import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle, Bot } from "lucide-react";
 import Link from 'next/link';
 import { processCvAndGenerateSite, type ProcessCvOutput } from "@/ai/flows/process-cv-flow";
+import { JobBotAnimation } from "./JobBotAnimation"; // Importar el nuevo robot animado
 
 type UploadStatus = "idle" | "fileSelected" | "processing" | "success" | "error";
 
@@ -125,7 +126,7 @@ export function CvUploadSection() {
     if (status === "processing") {
       return (
         <>
-          <Bot className="h-16 w-16 text-primary mx-auto mb-4 animate-pulse" />
+          <JobBotAnimation className="h-32 w-32 text-primary mx-auto mb-4" />
           <p className="text-primary font-medium text-lg">Nuestro JobBot está en acción...</p>
           <p className="text-muted-foreground/80">Creando tu perfil profesional único.</p>
         </>
@@ -240,7 +241,7 @@ export function CvUploadSection() {
                 disabled={!selectedFile || status === "processing"}
               >
                 {status === "processing" ? (
-                  <Bot className="mr-3 h-6 w-6 animate-pulse" /> 
+                  <Bot className="mr-3 h-6 w-6 animate-spin" /> 
                 ) : (
                   <UploadCloud className="mr-3 h-6 w-6" />
                 )}
