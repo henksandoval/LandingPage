@@ -6,7 +6,7 @@ import { CvUploadSection } from '@/components/landing/CvUploadSection';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Eye, Sparkles, ThumbsUp, Briefcase, Users, Star, Wand2, FileText } from 'lucide-react';
-import { getDictionary, Dictionary } from '@/lib/translations';
+import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
 
 interface HomePageProps {
@@ -114,12 +114,13 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
             </div>
             <div className="mt-16">
               <Image
-                src="https://firebasestudio.ai/api/image-proxy/APP_ID/IMAGE_TOKEN_UNKNOWN_TO_THE_AGENT_%20unprocessed_generation_1715900400443_0.jpeg"
+                src="https://placehold.co/1200x600.png"
                 alt={t.hero.imageAlt}
                 width={1200}
                 height={600}
                 className="rounded-xl shadow-2xl mx-auto"
                 priority
+                data-ai-hint="professional website cv"
               />
             </div>
           </div>
