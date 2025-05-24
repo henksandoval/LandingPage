@@ -39,7 +39,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip all internal paths (_next) and API routes
-    '/((?!api/|_next/static/|_next/image/|favicon\\.ico|.*\\.[a-zA-Z0-9]+$).*)',
+    '/((?!api/|_next/static/|_next/image|favicon\\.ico|.*\\.[a-zA-Z0-9]+$).*)',
     // Match the root path to redirect it
     '/', 
   ],
