@@ -4,7 +4,7 @@ import { useState, ChangeEvent, useRef, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import {toast, useToast} from "@/hooks/use-toast";
 import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle } from "lucide-react";
 import Link from 'next/link';
 import { JobBotAnimation } from "./JobBotAnimation";
@@ -44,7 +44,7 @@ async function loadPdfjs() {
       const cdnWorkerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
 
       try {
-        new URL(cdnWorkerSrc); // Validar la URL de la CDN
+        new URL(cdnWorkerSrc); // Validate CDN URL
         console.log(`loadPdfjs: Attempting to set workerSrc to CDN: ${cdnWorkerSrc}`);
         pdfjs.GlobalWorkerOptions.workerSrc = cdnWorkerSrc;
       } catch (urlError) {
@@ -59,7 +59,7 @@ async function loadPdfjs() {
     return pdfjsLibModule;
   } catch (error) {
     console.error("loadPdfjs: Error dynamically importing pdfjs-dist or configuring worker:", error);
-    pdfWorkerConfigured = false; // Resetear si la configuración falló
+    pdfWorkerConfigured = false;
     return null;
   }
 }
@@ -70,9 +70,7 @@ const extractTextFromFile = async (file: File): Promise<string | null> => {
 
   if (type === "application/pdf") {
     if (!pdfjsLib) {
-      console.error("extractTextFromFile: PDF.js library is not available for processing PDF.");
-      // Considera mostrar un toast al usuario aquí
-      // Ejemplo: toast({ title: "Error", description: "No se pudo cargar la librería para leer PDFs.", variant: "destructive" });
+      toast({ title: "Error", description: "No se pudo cargar la librería para leer PDFs.", variant: "destructive" });
       return Promise.reject(new Error("PDF processing library (pdfjs-dist) not available."));
     }
     console.log("extractTextFromFile: PDF.js library loaded, proceeding with PDF parsing.");
@@ -143,7 +141,7 @@ const extractTextFromFile = async (file: File): Promise<string | null> => {
 };
 
 interface CvUploadSectionProps {
-  translations: Dictionary; // This will be t.cvUpload from the parent
+  translations: Dictionary;
   locale: Locale;
 }
 
@@ -184,7 +182,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
-      if (file.size > 5 * 1024 * 1024) { // 5MB
+      if (file.size > 5 * 1024 * 1024) {
         toast({
           title: t.toast?.fileTooLargeTitle || "File too large",
           description: t.toast?.fileTooLargeDescription || "Maximum allowed size is 5MB.",
@@ -207,11 +205,6 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
 
         if (extractedText) {
           console.log(extractedText);
-          toast({
-            title: t.toast?.textExtractedTitle || "Text Extracted",
-            description: t.toast?.textExtractedDescription || "CV content has been logged to the browser console.",
-            variant: "default",
-          });
         } else {
           if (extractedText === null && file.type !== "application/pdf") {
             if (file.type === "application/msword") {
@@ -221,7 +214,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
                 variant: "warning",
                 duration: 8000,
               });
-            } else { // Otros tipos no soportados para extracción o fallo silencioso
+            } else {
               toast({
                 title: t.toast?.extractionUnavailableTitle || "Text Extraction Not Available",
                 description: t.toast?.extractionUnavailableDescription || "Could not automatically extract text from this file type for console logging.",
@@ -235,13 +228,13 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
       } catch (error) {
         console.error("handleFileChange: Error extracting text from file:", error);
         const errorMsg = error instanceof Error ? error.message : "Unknown error during text extraction.";
-        if (errorMsg !== "PDF processing library (pdfjs-dist) not available.") { // Evitar toast duplicado
+        if (errorMsg !== "PDF processing library (pdfjs-dist) not available.") {
           toast({
             title: t.toast?.extractionErrorTitle || "Text Extraction Error",
             description: (t.toast?.extractionErrorDescription || "Failed to extract text for console logging: {errorMsg}.").replace('{errorMsg}', errorMsg),
             variant: "destructive",
           });
-        } else { // Error específico de la librería PDF no disponible
+        } else {
           toast({
             title: t.toast?.pdfLibraryErrorTitle || "PDF Processing Error",
             description: (t.toast?.pdfLibraryErrorDescription || "Could not process the PDF file. The necessary library might have failed to load: {errorMsg}.").replace('{errorMsg}', errorMsg),
