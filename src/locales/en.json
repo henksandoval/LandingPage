@@ -153,15 +153,182 @@
   "termsPage": {
     "title": "Terms of Service",
     "metaDescription": "Read our Terms of Service for Job Magnetic.",
-    "content": "This is a placeholder for the Terms of Service. Please replace this with your actual terms. This page outlines the rules and regulations for the use of Job Magnetic's Website.",
-    "section1Title": "1. Introduction",
-    "section2Title": "2. User Responsibilities"
+    "lastUpdated": "Last Updated: {currentDate}",
+    "introduction": [
+      "Welcome to Job Magnetic (\"Company\", \"we\", \"our\", \"us\")! These Terms of Service (\"Terms\", \"Terms of Service\") govern your use of our website located at [Your Website URL] (together or individually \"Service\") operated by Job Magnetic.",
+      "Our Privacy Policy also governs your use of our Service and explains how we collect, safeguard and disclose information that results from your use of our web pages. Please read it here [Link to Your Privacy Policy Page].",
+      "Your agreement with us includes these Terms and our Privacy Policy (\"Agreements\"). You acknowledge that you have read and understood Agreements, and agree to be bound of them.",
+      "If you do not agree with (or cannot comply with) Agreements, then you may not use the Service, but please let us know by emailing at [Your Support Email] so we can try to find a solution. These Terms apply to all visitors, users and others who wish to access or use Service."
+    ],
+    "sections": [
+      {
+        "title": "1. Use of Service",
+        "content": [
+          "You may use our Service only for lawful purposes and in accordance with Terms. You agree not to use Service:",
+          "(a) In any way that violates any applicable national or international law or regulation.",
+          "(b) For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way by exposing them to inappropriate content or otherwise.",
+          "(c) To transmit, or procure the sending of, any advertising or promotional material, including any “junk mail”, “chain letter,” “spam,” or any other similar solicitation.",
+          "(d) To impersonate or attempt to impersonate Company, a Company employee, another user, or any other person or entity.",
+          "(e) In any way that infringes upon the rights of others, or in any way is illegal, threatening, fraudulent, or harmful, or in connection with any unlawful, illegal, fraudulent, or harmful purpose or activity.",
+          "(f) To engage in any other conduct that restricts or inhibits anyone’s use or enjoyment of Service, or which, as determined by us, may harm or offend Company or users of Service or expose them to liability."
+        ]
+      },
+      {
+        "title": "2. Intellectual Property",
+        "content": [
+          "The Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of Job Magnetic and its licensors. Service is protected by copyright, trademark, and other laws of both the [Your Country] and foreign countries. Our trademarks may not be used in connection with any product or service without the prior written consent of Job Magnetic."
+        ]
+      },
+      {
+        "title": "3. CV Data and User Content",
+        "content": [
+          "When you upload your CV or provide other content to the Service (\"User Content\"), you retain all of your ownership rights in your User Content. However, by submitting User Content to the Service, you grant Job Magnetic a worldwide, non-exclusive, royalty-free, sublicensable and transferable license to use, reproduce, distribute, prepare derivative works of, display, and perform the User Content in connection with the Service and Job Magnetic's (and its successors' and affiliates') business, including without limitation for promoting and redistributing part or all of the Service (and derivative works thereof) in any media formats and through any media channels.",
+          "You represent and warrant that: (i) you own or control all rights in and to the User Content and have the right to grant the license granted above to us and our affiliates and service providers, and each of their and our respective licensees, successors, and assigns; and (ii) all of your User Content does and will comply with these Terms of Service."
+        ]
+      },
+      {
+        "title": "4. Termination",
+        "content": [
+          "We may terminate or suspend your access to Service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation, including but not limited to a breach of Terms.",
+          "All provisions of Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity and limitations of liability."
+        ]
+      },
+      {
+        "title": "5. Disclaimer Of Warranty",
+        "content": [
+          "THESE SERVICES ARE PROVIDED BY COMPANY ON AN “AS IS” AND “AS AVAILABLE” BASIS. COMPANY MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THEIR SERVICES, OR THE INFORMATION, CONTENT OR MATERIALS INCLUDED THEREIN. YOU EXPRESSLY AGREE THAT YOUR USE OF THESE SERVICES, THEIR CONTENT, AND ANY SERVICES OR ITEMS OBTAINED FROM US IS AT YOUR SOLE RISK.",
+          "NEITHER COMPANY NOR ANY PERSON ASSOCIATED WITH COMPANY MAKES ANY WARRANTY OR REPRESENTATION WITH RESPECT TO THE COMPLETENESS, SECURITY, RELIABILITY, QUALITY, ACCURACY, OR AVAILABILITY OF THE SERVICES. WITHOUT LIMITING THE FOREGOING, NEITHER COMPANY NOR ANYONE ASSOCIATED WITH COMPANY REPRESENTS OR WARRANTS THAT THE SERVICES, THEIR CONTENT, OR ANY SERVICES OR ITEMS OBTAINED THROUGH THE SERVICES WILL BE ACCURATE, RELIABLE, ERROR-FREE, OR UNINTERRUPTED, THAT DEFECTS WILL BE CORRECTED, THAT THE SERVICES OR THE SERVER THAT MAKES IT AVAILABLE ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS OR THAT THE SERVICES OR ANY SERVICES OR ITEMS OBTAINED THROUGH THE SERVICES WILL OTHERWISE MEET YOUR NEEDS OR EXPECTATIONS."
+        ]
+      },
+      {
+        "title": "6. Limitation Of Liability",
+        "content": [
+          "EXCEPT AS PROHIBITED BY LAW, YOU WILL HOLD US AND OUR OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS HARMLESS FOR ANY INDIRECT, PUNITIVE, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGE, HOWEVER IT ARISES (INCLUDING ATTORNEYS' FEES AND ALL RELATED COSTS AND EXPENSES OF LITIGATION AND ARBITRATION, OR AT TRIAL OR ON APPEAL, IF ANY, WHETHER OR NOT LITIGATION OR ARBITRATION IS INSTITUTED), WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE, OR OTHER TORTIOUS ACTION, OR ARISING OUT OF OR IN CONNECTION WITH THIS AGREEMENT, INCLUDING WITHOUT LIMITATION ANY CLAIM FOR PERSONAL INJURY OR PROPERTY DAMAGE, ARISING FROM THIS AGREEMENT AND ANY VIOLATION BY YOU OF ANY FEDERAL, STATE, OR LOCAL LAWS, STATUTES, RULES, OR REGULATIONS, EVEN IF COMPANY HAS BEEN PREVIOUSLY ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. EXCEPT AS PROHIBITED BY LAW, IF THERE IS LIABILITY FOUND ON THE PART OF COMPANY, IT WILL BE LIMITED TO THE AMOUNT PAID FOR THE PRODUCTS AND/OR SERVICES, AND UNDER NO CIRCUMSTANCES WILL THERE BE CONSEQUENTIAL OR PUNITIVE DAMAGES. SOME STATES DO NOT ALLOW THE EXCLUSION OR LIMITATION OF PUNITIVE, INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THE PRIOR LIMITATION OR EXCLUSION MAY NOT APPLY TO YOU."
+        ]
+      },
+      {
+        "title": "7. Governing Law",
+        "content": [
+          "These Terms shall be governed and construed in accordance with the laws of [Your Jurisdiction, e.g., State of California, USA], without regard to its conflict of law provisions."
+        ]
+      },
+      {
+        "title": "8. Changes To Service",
+        "content": [
+          "We reserve the right to withdraw or amend our Service, and any service or material we provide via Service, in our sole discretion without notice. We will not be liable if for any reason all or any part of Service is unavailable at any time or for any period. From time to time, we may restrict access to some parts of Service, or the entire Service, to users."
+        ]
+      },
+      {
+        "title": "9. Amendments To Terms",
+        "content": [
+          "We may amend Terms at any time by posting the amended terms on this site. It is your responsibility to review these Terms periodically.",
+          "Your continued use of the Platform following the posting of revised Terms means that you accept and agree to the changes. You are expected to check this page frequently so you are aware of any changes, as they are binding on you."
+        ]
+      }
+    ],
+    "conclusion": [
+      "By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use Service.",
+      "If you have any questions about these Terms, please contact us at [Your Support Email or Contact Page Link]."
+    ]
   },
   "privacyPage": {
     "title": "Privacy Policy",
     "metaDescription": "Read our Privacy Policy for Job Magnetic.",
-    "content": "This is a placeholder for the Privacy Policy. Please replace this with your actual privacy policy. This Privacy Policy document contains types of information that is collected and recorded by Job Magnetic and how we use it.",
-    "section1Title": "1. Information We Collect",
-    "section2Title": "2. How We Use Your Information"
+    "lastUpdated": "Last Updated: {currentDate}",
+    "introduction": [
+      "Welcome to Job Magnetic (\"us\", \"we\", or \"our\"). We operate [Your Website URL] (hereinafter referred to as \"Service\").",
+      "Our Privacy Policy governs your visit to [Your Website URL], and explains how we collect, safeguard and disclose information that results from your use of our Service.",
+      "We use your data to provide and improve Service. By using Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms of Service.",
+      "Our Terms of Service (\"Terms\") govern all use of our Service and together with the Privacy Policy constitutes your agreement with us (\"agreement\")."
+    ],
+    "sections": [
+      {
+        "title": "1. Information Collection and Use",
+        "content": [
+          "We collect several different types of information for various purposes to provide and improve our Service to you."
+        ]
+      },
+      {
+        "title": "2. Types of Data Collected",
+        "content": [
+          "**Personal Data:** While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you (“Personal Data”). Personally identifiable information may include, but is not limited to: (a) Email address (for subscriptions and account creation); (b) First name and last name (optional, if provided in CV or profile); (c) Phone number (optional, if provided in CV); (d) Address, State, Province, ZIP/Postal code, City (optional, if provided in CV); (e) CV document data (including work experience, education, skills, etc.).",
+          "**Usage Data:** We may also collect information that your browser sends whenever you visit our Service or when you access Service by or through a mobile device (“Usage Data”). This Usage Data may include information such as your computer’s Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that you visit, the time and date of your visit, the time spent on those pages, unique device identifiers and other diagnostic data.",
+          "**Tracking Cookies Data:** We use cookies and similar tracking technologies to track the activity on our Service and we hold certain information. Cookies are files with a small amount of data which may include an anonymous unique identifier. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service."
+        ]
+      },
+      {
+        "title": "3. Use of Data",
+        "content": [
+          "Job Magnetic uses the collected data for various purposes:",
+          "(a) To provide and maintain our Service;",
+          "(b) To notify you about changes to our Service;",
+          "(c) To allow you to participate in interactive features of our Service when you choose to do so;",
+          "(d) To provide customer support;",
+          "(e) To gather analysis or valuable information so that we can improve our Service;",
+          "(f) To monitor the usage of our Service;",
+          "(g) To detect, prevent and address technical issues;",
+          "(h) To fulfill any other purpose for which you provide it;",
+          "(i) To carry out our obligations and enforce our rights arising from any contracts entered into between you and us, including for billing and collection (if applicable);",
+          "(j) To provide you with notices about your account and/or subscription, including expiration and renewal notices, email-instructions, etc. (if applicable);",
+          "(k) To provide you with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless you have opted not to receive such information (if applicable)."
+        ]
+      },
+      {
+        "title": "4. Retention of Data",
+        "content": [
+          "We will retain your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies."
+        ]
+      },
+      {
+        "title": "5. Transfer of Data",
+        "content": [
+          "Your information, including Personal Data, may be transferred to – and maintained on – computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ from those of your jurisdiction.",
+          "If you are located outside [Your Country] and choose to provide information to us, please note that we transfer the data, including Personal Data, to [Your Country/Server Location Country] and process it there.",
+          "Your consent to this Privacy Policy followed by your submission of such information represents your agreement to that transfer."
+        ]
+      },
+      {
+        "title": "6. Disclosure of Data",
+        "content": [
+          "We may disclose personal information that we collect, or you provide:",
+          "(a) Disclosure for Law Enforcement: Under certain circumstances, we may be required to disclose your Personal Data if required to do so by law or in response to valid requests by public authorities.",
+          "(b) Business Transaction: If we or our subsidiaries are involved in a merger, acquisition or asset sale, your Personal Data may be transferred.",
+          "(c) Other cases. We may disclose your information also: to our subsidiaries and affiliates; to contractors, service providers, and other third parties we use to support our business."
+        ]
+      },
+      {
+        "title": "7. Security of Data",
+        "content": [
+          "The security of your data is important to us but remember that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Data, we cannot guarantee its absolute security."
+        ]
+      },
+      {
+        "title": "8. Your Data Protection Rights",
+        "content": [
+          "Depending on your location, you may have certain data protection rights. Job Magnetic aims to take reasonable steps to allow you to correct, amend, delete, or limit the use of your Personal Data.",
+          "If you wish to be informed what Personal Data we hold about you and if you want it to be removed from our systems, please email us at [Your Support Email].",
+          "In certain circumstances, you have the following data protection rights: the right to access, update or to delete the information we have on you; the right of rectification; the right to object; the right of restriction; the right to data portability; the right to withdraw consent."
+        ]
+      },
+      {
+        "title": "9. Children's Privacy",
+        "content": [
+          "Our Services are not intended for use by children under the age of 13 (or a higher age threshold as required by applicable law). We do not knowingly collect personally identifiable information from Children under 13. If you become aware that a Child has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from Children without verification of parental consent, we take steps to remove that information from our servers."
+        ]
+      },
+      {
+        "title": "10. Changes to This Privacy Policy",
+        "content": [
+          "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.",
+          "We will let you know via email and/or a prominent notice on our Service, prior to the change becoming effective and update “last updated” date at the top of this Privacy Policy.",
+          "You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page."
+        ]
+      }
+    ],
+    "conclusion": [
+      "If you have any questions about this Privacy Policy, please contact us by email: [Your Support Email]."
+    ]
   }
 }
+
+    

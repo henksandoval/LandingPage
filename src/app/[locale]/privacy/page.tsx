@@ -3,6 +3,7 @@ import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Footer';
 import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
+import { format } from 'date-fns';
 
 interface LegalPageProps {
   params: {
@@ -12,25 +13,37 @@ interface LegalPageProps {
 
 export default async function PrivacyPage({ params: { locale } }: LegalPageProps) {
   const t: Dictionary = await getDictionary(locale);
+  const privacyData = t.privacyPage || {};
+  const currentDate = format(new Date(), 'MMMM d, yyyy');
+  const lastUpdated = privacyData.lastUpdated?.replace('{currentDate}', currentDate) || `Last Updated: ${currentDate}`;
+
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Header locale={locale} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow container mx-auto px-4 md:px-6 py-12 md:py-16">
         <article className="prose dark:prose-invert max-w-4xl mx-auto">
-          <h1 className="text-3xl md:text-4xl font-bold font-heading mb-6 text-foreground">
-            {t.privacyPage?.title || "Privacy Policy"}
+          <h1 className="text-3xl md:text-4xl font-bold font-heading mb-2 text-foreground">
+            {privacyData.title || "Privacy Policy"}
           </h1>
-          <div className="space-y-4 text-muted-foreground">
-            <p>{t.privacyPage?.content || "Placeholder content for Privacy Policy."}</p>
-            {/* Add more paragraphs or sections as needed */}
-            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-            <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
-            <h2 className="text-2xl font-semibold font-heading mt-8 mb-4 text-foreground">{t.privacyPage?.section1Title || "Section 1: Information We Collect"}</h2>
-            <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
-             <h2 className="text-2xl font-semibold font-heading mt-8 mb-4 text-foreground">{t.privacyPage?.section2Title || "Section 2: How We Use Your Information"}</h2>
-            <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
-          </div>
+          <p className="text-sm text-muted-foreground mb-6">{lastUpdated}</p>
+          
+          {privacyData.introduction?.map((paragraph: string, index: number) => (
+            <p key={`intro-${index}`} className="text-muted-foreground">{paragraph}</p>
+          ))}
+
+          {privacyData.sections?.map((section: { title: string; content: string[] }, sectionIndex: number) => (
+            <section key={`section-${sectionIndex}`} className="mt-8">
+              <h2 className="text-2xl font-semibold font-heading mb-4 text-foreground">{section.title}</h2>
+              {section.content?.map((paragraph: string, pIndex: number) => (
+                <p key={`section-${sectionIndex}-p-${pIndex}`} className="text-muted-foreground">{paragraph}</p>
+              ))}
+            </section>
+          ))}
+
+          {privacyData.conclusion?.map((paragraph: string, index: number) => (
+            <p key={`conclusion-${index}`} className="mt-6 text-muted-foreground">{paragraph}</p>
+          ))}
         </article>
       </main>
       <Footer t={t.footer} />
@@ -38,11 +51,13 @@ export default async function PrivacyPage({ params: { locale } }: LegalPageProps
   );
 }
 
-// Add metadata generation if needed
 export async function generateMetadata({ params: { locale } }: LegalPageProps) {
   const t: Dictionary = await getDictionary(locale);
+  const privacyData = t.privacyPage || {};
   return {
-    title: t.privacyPage?.title || "Privacy Policy",
-    description: t.privacyPage?.metaDescription || "Read our Privacy Policy.",
+    title: privacyData.title || "Privacy Policy",
+    description: privacyData.metaDescription || "Read our Privacy Policy for Job Magnetic.",
   };
 }
+
+    
