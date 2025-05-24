@@ -20,11 +20,11 @@ const roboto = Roboto({
 });
 
 interface LayoutAndPageProps {
-  params: { locale: Locale };
+  paramsPromise: Promise<{ locale: string }>;
 }
 
-export async function generateMetadata({ params }: LayoutAndPageProps): Promise<Metadata> {
-  const { locale } = params; // Destructure locale from params
+export async function generateMetadata({ paramsPromise }: LayoutAndPageProps): Promise<Metadata> {
+  const { locale } = await paramsPromise; // Destructure locale from params
   const dict: Dictionary = await getDictionary(locale);
   return {
     title: dict.metadata.title,
@@ -42,15 +42,16 @@ export const viewport: Viewport = {
   ],
 };
 
-interface LocaleLayoutProps extends LayoutAndPageProps {
+interface LocaleLayoutProps {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }
 
 export default async function LocaleLayout({
   children,
-  params, // Pass params as a whole object
+  params
 }: LocaleLayoutProps) {
-  const { locale } = params; // Destructure locale from params here
+  const { locale } = await params; // Destructure locale from params here
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${inter.variable} ${roboto.variable} font-sans antialiased`}>

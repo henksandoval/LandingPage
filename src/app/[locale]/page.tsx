@@ -10,12 +10,12 @@ import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
 
 interface HomePageProps {
-  params: {
-    locale: Locale;
-  };
+  params: Promise<{ locale: string }>;
 }
 
-export default async function HomePage({ params: { locale } }: HomePageProps) {
+export default async function HomePage({ params: paramsPromise }: HomePageProps) {
+  const { locale } = await paramsPromise;
+  const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(locale);
 
   const benefits = [
@@ -94,7 +94,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header locale={locale} tHeader={t.header} tThemeToggle={t.themeToggle} />
+      <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-20 md:py-32 bg-gradient-to-br from-secondary via-background to-background">
@@ -127,7 +127,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
         </section>
 
         {/* CV Upload Section */}
-        <CvUploadSection translations={t.cvUpload} locale={locale} />
+        <CvUploadSection translations={t.cvUpload} locale={localeString} />
 
         {/* How It Works Section */}
         <section id="como-funciona" className="py-16 md:py-24">

@@ -6,12 +6,12 @@ import type { Locale } from '@/lib/i18n-config';
 import { format } from 'date-fns';
 
 interface LegalPageProps {
-  params: {
-    locale: Locale;
-  };
+  params: Promise<{ locale: string }>;
 }
 
-export default async function PrivacyPage({ params: { locale } }: LegalPageProps) {
+export default async function PrivacyPage({ params: paramsPromise }: LegalPageProps) {
+  const { locale } = await paramsPromise;
+  const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(locale);
   const privacyData = t.privacyPage || {};
   const currentDate = format(new Date(), 'MMMM d, yyyy');
@@ -20,7 +20,7 @@ export default async function PrivacyPage({ params: { locale } }: LegalPageProps
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header locale={locale} tHeader={t.header} tThemeToggle={t.themeToggle} />
+      <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow container mx-auto px-4 md:px-6 py-12 md:py-16">
         <article className="prose dark:prose-invert max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold font-heading mb-2 text-foreground">
@@ -51,7 +51,8 @@ export default async function PrivacyPage({ params: { locale } }: LegalPageProps
   );
 }
 
-export async function generateMetadata({ params: { locale } }: LegalPageProps) {
+export async function generateMetadata({ params }: LegalPageProps) {
+  const { locale } = await params;
   const t: Dictionary = await getDictionary(locale);
   const privacyData = t.privacyPage || {};
   return {
