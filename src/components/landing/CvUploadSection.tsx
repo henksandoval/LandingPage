@@ -64,80 +64,140 @@ async function loadPdfjs() {
   }
 }
 
+const readFileAsArrayBuffer = (file: File): Promise<ArrayBuffer> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target?.result && e.target.result instanceof ArrayBuffer) {
+        resolve(e.target.result);
+      } else {
+        reject(new Error("Error al leer el archivo como ArrayBuffer o el resultado no es un ArrayBuffer."));
+      }
+    };
+    reader.onerror = (e) => {
+      console.error("FileReader error (ArrayBuffer):", e.target?.error);
+      reject(new Error("Error de FileReader (ArrayBuffer): " + e.target?.error?.message));
+    };
+    reader.readAsArrayBuffer(file);
+  });
+};
+
+const readFileAsText = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (typeof e.target?.result === 'string') {
+        resolve(e.target.result);
+      } else {
+        reject(new Error("Error al leer el archivo como texto o el resultado no es una cadena."));
+      }
+    };
+    reader.onerror = (e) => {
+      console.error("FileReader error (Text):", e.target?.error);
+      reject(new Error("Error de FileReader (Text): " + e.target?.error?.message));
+    };
+    reader.readAsText(file);
+  });
+};
+
 const extractTextFromFile = async (file: File): Promise<string | null> => {
-  const { type } = file;
-  const pdfjsLib = await loadPdfjs();
+  const MIN_PROCESSING_DURATION_MS = 5000; // 5 segundos
+  // const TARGET_MAX_PROCESSING_DURATION_MS = 10000; // 10 segundos (no se usa para truncar, solo como referencia)
 
-  if (type === "application/pdf") {
-    if (!pdfjsLib) {
-      toast({ title: "Error", description: "No se pudo cargar la librería para leer PDFs.", variant: "destructive" });
-      return Promise.reject(new Error("PDF processing library (pdfjs-dist) not available."));
+  const startTime = Date.now();
+
+  // Función interna para realizar la extracción real del texto
+  const performActualExtraction = async (): Promise<string | null> => {
+    const { type } = file;
+    const pdfjsLib = await loadPdfjs(); // Carga la librería PDF.js
+
+    if (type === "application/pdf") {
+      if (!pdfjsLib) {
+        // Este toast se mostrará inmediatamente, lo cual está bien para errores de configuración.
+        toast({ title: "Error", description: "No se pudo cargar la librería para leer PDFs.", variant: "destructive" });
+        throw new Error("PDF processing library (pdfjs-dist) not available.");
+      }
+      console.log("extractTextFromFile: Librería PDF.js cargada, procesando PDF...");
+
+      try {
+        const arrayBuffer = await readFileAsArrayBuffer(file);
+        const typedArray = new Uint8Array(arrayBuffer);
+        console.log("extractTextFromFile: Intentando obtener el documento desde los datos del PDF...");
+        const pdfDoc = await pdfjsLib.getDocument({ data: typedArray }).promise;
+        console.log(`extractTextFromFile: Documento PDF cargado. Número de páginas: ${pdfDoc.numPages}`);
+        let textContent = "";
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+          const page = await pdfDoc.getPage(i);
+          const text = await page.getTextContent();
+          // Asegura que 'item.str' exista y sea una cadena antes de unir
+          textContent += text.items.map(item => (item && 'str' in item && typeof item.str === 'string' ? item.str : '')).join(" ") + "\n";
+        }
+        return textContent.trim();
+      } catch (error) {
+        console.error("extractTextFromFile: Error durante el procesamiento del PDF:", error);
+        throw error; // Relanza para que el catch exterior lo maneje y aplique el retardo
+      }
+
+    } else if (type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+      console.log("extractTextFromFile: Procesando DOCX con Mammoth...");
+      try {
+        const arrayBuffer = await readFileAsArrayBuffer(file);
+        // @ts-ignore // Asume que mammoth está disponible globalmente o importado correctamente
+        const result = await mammoth.extractRawText({ arrayBuffer });
+        return result.value;
+      } catch (error) {
+        console.error("Error analizando DOCX con mammoth:", error);
+        throw error;
+      }
+    } else if (type === "text/plain") {
+      console.log("extractTextFromFile: Procesando archivo de texto plano...");
+      try {
+        return await readFileAsText(file);
+      } catch (error) {
+        console.error("Error leyendo archivo de texto:", error);
+        throw error;
+      }
+    } else if (type === "application/msword") {
+      console.warn("Los archivos .doc no son compatibles directamente para la extracción de texto en el lado del cliente.");
+      return null; // Devuelve null como antes
     }
-    console.log("extractTextFromFile: PDF.js library loaded, proceeding with PDF parsing.");
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        if (!e.target?.result) {
-          return reject(new Error("Error reading PDF file with FileReader."));
-        }
-        try {
-          const typedArray = new Uint8Array(e.target.result as ArrayBuffer);
-          console.log("extractTextFromFile: Attempting to getDocument from PDF data...");
-          const pdfDoc = await pdfjsLib.getDocument({ data: typedArray }).promise;
-          console.log(`extractTextFromFile: PDF Document loaded. Number of pages: ${pdfDoc.numPages}`);
-          let textContent = "";
-          for (let i = 1; i <= pdfDoc.numPages; i++) {
-            const page = await pdfDoc.getPage(i);
-            const text = await page.getTextContent();
-            textContent += text.items.map(item => ('str' in item ? item.str : '')).join(" ") + "\n";
-          }
-          resolve(textContent.trim());
-        } catch (error) {
-          console.error("extractTextFromFile: Error parsing PDF content:", error);
-          reject(error); // El error original que viste probablemente se origine aquí si el worker falla
-        }
-      };
-      reader.onerror = (e) => reject(new Error("FileReader error: " + e.target?.error?.message));
-      reader.readAsArrayBuffer(file);
-    });
-  } else if (type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        if (!e.target?.result) {
-          return reject(new Error("Error reading DOCX file."));
-        }
-        try {
-          const result = await mammoth.extractRawText({ arrayBuffer: e.target.result as ArrayBuffer });
-          resolve(result.value);
-        } catch (error) {
-          console.error("Error parsing DOCX with mammoth:", error);
-          reject(error);
-        }
-      };
-      reader.onerror = (e) => reject(new Error("FileReader error: " + e.target?.error?.message));
-      reader.readAsArrayBuffer(file);
-    });
-  } else if (type === "text/plain") {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (typeof e.target?.result === 'string') {
-          resolve(e.target.result);
-        } else {
-          reject(new Error("Error reading text file."));
-        }
-      };
-      reader.onerror = (e) => reject(new Error("FileReader error: " + e.target?.error?.message));
-      reader.readAsText(file);
-    });
-  } else if (type === "application/msword") {
-    console.warn(".doc files are not directly supported for client-side text extraction.");
-    return Promise.resolve(null);
-  }
 
-  console.warn(`Unsupported file type for client-side text extraction: ${type}`);
-  return Promise.resolve(null);
+    console.warn(`Tipo de archivo no compatible para extracción de texto en el cliente: ${type}`);
+    return null; // Devuelve null para tipos no compatibles
+  };
+
+  // Bloque principal try-catch para manejar la extracción y la lógica de retardo
+  try {
+    const extractedText = await performActualExtraction(); // Ejecuta la extracción
+
+    const elapsedTime = Date.now() - startTime;
+    console.log(`La extracción real del texto tomó ${elapsedTime}ms.`);
+
+    if (elapsedTime < MIN_PROCESSING_DURATION_MS) {
+      const delayRequired = MIN_PROCESSING_DURATION_MS - elapsedTime;
+      console.log(`Esperando ${delayRequired}ms adicionales para alcanzar la duración mínima de ${MIN_PROCESSING_DURATION_MS}ms.`);
+      await new Promise(resolve => setTimeout(resolve, delayRequired));
+    }
+    // Si elapsedTime es >= MIN_PROCESSING_DURATION_MS, no se añade retardo.
+    // Si la operación dura más de 10s, simplemente toma ese tiempo. No la acortamos.
+
+    console.log(`Duración total (con posible retardo): ${Date.now() - startTime}ms.`);
+    return extractedText;
+
+  } catch (error) {
+    console.error("Error en el proceso de extracción de texto:", error);
+    const elapsedTime = Date.now() - startTime;
+    console.log(`La extracción falló después de ${elapsedTime}ms (tiempo real).`);
+
+    if (elapsedTime < MIN_PROCESSING_DURATION_MS) {
+      const delayRequired = MIN_PROCESSING_DURATION_MS - elapsedTime;
+      console.log(`Esperando ${delayRequired}ms adicionales antes de propagar el error (para cumplir duración mínima).`);
+      await new Promise(resolve => setTimeout(resolve, delayRequired));
+    }
+
+    console.log(`Duración total (con error y posible retardo): ${Date.now() - startTime}ms.`);
+    throw error; // Relanza el error original después de asegurar la duración mínima
+  }
 };
 
 interface CvUploadSectionProps {
