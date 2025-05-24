@@ -6,13 +6,11 @@ import type { Locale } from '@/lib/i18n-config';
 import { format } from 'date-fns';
 
 interface LegalPageProps {
-  params: { locale: string }; // Keep as string for broader compatibility, cast to Locale where needed
+  params: { locale: Locale };
 }
 
-export default async function PrivacyPage({ params }: LegalPageProps) {
-  const { locale } = params; // No need to await here, params is directly available
-  const localeString = locale as Locale;
-  const t: Dictionary = await getDictionary(localeString);
+export default async function PrivacyPage({ params: { locale } }: LegalPageProps) {
+  const t: Dictionary = await getDictionary(locale);
   const privacyData = t.privacyPage || {};
   const currentDate = format(new Date(), 'MMMM d, yyyy');
   const lastUpdated = privacyData.lastUpdated?.replace('{currentDate}', currentDate) || `Last Updated: ${currentDate}`;
@@ -20,7 +18,7 @@ export default async function PrivacyPage({ params }: LegalPageProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
+      <Header locale={locale} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow container mx-auto px-4 md:px-6 py-12 md:py-16">
         <article className="prose dark:prose-invert max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold font-heading mb-2 text-foreground">
@@ -51,14 +49,11 @@ export default async function PrivacyPage({ params }: LegalPageProps) {
   );
 }
 
-export async function generateMetadata({ params }: LegalPageProps) {
-  const { locale } = params; // No need to await here for simple param access
-  const t: Dictionary = await getDictionary(locale as Locale);
+export async function generateMetadata({ params: { locale } }: LegalPageProps) {
+  const t: Dictionary = await getDictionary(locale);
   const privacyData = t.privacyPage || {};
   return {
     title: privacyData.title || "Privacy Policy",
     description: privacyData.metaDescription || "Read our Privacy Policy for Job Magnetic.",
   };
 }
-
-    
