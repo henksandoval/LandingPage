@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, ChangeEvent, useRef } from "react";
@@ -175,8 +176,8 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   const termsLinkText = t.termsLink || "Terms of Service";
   const privacyLinkText = t.privacyLink || "Privacy Policy";
   const termsAndPrivacyNotice = (t.termsAndPrivacyNotice || "By uploading your CV, you agree to our {termsLink} and {privacyLink}.")
-    .replace('{termsLink}', `<a href="/${locale}/terminos" class="underline hover:text-primary">${termsLinkText}</a>`)
-    .replace('{privacyLink}', `<a href="/${locale}/privacidad" class="underline hover:text-primary">${privacyLinkText}</a>`);
+    .replace('{termsLink}', `<a href="/${locale}/terms" class="underline hover:text-primary">${termsLinkText}</a>`)
+    .replace('{privacyLink}', `<a href="/${locale}/privacy" class="underline hover:text-primary">${privacyLinkText}</a>`);
 
 
   return (
