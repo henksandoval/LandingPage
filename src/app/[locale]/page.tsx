@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Footer';
@@ -11,10 +10,12 @@ import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
 
 interface HomePageProps {
-  params: { locale: Locale };
+  params: Promise<{ locale: string }>;
 }
 
-export default async function HomePage({ params: { locale } }: HomePageProps) {
+export default async function HomePage({ params: params }: HomePageProps) {
+  const { locale } = await params;
+  const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(locale);
 
   const benefits = [
@@ -36,64 +37,64 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
     {
       icon: <ThumbsUp className="h-8 w-8 text-primary mb-4" />,
       title: t.benefits.benefit4.title,
-      "description": t.benefits.benefit4.description,
+      description: t.benefits.benefit4.description,
     },
   ];
 
   const howItWorksSteps = [
     {
-      "icon": <FileText className="h-10 w-10 text-primary" />,
-      "title": t.howItWorks.step1.title,
-      "description": t.howItWorks.step1.description,
-      "imageHint": "cv data extraction"
+      icon: <FileText className="h-10 w-10 text-primary" />,
+      title: t.howItWorks.step1.title,
+      description: t.howItWorks.step1.description,
+      imageHint: "cv data extraction"
     },
     {
-      "icon": <Wand2 className="h-10 w-10 text-primary" />,
-      "title": t.howItWorks.step2.title,
-      "description": t.howItWorks.step2.description,
-      "imageHint": "ai transforming cv"
+      icon: <Wand2 className="h-10 w-10 text-primary" />,
+      title: t.howItWorks.step2.title,
+      description: t.howItWorks.step2.description,
+      imageHint: "ai transforming cv"
     },
     {
-      "icon": <Briefcase className="h-10 w-10 text-primary" />,
-      "title": t.howItWorks.step3.title,
-      "description": t.howItWorks.step3.description,
-      "imageHint": "networking connections"
+      icon: <Briefcase className="h-10 w-10 text-primary" />,
+      title: t.howItWorks.step3.title,
+      description: t.howItWorks.step3.description,
+      imageHint: "networking connections"
     },
   ];
 
   const testimonials = [
     {
-      "name": t.testimonials.user1.name,
-      "role": t.testimonials.user1.role,
-      "quote": t.testimonials.user1.quote,
-      "avatar": "https://placehold.co/100x100.png",
-      "avatarFallback": t.testimonials.user1.name.substring(0,1) + (t.testimonials.user1.name.split(' ')[1]?.substring(0,1) || t.testimonials.user1.name.substring(1,2)),
-      "rating": 5,
-      "imageHint": "woman professional"
+      name: t.testimonials.user1.name,
+      role: t.testimonials.user1.role,
+      quote: t.testimonials.user1.quote,
+      avatar: "https://placehold.co/100x100.png",
+      avatarFallback: t.testimonials.user1.name.substring(0,1) + (t.testimonials.user1.name.split(' ')[1]?.substring(0,1) || t.testimonials.user1.name.substring(1,2)),
+      rating: 5,
+      imageHint: "woman professional"
     },
     {
-      "name": t.testimonials.user2.name,
-      "role": t.testimonials.user2.role,
-      "quote": t.testimonials.user2.quote,
-      "avatar": "https://placehold.co/100x100.png",
-      "avatarFallback": t.testimonials.user2.name.substring(0,1) + (t.testimonials.user2.name.split(' ')[1]?.substring(0,1) || t.testimonials.user2.name.substring(1,2)),
-      "rating": 5,
-      "imageHint": "man smiling"
+      name: t.testimonials.user2.name,
+      role: t.testimonials.user2.role,
+      quote: t.testimonials.user2.quote,
+      avatar: "https://placehold.co/100x100.png",
+      avatarFallback: t.testimonials.user2.name.substring(0,1) + (t.testimonials.user2.name.split(' ')[1]?.substring(0,1) || t.testimonials.user2.name.substring(1,2)),
+      rating: 5,
+      imageHint: "man smiling"
     },
     {
-      "name": t.testimonials.user3.name,
-      "role": t.testimonials.user3.role,
-      "quote": t.testimonials.user3.quote,
-      "avatar": "https://placehold.co/100x100.png",
-      "avatarFallback": t.testimonials.user3.name.substring(0,1) + (t.testimonials.user3.name.split(' ')[1]?.substring(0,1) || t.testimonials.user3.name.substring(1,2)),
-      "rating": 4,
-      "imageHint": "woman working"
+      name: t.testimonials.user3.name,
+      role: t.testimonials.user3.role,
+      quote: t.testimonials.user3.quote,
+      avatar: "https://placehold.co/100x100.png",
+      avatarFallback: t.testimonials.user3.name.substring(0,1) + (t.testimonials.user3.name.split(' ')[1]?.substring(0,1) || t.testimonials.user3.name.substring(1,2)),
+      rating: 4,
+      imageHint: "woman working"
     },
   ];
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header locale={locale} tHeader={t.header} tThemeToggle={t.themeToggle} />
+      <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-20 md:py-32 bg-gradient-to-br from-secondary via-background to-background">
@@ -126,10 +127,10 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
         </section>
 
         {/* CV Upload Section */}
-        <CvUploadSection translations={t.cvUpload} locale={locale} />
+        <CvUploadSection translations={t.cvUpload} locale={localeString} />
 
         {/* How It Works Section */}
-        <section id="how-it-works" className="py-16 md:py-24">
+        <section id="como-funciona" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-4"
                 dangerouslySetInnerHTML={{ __html: t.howItWorks.sectionTitle }} />
@@ -140,7 +141,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
               {howItWorksSteps.map((step, index) => (
                 <Card 
                   key={index} 
-                  className="text-center shadow-lg hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card flex flex-col"
+                  className="text-center shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card flex flex-col"
                 >
                   <CardHeader className="items-center">
                     <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
@@ -166,7 +167,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
         </section>
 
         {/* Key Benefits Section */}
-        <section id="benefits" className="py-16 md:py-24 bg-secondary/50">
+        <section id="beneficios" className="py-16 md:py-24 bg-secondary/50">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-12 md:mb-16"
                 dangerouslySetInnerHTML={{ __html: t.benefits.sectionTitle }} />
@@ -174,7 +175,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
               {benefits.map((benefit, index) => (
                 <Card 
                   key={index} 
-                  className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card"
+                  className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card"
                 >
                   {benefit.icon}
                   <h3 className="text-xl font-semibold font-heading mb-2">{benefit.title}</h3>
@@ -186,7 +187,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonials" className="py-16 md:py-24">
+        <section id="testimonios" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-4"
                 dangerouslySetInnerHTML={{ __html: t.testimonials.sectionTitle }} />
@@ -197,7 +198,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
               {testimonials.map((testimonial, index) => (
                 <Card 
                   key={index} 
-                  className="flex flex-col bg-card shadow-lg hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out"
+                  className="flex flex-col bg-card shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out"
                 >
                   <CardContent className="pt-6 flex-grow flex flex-col">
                     <div className="flex items-center mb-4">
@@ -253,5 +254,3 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
     </div>
   );
 }
-
-    
