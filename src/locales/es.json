@@ -149,5 +149,19 @@
     "description": "Únete a nuestra comunidad de early adopters y sé el primero en experimentar la revolución de la búsqueda de empleo con Job Magnetic.",
     "button": "¡Quiero ser Early Adopter! 🚀",
     "placeholder": "Tu mejor correo electrónico"
+  },
+  "terminosPage": {
+    "title": "Términos de Servicio",
+    "metaDescription": "Lee nuestros Términos de Servicio para Job Magnetic.",
+    "content": "Este es un texto de ejemplo para los Términos de Servicio. Por favor, reemplázalo con tus términos reales. Esta página describe las reglas y regulaciones para el uso del sitio web de Job Magnetic.",
+    "section1Title": "Sección 1: Introducción",
+    "section2Title": "Sección 2: Responsabilidades del Usuario"
+  },
+  "privacidadPage": {
+    "title": "Política de Privacidad",
+    "metaDescription": "Lee nuestra Política de Privacidad para Job Magnetic.",
+    "content": "Este es un texto de ejemplo para la Política de Privacidad. Por favor, reemplázalo con tu política de privacidad real. Este documento de Política de Privacidad contiene tipos de información que Job Magnetic recopila y registra y cómo la usamos.",
+    "section1Title": "Sección 1: Información que Recopilamos",
+    "section2Title": "Sección 2: Cómo Usamos tu Información"
   }
 }
