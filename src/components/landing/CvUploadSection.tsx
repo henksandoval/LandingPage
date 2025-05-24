@@ -183,7 +183,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   return (
     <section id="upload-cv" className="py-16 md:py-24 bg-gradient-to-br from-background via-secondary/20 to-background">
       <div className="container mx-auto px-4 md:px-6">
-        <Card className="max-w-3xl mx-auto text-center shadow-2xl dark:hover:shadow-dark-accent-glow-xl border-2 border-primary/10 hover:border-primary/30 transition-all duration-300 transform hover:scale-[1.01]">
+        <Card className="max-w-3xl mx-auto text-center shadow-2xl hover:shadow-light-primary-glow-xl dark:hover:shadow-dark-accent-glow-xl border-2 border-primary/10 hover:border-primary/30 transition-all duration-300 transform hover:scale-[1.01]">
           <CardHeader className="pb-4">
             <div className="mx-auto bg-primary/10 p-5 rounded-full w-fit mb-6 shadow-lg transform group-hover:scale-110 transition-transform duration-300">
               <UploadCloud className="h-16 w-16 text-primary" strokeWidth={1.5} />
@@ -253,7 +253,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
             {(status === "idle" || status === "fileSelected") && (
               <Button
                 size="lg"
-                className="py-7 px-10 text-lg rounded-lg shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md transition-shadow duration-300 w-full md:w-auto"
+                className="py-7 px-10 text-lg rounded-lg shadow-md hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md transition-shadow duration-300 w-full md:w-auto"
                 onClick={handleUploadAndProcess}
                 disabled={!selectedFile}
               >

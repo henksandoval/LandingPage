@@ -10,12 +10,10 @@ import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
 
 interface HomePageProps {
-  params: Promise<{ locale: string }>;
+  params: { locale: Locale };
 }
 
-export default async function HomePage({ params: params }: HomePageProps) {
-  const { locale } = await params;
-  const localeString = locale as Locale;
+export default async function HomePage({ params: { locale } }: HomePageProps) {
   const t: Dictionary = await getDictionary(locale);
 
   const benefits = [
@@ -94,7 +92,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
+      <Header locale={locale} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-20 md:py-32 bg-gradient-to-br from-secondary via-background to-background">
@@ -127,7 +125,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
         </section>
 
         {/* CV Upload Section */}
-        <CvUploadSection translations={t.cvUpload} locale={localeString} />
+        <CvUploadSection translations={t.cvUpload} locale={locale} />
 
         {/* How It Works Section */}
         <section id="como-funciona" className="py-16 md:py-24">
@@ -141,7 +139,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
               {howItWorksSteps.map((step, index) => (
                 <Card 
                   key={index} 
-                  className="text-center shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card flex flex-col"
+                  className="text-center shadow-lg hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card flex flex-col"
                 >
                   <CardHeader className="items-center">
                     <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
@@ -175,7 +173,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
               {benefits.map((benefit, index) => (
                 <Card 
                   key={index} 
-                  className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card"
+                  className="flex flex-col items-center text-center p-6 shadow-lg hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out bg-card"
                 >
                   {benefit.icon}
                   <h3 className="text-xl font-semibold font-heading mb-2">{benefit.title}</h3>
@@ -198,7 +196,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
               {testimonials.map((testimonial, index) => (
                 <Card 
                   key={index} 
-                  className="flex flex-col bg-card shadow-lg hover:shadow-xl dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out"
+                  className="flex flex-col bg-card shadow-lg hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md hover:border-primary/30 transform hover:scale-[1.01] transition-all duration-300 ease-out"
                 >
                   <CardContent className="pt-6 flex-grow flex flex-col">
                     <div className="flex items-center mb-4">

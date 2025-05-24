@@ -93,8 +93,10 @@ export default {
   			'accordion-up': 'accordion-up 0.2s ease-out'
   		},
       boxShadow: {
-        'dark-accent-glow-md': '0px 0px 15px 2px hsl(var(--accent) / 0.3)', // Sombra para tarjetas pequeñas en hover oscuro
-        'dark-accent-glow-xl': '0px 0px 25px 5px hsl(var(--accent) / 0.3)', // Sombra para tarjeta principal en hover oscuro
+        'dark-accent-glow-md': '0px 0px 15px 2px hsl(var(--accent) / 0.3)',
+        'dark-accent-glow-xl': '0px 0px 25px 5px hsl(var(--accent) / 0.3)',
+        'light-primary-glow-md': '0px 0px 15px 2px hsl(var(--primary) / 0.2)',
+        'light-primary-glow-xl': '0px 0px 25px 5px hsl(var(--primary) / 0.2)',
       }
   	}
   },
