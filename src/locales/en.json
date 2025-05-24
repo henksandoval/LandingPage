@@ -14,11 +14,10 @@
       "joinNow": "Join Now"
     },
     "mobileMenuTitle": "Open menu",
-    "languageSelectorTooltip": "Change language",
-    "currentLanguage": "Current",
     "settingsDropdownTitle": "Settings",
     "languageDropdownLabel": "Language",
-    "themeDropdownLabel": "Theme"
+    "themeDropdownLabel": "Theme",
+    "currentLanguage": "Current"
   },
   "footer": {
     "copyright": "© {year} Job Magnetic. All rights reserved."
@@ -227,7 +226,7 @@
       }
     ],
     "conclusion": [
-      "By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree to the new terms, you are no longer authorized to use Service.",
+      "By continuing to access or use our Service after any revisions become effective, you agree to be bound by the revised terms. If you do not agree with the new terms, you are no longer authorized to use Service.",
       "If you have any questions about these Terms, please contact us at [Your Support Email or Contact Page Link]."
     ]
   },

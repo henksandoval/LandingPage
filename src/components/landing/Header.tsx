@@ -24,8 +24,8 @@ import * as React from 'react';
 
 interface HeaderProps {
   locale: Locale;
-  tHeader: Dictionary;
-  tThemeToggle: Dictionary;
+  tHeader: Dictionary; // Corresponds to dictionary.header
+  tThemeToggle: Dictionary; // Corresponds to dictionary.themeToggle
 }
 
 const SpainFlagIcon = () => (
@@ -104,13 +104,13 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
           <span>{tHeader.appName}</span>
         </Link>
         <nav className="hidden md:flex gap-4 items-center">
-          <Link href={`/${locale}/#como-funciona`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+          <Link href={`/${locale}/#how-it-works`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             {tHeader.nav.howItWorks}
           </Link>
-          <Link href={`/${locale}/#beneficios`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+          <Link href={`/${locale}/#benefits`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             {tHeader.nav.benefits}
           </Link>
-          <Link href={`/${locale}/#testimonios`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+          <Link href={`/${locale}/#testimonials`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             {tHeader.nav.testimonials}
           </Link>
            <Link href={`/${locale}/#upload-cv`} className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
@@ -151,13 +151,13 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <Link href={`/${locale}/#como-funciona`}>{tHeader.nav.howItWorks}</Link>
+                <Link href={`/${locale}/#how-it-works`}>{tHeader.nav.howItWorks}</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/${locale}/#beneficios`}>{tHeader.nav.benefits}</Link>
+                <Link href={`/${locale}/#benefits`}>{tHeader.nav.benefits}</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={`/${locale}/#testimonios`}>{tHeader.nav.testimonials}</Link>
+                <Link href={`/${locale}/#testimonials`}>{tHeader.nav.testimonials}</Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href={`/${locale}/#upload-cv`}>{tHeader.nav.uploadCv}</Link>
@@ -173,3 +173,5 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
     </header>
   );
 }
+
+    

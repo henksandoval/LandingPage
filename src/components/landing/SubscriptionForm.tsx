@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Rocket, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { Dictionary } from '@/lib/translations';
+import type { Dictionary } from '@/lib/translations'; // Ensure Dictionary type is correctly imported/defined
 
 interface SubscriptionFormProps {
   buttonText?: string;
@@ -24,13 +25,14 @@ interface SubscriptionFormProps {
 }
 
 export function SubscriptionForm({ 
-  buttonText = "Únete a nuestra lista de early adopters", 
-  placeholderText = "tu@email.com",
+  buttonText = "Join our early adopters list", 
+  placeholderText = "you@email.com",
   translations 
 }: SubscriptionFormProps) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
+  // Using translations for Zod messages
   const subscriptionSchema = z.object({
     email: z.string().email({ message: translations.emailValidation || "Please enter a valid email." }),
   });
@@ -48,7 +50,7 @@ export function SubscriptionForm({
     
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     if (!apiBaseUrl) {
-      console.error("Error: NEXT_PUBLIC_API_BASE_URL no está configurada.");
+      console.error("Error: NEXT_PUBLIC_API_BASE_URL is not configured.");
       toast({
         title: translations.toastConfigErrorTitle || "Configuration Error",
         description: translations.toastConfigErrorDescription || "API URL not configured.",
@@ -84,7 +86,7 @@ export function SubscriptionForm({
         });
       }
     } catch (error) {
-      console.error("Error en la llamada a la API:", error);
+      console.error("Error calling API:", error);
       toast({
         title: translations.toastNetworkErrorTitle || "Network Error",
         description: translations.toastNetworkErrorDescription || "Could not connect to server.",
@@ -111,7 +113,7 @@ export function SubscriptionForm({
                     placeholder={placeholderText} 
                     {...field} 
                     className="pl-10 py-6 text-base rounded-lg shadow-sm focus:ring-primary focus:border-primary" 
-                    aria-label="Correo electrónico"
+                    aria-label="Email address" // Changed to English
                   />
                 </div>
               </FormControl>
@@ -136,3 +138,5 @@ export function SubscriptionForm({
     </Form>
   );
 }
+
+    

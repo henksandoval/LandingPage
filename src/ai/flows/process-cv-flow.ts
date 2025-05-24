@@ -1,37 +1,37 @@
 
 'use server';
 /**
- * @fileOverview Flujo para procesar un CV y generar (simuladamente) un sitio web personal.
+ * @fileOverview Flow to process a CV and (simulated) generate a personal website.
  *
- * - processCvAndGenerateSite - Función que maneja el procesamiento del CV.
- * - ProcessCvInput - El tipo de entrada para la función.
- * - ProcessCvOutput - El tipo de retorno para la función.
+ * - processCvAndGenerateSite - Function that handles CV processing.
+ * - ProcessCvInput - The input type for the function.
+ * - ProcessCvOutput - The return type for the function.
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'genkit'; // <--- CORREGIDO AQUÍ
+import { z } from 'genkit';
 
-// Esquema de entrada
+// Input schema
 const ProcessCvInputSchema = z.object({
   cvDataUri: z
     .string()
     .describe(
-      "El CV como un data URI que debe incluir un MIME type y usar Base64 encoding. Esperado: 'data:<mimetype>;base64,<encoded_data>'."
+      "The CV as a data URI that must include a MIME type and use Base64 encoding. Expected: 'data:<mimetype>;base64,<encoded_data>'."
     ),
-  fileName: z.string().describe('El nombre original del archivo del CV.'),
+  fileName: z.string().describe('The original file name of the CV.'),
 });
 export type ProcessCvInput = z.infer<typeof ProcessCvInputSchema>;
 
-// Esquema de salida
+// Output schema
 const ProcessCvOutputSchema = z.object({
-  generatedSiteUrl: z.string().optional().describe('La URL del sitio web personal generado, si tuvo éxito.'),
-  feedbackMessage: z.string().describe('Un mensaje de retroalimentación para el usuario sobre el proceso.'),
-  processedCvSummary: z.string().optional().describe('Un resumen del CV procesado (simulado).'),
+  generatedSiteUrl: z.string().optional().describe('The URL of the generated personal website, if successful.'),
+  feedbackMessage: z.string().describe('A feedback message for the user about the process.'),
+  processedCvSummary: z.string().optional().describe('A summary of the processed CV (simulated).'),
 });
 export type ProcessCvOutput = z.infer<typeof ProcessCvOutputSchema>;
 
 
-// El prompt para Genkit
+// The Genkit prompt
 const cvProcessingPrompt = ai.definePrompt({
   name: 'cvProcessingPrompt',
   input: { schema: ProcessCvInputSchema },
@@ -52,13 +52,13 @@ const cvProcessingPrompt = ai.definePrompt({
     Por ahora, siempre simula un procesamiento exitoso.
   `,
   config: {
-    // Podrías ajustar la temperatura u otras configuraciones aquí si es necesario.
-    // temperature: 0.3 
+    // You could adjust temperature or other settings here if needed.
+    // temperature: 0.3
   }
 });
 
 
-// El flujo principal
+// The main flow
 const processCvFlow = ai.defineFlow(
   {
     name: 'processCvFlow',
@@ -67,9 +67,9 @@ const processCvFlow = ai.defineFlow(
   },
   async (input: ProcessCvInput) => {
     try {
-      // Aquí es donde llamarías a tu API de backend real en el futuro,
-      // pasando el input.cvDataUri (o el texto extraído del mismo) y input.fileName.
-      // const backendResponse = await fetch('https://tu-api.com/generar-sitio', {
+      // This is where you would call your actual backend API in the future,
+      // passing input.cvDataUri (or extracted text from it) and input.fileName.
+      // const backendResponse = await fetch('https://your-api.com/generate-site', {
       //   method: 'POST',
       //   body: JSON.stringify({ cvContent: input.cvDataUri, fileName: input.fileName }),
       //   headers: { 'Content-Type': 'application/json' }
@@ -77,50 +77,50 @@ const processCvFlow = ai.defineFlow(
       // if (!backendResponse.ok) {
       //   const errorData = await backendResponse.json();
       //   return {
-      //     feedbackMessage: `Error del backend: ${errorData.message || 'No se pudo generar el sitio.'}`,
+      //     feedbackMessage: \`Backend error: \${errorData.message || 'Could not generate site.'}\`,
       //   };
       // }
       // const siteData = await backendResponse.json();
       // return {
       //   generatedSiteUrl: siteData.url,
-      //   feedbackMessage: "¡Tu perfil ha sido creado y está listo para que lo compartas!",
-      //   processedCvSummary: siteData.summary || "CV procesado exitosamente."
+      //   feedbackMessage: "Your profile has been created and is ready for you to share!",
+      //   processedCvSummary: siteData.summary || "CV processed successfully."
       // };
 
-      // Por ahora, llamamos al prompt de Genkit para simular la respuesta.
+      // For now, we call the Genkit prompt to simulate the response.
       const { output } = await cvProcessingPrompt(input);
 
       if (!output) {
         return {
-          feedbackMessage: "La IA no pudo procesar la solicitud. Intenta de nuevo.",
+          feedbackMessage: "The AI could not process the request. Please try again.",
         };
       }
       
-      // Aseguramos que la URL sea plausible y el mensaje sea amigable
+      // Ensure the URL is plausible and the message is friendly
       if (output.generatedSiteUrl && output.generatedSiteUrl.startsWith('https://')) {
          return {
           generatedSiteUrl: output.generatedSiteUrl,
-          feedbackMessage: output.feedbackMessage || "¡Tu perfil ha sido creado y está listo!",
-          processedCvSummary: output.processedCvSummary || "Hemos extraído la información clave de tu CV."
+          feedbackMessage: output.feedbackMessage || "Your profile has been created and is ready!",
+          processedCvSummary: output.processedCvSummary || "We have extracted the key information from your CV."
         };
       } else {
-        // Si la IA devuelve algo inesperado
+        // If the AI returns something unexpected
          return {
-          feedbackMessage: "Hubo un problema generando la URL de tu perfil. Por favor, intenta de nuevo.",
-          processedCvSummary: "Procesamiento simulado completado con detalles inesperados."
+          feedbackMessage: "There was a problem generating your profile URL. Please try again.",
+          processedCvSummary: "Simulated processing completed with unexpected details."
         };
       }
 
     } catch (error) {
-      console.error('Error en processCvFlow:', error);
+      console.error('Error in processCvFlow:', error);
       return {
-        feedbackMessage: `Ocurrió un error inesperado procesando tu CV. Detalles: ${error instanceof Error ? error.message : String(error)}`,
+        feedbackMessage: `An unexpected error occurred while processing your CV. Details: ${error instanceof Error ? error.message : String(error)}`,
       };
     }
   }
 );
 
-// Función exportada para ser llamada desde el componente de frontend
+// Exported function to be called from the frontend component
 export async function processCvAndGenerateSite(input: ProcessCvInput): Promise<ProcessCvOutput> {
   return processCvFlow(input);
 }

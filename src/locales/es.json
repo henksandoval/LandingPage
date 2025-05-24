@@ -14,11 +14,10 @@
       "joinNow": "Únete Ahora"
     },
     "mobileMenuTitle": "Abrir menú",
-    "languageSelectorTooltip": "Cambiar idioma",
-    "currentLanguage": "Actual",
     "settingsDropdownTitle": "Configuración",
     "languageDropdownLabel": "Idioma",
-    "themeDropdownLabel": "Tema"
+    "themeDropdownLabel": "Tema",
+    "currentLanguage": "Actual"
   },
   "footer": {
     "copyright": "© {year} Job Magnetic. Todos los derechos reservados."

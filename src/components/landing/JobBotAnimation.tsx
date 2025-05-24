@@ -7,7 +7,7 @@ export function JobBotAnimation(props: SVGProps<SVGSVGElement>) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 120 120"
-      // className="h-32 w-32 text-primary mx-auto mb-4" // Clases se pasan por props
+      // className will be passed via props
       {...props}
     >
       <style>
@@ -27,24 +27,24 @@ export function JobBotAnimation(props: SVGProps<SVGSVGElement>) {
             to { fill-opacity: 1; r: 3.5px; }
           }
           .job-bot-arm-right {
-            animation: job-bot-wave 2.5s infinite ease-in-out; /* Animación de saludo */
-            transform-origin: 99px 60px; /* Punto de rotación para el saludo */
+            animation: job-bot-wave 2.5s infinite ease-in-out; /* Waving animation */
+            transform-origin: 99px 60px; /* Rotation point for waving */
           }
-          @keyframes job-bot-wave { /* Animación de saludo */
+          @keyframes job-bot-wave { /* Waving animation */
             0%, 100% { transform: rotate(0deg); }
             20%, 60% { transform: rotate(-25deg); }
             40%, 80% { transform: rotate(10deg); }
           }
-          .job-bot-body-light-panel { /* Panel de luces del cuerpo */
+          .job-bot-body-light-panel { /* Body light panel */
             animation: job-bot-body-glow 2s infinite ease-in-out alternate;
           }
           @keyframes job-bot-body-glow {
             from { opacity: 0.5; }
             to { opacity: 0.9; }
           }
-          .job-bot-panel-light { /* Luces individuales del panel */
+          .job-bot-panel-light { /* Individual panel lights */
             animation-name: job-bot-panel-blink;
-            animation-duration: 1.8s; /* Duración más larga para un parpadeo más espaciado */
+            animation-duration: 1.8s; /* Longer duration for more spaced out blinking */
             animation-iteration-count: infinite;
             animation-timing-function: ease-in-out;
           }
@@ -57,49 +57,51 @@ export function JobBotAnimation(props: SVGProps<SVGSVGElement>) {
           .job-bot-panel-light.light-3 {
             animation-delay: 1.2s;
           }
-          @keyframes job-bot-panel-blink { /* Parpadeo de luces del panel */
+          @keyframes job-bot-panel-blink { /* Panel lights blinking */
             0%, 40%, 100% { opacity: 0.3; }
             20% { opacity: 1; }
           }
         `}
       </style>
-      {/* Antena */}
+      {/* Antenna */}
       <line x1="60" y1="10" x2="60" y2="0" stroke="hsl(var(--secondary-foreground))" strokeWidth="1.5" />
       <circle cx="60" cy="1" r="3" className="job-bot-antenna-light" fill="hsl(var(--accent))" stroke="hsl(var(--background))" strokeWidth="0.5" />
 
-      {/* Cabeza */}
+      {/* Head */}
       <rect x="40" y="10" width="40" height="30" rx="6" ry="6" fill="currentColor" stroke="hsl(var(--border))" strokeWidth="0.5"/>
-      {/* Ojos */}
+      {/* Eyes */}
       <rect x="46" y="20" width="28" height="10" rx="3" fill="hsl(var(--secondary))" />
       <circle cx="53" cy="25" r="3.5" fill="white" className="job-bot-eye" />
       <circle cx="67" cy="25" r="3.5" fill="white" className="job-bot-eye" style={{ animationDelay: '0.15s' }} />
       
-      {/* Cuello */}
+      {/* Neck */}
       <rect x="55" y="40" width="10" height="5" fill="hsl(var(--secondary))" />
 
-      {/* Cuerpo */}
+      {/* Body */}
       <rect x="30" y="45" width="60" height="55" rx="10" ry="10" fill="currentColor" stroke="hsl(var(--border))" strokeWidth="0.5"/>
 
-      {/* Brazos */}
-      {/* Brazo Izquierdo (estático) */}
+      {/* Arms */}
+      {/* Left Arm (static) */}
       <rect x="15" y="58" width="12" height="35" rx="5" ry="5" fill="currentColor" />
-      <circle cx="21" cy="95" r="7" fill="hsl(var(--secondary))" /> {/* Mano */}
+      <circle cx="21" cy="95" r="7" fill="hsl(var(--secondary))" /> {/* Hand */}
 
-      {/* Brazo Derecho (animado saludando) */}
+      {/* Right Arm (animated waving) */}
       <g className="job-bot-arm-right">
         <rect x="93" y="58" width="12" height="35" rx="5" ry="5" fill="currentColor" />
-        <circle cx="99" cy="95" r="7" fill="hsl(var(--secondary))" /> {/* Mano */}
+        <circle cx="99" cy="95" r="7" fill="hsl(var(--secondary))" /> {/* Hand */}
       </g>
       
-      {/* Panel de control en el cuerpo */}
+      {/* Control panel on the body */}
       <rect x="42" y="55" width="36" height="20" rx="3" fill="hsl(var(--background))" className="job-bot-body-light-panel" />
       <circle cx="50" cy="65" r="2.5" fill="hsl(var(--accent))" className="job-bot-panel-light light-1" />
       <circle cx="60" cy="65" r="2.5" fill="hsl(var(--accent))" className="job-bot-panel-light light-2" />
       <circle cx="70" cy="65" r="2.5" fill="hsl(var(--accent))" className="job-bot-panel-light light-3" />
       
-      {/* Piernas/Base */}
+      {/* Legs/Base */}
       <rect x="42" y="100" width="16" height="20" rx="4" ry="4" fill="currentColor" />
       <rect x="62" y="100" width="16" height="20" rx="4" ry="4" fill="currentColor" />
     </svg>
   );
 }
+
+    

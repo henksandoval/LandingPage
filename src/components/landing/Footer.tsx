@@ -1,7 +1,8 @@
-import { Dictionary } from '@/lib/translations';
+
+import type { Dictionary } from '@/lib/translations';
 
 interface FooterProps {
-  t: Dictionary; // Or a more specific type for footer translations
+  t: Dictionary; // This will be t.footer from the parent
 }
 export function Footer({ t }: FooterProps) {
   const year = new Date().getFullYear();
@@ -15,3 +16,5 @@ export function Footer({ t }: FooterProps) {
     </footer>
   );
 }
+
+    

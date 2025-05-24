@@ -4,12 +4,12 @@
 import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dictionary } from '@/lib/translations';
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu"; // Import DropdownMenuItem
+import type { Dictionary } from '@/lib/translations'; // Ensure Dictionary type is correctly imported/defined
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 interface ThemeToggleButtonProps {
-  translations: Dictionary;
-  asMenuItem?: boolean; // New prop
+  translations: Dictionary; // This will be t.themeToggle from parent
+  asMenuItem?: boolean; 
 }
 
 export function ThemeToggleButton({ translations: t, asMenuItem = false }: ThemeToggleButtonProps) {
@@ -41,7 +41,7 @@ export function ThemeToggleButton({ translations: t, asMenuItem = false }: Theme
         document.documentElement.classList.remove("dark");
         localStorage.setItem("theme", "light");
       }
-      // Dispatch a custom event to notify other components (like Header) of theme change
+      // Dispatch a custom event to notify other components of theme change
       window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
     }
   }, [theme, mounted]);
@@ -51,6 +51,7 @@ export function ThemeToggleButton({ translations: t, asMenuItem = false }: Theme
   };
 
   if (!mounted && !asMenuItem) {
+    // Default to Sun icon before hydration for button variant
     return <Button variant="outline" size="icon" disabled className="w-9 h-9"><Sun className="h-[1.2rem] w-[1.2rem]" /></Button>;
   }
   if (!mounted && asMenuItem) {
@@ -100,3 +101,5 @@ export function ThemeToggleButton({ translations: t, asMenuItem = false }: Theme
     </Button>
   );
 }
+
+    

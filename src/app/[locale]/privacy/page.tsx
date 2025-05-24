@@ -6,13 +6,13 @@ import type { Locale } from '@/lib/i18n-config';
 import { format } from 'date-fns';
 
 interface LegalPageProps {
-  params: Promise<{ locale: string }>;
+  params: { locale: string }; // Keep as string for broader compatibility, cast to Locale where needed
 }
 
-export default async function PrivacyPage({ params: params }: LegalPageProps) {
-  const { locale } = await params;
+export default async function PrivacyPage({ params }: LegalPageProps) {
+  const { locale } = params; // No need to await here, params is directly available
   const localeString = locale as Locale;
-  const t: Dictionary = await getDictionary(locale);
+  const t: Dictionary = await getDictionary(localeString);
   const privacyData = t.privacyPage || {};
   const currentDate = format(new Date(), 'MMMM d, yyyy');
   const lastUpdated = privacyData.lastUpdated?.replace('{currentDate}', currentDate) || `Last Updated: ${currentDate}`;
@@ -52,8 +52,8 @@ export default async function PrivacyPage({ params: params }: LegalPageProps) {
 }
 
 export async function generateMetadata({ params }: LegalPageProps) {
-  const { locale } = await params;
-  const t: Dictionary = await getDictionary(locale);
+  const { locale } = params; // No need to await here for simple param access
+  const t: Dictionary = await getDictionary(locale as Locale);
   const privacyData = t.privacyPage || {};
   return {
     title: privacyData.title || "Privacy Policy",

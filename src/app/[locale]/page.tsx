@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Footer';
@@ -35,58 +36,58 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
     {
       icon: <ThumbsUp className="h-8 w-8 text-primary mb-4" />,
       title: t.benefits.benefit4.title,
-      description: t.benefits.benefit4.description,
+      "description": t.benefits.benefit4.description,
     },
   ];
 
   const howItWorksSteps = [
     {
-      icon: <FileText className="h-10 w-10 text-primary" />,
-      title: t.howItWorks.step1.title,
-      description: t.howItWorks.step1.description,
-      imageHint: "cv data extraction"
+      "icon": <FileText className="h-10 w-10 text-primary" />,
+      "title": t.howItWorks.step1.title,
+      "description": t.howItWorks.step1.description,
+      "imageHint": "cv data extraction"
     },
     {
-      icon: <Wand2 className="h-10 w-10 text-primary" />,
-      title: t.howItWorks.step2.title,
-      description: t.howItWorks.step2.description,
-      imageHint: "ai transforming cv"
+      "icon": <Wand2 className="h-10 w-10 text-primary" />,
+      "title": t.howItWorks.step2.title,
+      "description": t.howItWorks.step2.description,
+      "imageHint": "ai transforming cv"
     },
     {
-      icon: <Briefcase className="h-10 w-10 text-primary" />,
-      title: t.howItWorks.step3.title,
-      description: t.howItWorks.step3.description,
-      imageHint: "networking connections"
+      "icon": <Briefcase className="h-10 w-10 text-primary" />,
+      "title": t.howItWorks.step3.title,
+      "description": t.howItWorks.step3.description,
+      "imageHint": "networking connections"
     },
   ];
 
   const testimonials = [
     {
-      name: t.testimonials.user1.name,
-      role: t.testimonials.user1.role,
-      quote: t.testimonials.user1.quote,
-      avatar: "https://placehold.co/100x100.png",
-      avatarFallback: t.testimonials.user1.name.substring(0,1) + (t.testimonials.user1.name.split(' ')[1]?.substring(0,1) || t.testimonials.user1.name.substring(1,2)),
-      rating: 5,
-      imageHint: "woman professional"
+      "name": t.testimonials.user1.name,
+      "role": t.testimonials.user1.role,
+      "quote": t.testimonials.user1.quote,
+      "avatar": "https://placehold.co/100x100.png",
+      "avatarFallback": t.testimonials.user1.name.substring(0,1) + (t.testimonials.user1.name.split(' ')[1]?.substring(0,1) || t.testimonials.user1.name.substring(1,2)),
+      "rating": 5,
+      "imageHint": "woman professional"
     },
     {
-      name: t.testimonials.user2.name,
-      role: t.testimonials.user2.role,
-      quote: t.testimonials.user2.quote,
-      avatar: "https://placehold.co/100x100.png",
-      avatarFallback: t.testimonials.user2.name.substring(0,1) + (t.testimonials.user2.name.split(' ')[1]?.substring(0,1) || t.testimonials.user2.name.substring(1,2)),
-      rating: 5,
-      imageHint: "man smiling"
+      "name": t.testimonials.user2.name,
+      "role": t.testimonials.user2.role,
+      "quote": t.testimonials.user2.quote,
+      "avatar": "https://placehold.co/100x100.png",
+      "avatarFallback": t.testimonials.user2.name.substring(0,1) + (t.testimonials.user2.name.split(' ')[1]?.substring(0,1) || t.testimonials.user2.name.substring(1,2)),
+      "rating": 5,
+      "imageHint": "man smiling"
     },
     {
-      name: t.testimonials.user3.name,
-      role: t.testimonials.user3.role,
-      quote: t.testimonials.user3.quote,
-      avatar: "https://placehold.co/100x100.png",
-      avatarFallback: t.testimonials.user3.name.substring(0,1) + (t.testimonials.user3.name.split(' ')[1]?.substring(0,1) || t.testimonials.user3.name.substring(1,2)),
-      rating: 4,
-      imageHint: "woman working"
+      "name": t.testimonials.user3.name,
+      "role": t.testimonials.user3.role,
+      "quote": t.testimonials.user3.quote,
+      "avatar": "https://placehold.co/100x100.png",
+      "avatarFallback": t.testimonials.user3.name.substring(0,1) + (t.testimonials.user3.name.split(' ')[1]?.substring(0,1) || t.testimonials.user3.name.substring(1,2)),
+      "rating": 4,
+      "imageHint": "woman working"
     },
   ];
 
@@ -128,7 +129,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
         <CvUploadSection translations={t.cvUpload} locale={locale} />
 
         {/* How It Works Section */}
-        <section id="como-funciona" className="py-16 md:py-24">
+        <section id="how-it-works" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-4"
                 dangerouslySetInnerHTML={{ __html: t.howItWorks.sectionTitle }} />
@@ -165,7 +166,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
         </section>
 
         {/* Key Benefits Section */}
-        <section id="beneficios" className="py-16 md:py-24 bg-secondary/50">
+        <section id="benefits" className="py-16 md:py-24 bg-secondary/50">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-12 md:mb-16"
                 dangerouslySetInnerHTML={{ __html: t.benefits.sectionTitle }} />
@@ -185,7 +186,7 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonios" className="py-16 md:py-24">
+        <section id="testimonials" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-4"
                 dangerouslySetInnerHTML={{ __html: t.testimonials.sectionTitle }} />
@@ -252,3 +253,5 @@ export default async function HomePage({ params: { locale } }: HomePageProps) {
     </div>
   );
 }
+
+    

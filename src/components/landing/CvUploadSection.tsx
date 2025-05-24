@@ -10,13 +10,13 @@ import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle } from "lucide-r
 import Link from 'next/link';
 import { processCvAndGenerateSite, type ProcessCvOutput } from "@/ai/flows/process-cv-flow";
 import { JobBotAnimation } from "./JobBotAnimation"; 
-import { Dictionary } from '@/lib/translations';
+import type { Dictionary } from '@/lib/translations'; // Ensure Dictionary type is correctly imported/defined
 import type { Locale } from '@/lib/i18n-config';
 
 type UploadStatus = "idle" | "fileSelected" | "processing" | "success" | "error";
 
 interface CvUploadSectionProps {
-  translations: Dictionary;
+  translations: Dictionary; // This will be t.cvUpload from the parent
   locale: Locale;
 }
 
@@ -86,7 +86,6 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
 
     try {
       const cvDataUri = await convertFileToDataURL(selectedFile);
-      // Note: processCvAndGenerateSite might need to be locale-aware for its feedback messages in the future
       const result: ProcessCvOutput = await processCvAndGenerateSite({
         cvDataUri,
         fileName: selectedFile.name,
@@ -97,21 +96,21 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
         setStatus("success");
         toast({
           title: t.toast?.profileCreatedSuccessTitle || "Profile Created Successfully!",
-          description: result.feedbackMessage, // This message comes from AI, may need localization in flow
+          description: result.feedbackMessage, 
           variant: "default",
         });
       } else {
-        setErrorMessage(result.feedbackMessage || "Ocurrió un error al procesar tu CV.");
+        setErrorMessage(result.feedbackMessage || "An error occurred while processing your CV.");
         setStatus("error");
         toast({
           title: t.toast?.processingErrorTitle || "Processing Error",
-          description: result.feedbackMessage || "No se pudo generar tu perfil. Intenta de nuevo.",
+          description: result.feedbackMessage || "Could not generate your profile. Please try again.",
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error("Error processing CV:", error);
-      const errorMsg = error instanceof Error ? error.message : "Error desconocido durante el procesamiento.";
+      const errorMsg = error instanceof Error ? error.message : "Unknown error during processing.";
       setErrorMessage(errorMsg);
       setStatus("error");
       toast({
@@ -120,10 +119,12 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
         variant: "destructive",
       });
     } finally {
-      if (status !== "error") {
-          setSelectedFile(null); 
-      }
-      if (fileInputRef.current) {
+      // Removed clearing selectedFile here as it was causing an issue with the retry button.
+      // It's better to clear it explicitly when starting a new upload or on success.
+      // if (status !== "error") { 
+      //     setSelectedFile(null); 
+      // }
+      if (fileInputRef.current && status !== "error") { // Only clear if not an error, to allow retry
         fileInputRef.current.value = "";
       }
     }
@@ -211,13 +212,13 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
               role={status !== "processing" ? "button" : undefined}
               tabIndex={status !== "processing" ? 0 : undefined}
               onKeyPress={(e) => status !== "processing" && e.key === 'Enter' && triggerFileInput()}
-              aria-label="Zona para arrastrar y soltar o seleccionar archivo de CV"
+              aria-label={t.dropzone?.dragAndDrop || "Drag and drop your CV here or click to select"}
             >
               {renderDropZoneContent()}
             </div>
 
             {status === "success" && generatedSiteUrl && (
-              <div className="mt-6 mb-8 p-6 bg-green-50 dark:bg-green-800/30 border border-green-300 dark:border-green-700 rounded-lg text-left">
+              <div className="mt-6 mb-8 p-6 bg-green-50 dark:bg-green-900/20 border border-green-300 dark:border-green-700 rounded-lg text-left">
                 <h3 className="text-xl font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center">
                   <LinkIcon className="h-6 w-6 mr-2 text-green-600 dark:text-green-400" />
                   {t.status?.successTitle || "Your Profile is Ready!"}
@@ -255,7 +256,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
                 size="lg"
                 className="py-7 px-10 text-lg rounded-lg shadow-md hover:shadow-light-primary-glow-md dark:hover:shadow-dark-accent-glow-md transition-shadow duration-300 w-full md:w-auto"
                 onClick={handleUploadAndProcess}
-                disabled={!selectedFile}
+                disabled={!selectedFile} 
               >
                 <UploadCloud className="mr-3 h-6 w-6" />
                 {selectedFile ? (t.button?.createProfile || "Create Profile with this CV") : (t.button?.selectFirst || "Select a CV first")}
@@ -270,3 +271,5 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     </section>
   );
 }
+
+    
