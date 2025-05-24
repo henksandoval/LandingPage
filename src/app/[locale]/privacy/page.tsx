@@ -9,8 +9,8 @@ interface LegalPageProps {
   params: Promise<{ locale: string }>;
 }
 
-export default async function PrivacyPage({ params: paramsPromise }: LegalPageProps) {
-  const { locale } = await paramsPromise;
+export default async function PrivacyPage({ params: params }: LegalPageProps) {
+  const { locale } = await params;
   const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(locale);
   const privacyData = t.privacyPage || {};

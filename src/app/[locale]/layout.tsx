@@ -4,7 +4,6 @@ import { Inter, Roboto } from 'next/font/google';
 import '../globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { getDictionary, type Dictionary } from '@/lib/translations';
-import type { Locale } from '@/lib/i18n-config';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,11 +19,11 @@ const roboto = Roboto({
 });
 
 interface LayoutAndPageProps {
-  paramsPromise: Promise<{ locale: string }>;
+  params: Promise<{ locale: string }>;
 }
 
-export async function generateMetadata({ paramsPromise }: LayoutAndPageProps): Promise<Metadata> {
-  const { locale } = await paramsPromise; // Destructure locale from params
+export async function generateMetadata({ params }: LayoutAndPageProps): Promise<Metadata> {
+  const { locale } = await params; // Destructure locale from params
   const dict: Dictionary = await getDictionary(locale);
   return {
     title: dict.metadata.title,

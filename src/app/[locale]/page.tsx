@@ -13,8 +13,8 @@ interface HomePageProps {
   params: Promise<{ locale: string }>;
 }
 
-export default async function HomePage({ params: paramsPromise }: HomePageProps) {
-  const { locale } = await paramsPromise;
+export default async function HomePage({ params: params }: HomePageProps) {
+  const { locale } = await params;
   const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(locale);
 
