@@ -138,7 +138,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     if (status === "processing") {
       return (
         <>
-          <JobBotAnimation className="h-32 w-32 text-primary mx-auto mb-4" />
+          <JobBotAnimation containerClassName="mx-auto mb-4" botClassName="h-32 w-32 text-primary" />
           <p className="text-primary font-medium text-lg">{t.status?.processingTitle || "Our JobBot is in action..."}</p>
           <p className="text-muted-foreground/80">{t.status?.processingDescription || "Creating your unique professional profile."}</p>
         </>
