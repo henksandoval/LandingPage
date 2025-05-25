@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Languages, Settings, Sun, Moon } from 'lucide-react';
+import { Menu, Languages, Settings } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
