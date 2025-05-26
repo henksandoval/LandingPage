@@ -282,27 +282,56 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     setGeneratedSiteUrl(null);
     setErrorMessage(null);
 
-    try {
-      const apiResponse = await new Promise<{ success: boolean; data?: { profileUrl: string }; error?: string }>((resolve) => {
-        setTimeout(() => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT + "v0.1/profile";
 
-          if (cvText && cvText.length > 20) {
-            resolve({ success: true, data: { profileUrl: `https://example.com/profile/${selectedFile.name.split('.')[0]}-${Date.now()}` } });
-          } else {
-            resolve({ success: false, error: "Simulated API Error: CV text is too short or invalid." });
-          }
-        }, 2000);
+    if (!process.env.NEXT_PUBLIC_API_ENDPOINT) {
+      setErrorMessage("API configuration error (base URL). Please contact support.");
+      setStatus("error");
+      toast({
+        title: "Configuration Error",
+        description: "The API base endpoint is not configured.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('cvFile', selectedFile, selectedFile.name);
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        body: formData,
       });
 
-      if (apiResponse.success && apiResponse.data) {
-        setGeneratedSiteUrl(apiResponse.data.profileUrl);
+      if (!response.ok) {
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch (e) {
+            errorData = { message: "Failed to parse error response from the server.", error: e };
+        }
+        throw new Error(errorData?.message || errorData?.error || `API request failed with status ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.success && result.data?.profileUrl) {
+        setGeneratedSiteUrl(result.data.profileUrl);
+        setStatus("success");
+        toast({
+          title: t.toast?.profileCreatedTitle || "Profile Created!",
+          description: t.toast?.profileCreatedDescription || "Your professional profile has been successfully created.",
+        });
+      } else if (result.profileUrl) {
+        setGeneratedSiteUrl(result.profileUrl);
         setStatus("success");
         toast({
           title: t.toast?.profileCreatedTitle || "Profile Created!",
           description: t.toast?.profileCreatedDescription || "Your professional profile has been successfully created.",
         });
       } else {
-        throw new Error(apiResponse.error || "Unknown error from API.");
+        throw new Error(result.error || result.message || "API did not return the expected successful response structure.");
       }
     } catch (error) {
       const apiErrorMsg = error instanceof Error ? error.message : "Failed to process CV on the server.";
