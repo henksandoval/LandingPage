@@ -25,7 +25,6 @@ let pdfWorkerConfigured = false;
 
 async function loadPdfjs() {
   if (typeof window === 'undefined') {
-    console.warn("loadPdfjs: Attempting to load pdfjs-dist on the server. Skipped.");
     return null;
   }
 
@@ -34,10 +33,8 @@ async function loadPdfjs() {
   }
 
   try {
-    console.log("loadPdfjs: Attempting to dynamically import pdfjs-dist...");
     const pdfjs = await import('pdfjs-dist');
     pdfjsLibModule = pdfjs;
-    console.log(`loadPdfjs: pdfjs-dist imported successfully. Version: ${pdfjs.version}`);
 
     if (!pdfWorkerConfigured) {
       const localWorkerPath = '/pdf.worker.min.mjs';
@@ -45,20 +42,15 @@ async function loadPdfjs() {
 
       try {
         new URL(cdnWorkerSrc);
-        console.log(`loadPdfjs: Attempting to set workerSrc to CDN: ${cdnWorkerSrc}`);
         pdfjs.GlobalWorkerOptions.workerSrc = cdnWorkerSrc;
       } catch (urlError) {
-        console.warn(`loadPdfjs: CDN URL for pdf.worker.js (${cdnWorkerSrc}) might be invalid or version mismatch. Falling back to local.`, urlError);
-        console.log(`loadPdfjs: Setting workerSrc to local path: ${localWorkerPath}`);
         pdfjs.GlobalWorkerOptions.workerSrc = localWorkerPath;
       }
 
-      console.log(`loadPdfjs: GlobalWorkerOptions.workerSrc has been set to: ${pdfjs.GlobalWorkerOptions.workerSrc}`);
       pdfWorkerConfigured = true;
     }
     return pdfjsLibModule;
   } catch (error) {
-    console.error("loadPdfjs: Error dynamically importing pdfjs-dist or configuring worker:", error);
     pdfWorkerConfigured = false;
     return null;
   }
@@ -75,7 +67,6 @@ const readFileAsArrayBuffer = (file: File): Promise<ArrayBuffer> => {
       }
     };
     reader.onerror = (e) => {
-      console.error("FileReader error (ArrayBuffer):", e.target?.error);
       reject(new Error("FileReader error (ArrayBuffer): " + e.target?.error?.message));
     };
     reader.readAsArrayBuffer(file);
@@ -93,7 +84,6 @@ const readFileAsText = (file: File): Promise<string> => {
       }
     };
     reader.onerror = (e) => {
-      console.error("FileReader error (Text):", e.target?.error);
       reject(new Error("FileReader error (Text): " + e.target?.error?.message));
     };
     reader.readAsText(file);
@@ -114,51 +104,43 @@ const extractTextFromFile = async (file: File): Promise<string | null> => {
         toast({ title: "Error", description: "Could not load the library to read PDFs.", variant: "destructive" });
         throw new Error("PDF processing library (pdfjs-dist) not available.");
       }
-      console.log("extractTextFromFile: PDF.js library loaded, processing PDF...");
 
       try {
         const arrayBuffer = await readFileAsArrayBuffer(file);
         const typedArray = new Uint8Array(arrayBuffer);
-        console.log("extractTextFromFile: Attempting to get document from PDF data...");
         const pdfDoc = await pdfjsLib.getDocument({ data: typedArray }).promise;
-        console.log(`extractTextFromFile: PDF document loaded. Number of pages: ${pdfDoc.numPages}`);
         let textContent = "";
         for (let i = 1; i <= pdfDoc.numPages; i++) {
+          let textContentPage = "";
           const page = await pdfDoc.getPage(i);
           const text = await page.getTextContent();
-          textContent += text.items.map(item => (item && 'str' in item && typeof item.str === 'string' ? item.str : '')).join(" ") + "\n";
+          textContentPage = text.items.map(item => (item && 'str' in item && typeof item.str === 'string' ? item.str : '')).join(" ") + "\n";
+          textContent += textContentPage;
         }
         return textContent.trim();
       } catch (error) {
-        console.error("extractTextFromFile: Error during PDF processing:", error);
         throw error;
       }
 
     } else if (type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-      console.log("extractTextFromFile: Processing DOCX with Mammoth...");
       try {
         const arrayBuffer = await readFileAsArrayBuffer(file);
 
         const result = await mammoth.extractRawText({ arrayBuffer });
         return result.value;
       } catch (error) {
-        console.error("Error parsing DOCX with mammoth:", error);
         throw error;
       }
     } else if (type === "text/plain") {
-      console.log("extractTextFromFile: Processing plain text file...");
       try {
         return await readFileAsText(file);
       } catch (error) {
-        console.error("Error reading text file:", error);
         throw error;
       }
     } else if (type === "application/msword") {
-      console.warn(".doc files are not directly supported for client-side text extraction.");
       return null;
     }
 
-    console.warn(`Unsupported file type for client-side text extraction: ${type}`);
     return null;
   };
 
@@ -166,29 +148,22 @@ const extractTextFromFile = async (file: File): Promise<string | null> => {
     const extractedText = await performActualExtraction();
 
     const elapsedTime = Date.now() - startTime;
-    console.log(`Actual text extraction took ${elapsedTime}ms.`);
 
     if (elapsedTime < MIN_PROCESSING_DURATION_MS) {
       const delayRequired = MIN_PROCESSING_DURATION_MS - elapsedTime;
-      console.log(`Waiting an additional ${delayRequired}ms to reach the minimum duration of ${MIN_PROCESSING_DURATION_MS}ms.`);
       await new Promise(resolve => setTimeout(resolve, delayRequired));
     }
 
-    console.log(`Total duration (with possible delay): ${Date.now() - startTime}ms.`);
     return extractedText;
 
   } catch (error) {
-    console.error("Error in the text extraction process:", error);
     const elapsedTime = Date.now() - startTime;
-    console.log(`Extraction failed after ${elapsedTime}ms (real time).`);
 
     if (elapsedTime < MIN_PROCESSING_DURATION_MS) {
       const delayRequired = MIN_PROCESSING_DURATION_MS - elapsedTime;
-      console.log(`Waiting an additional ${delayRequired}ms before propagating the error (to meet minimum duration).`);
       await new Promise(resolve => setTimeout(resolve, delayRequired));
     }
 
-    console.log(`Total duration (with error and possible delay): ${Date.now() - startTime}ms.`);
     throw error;
   }
 };
@@ -208,7 +183,6 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      console.log("CvUploadSection: Component did mount on client, pre-loading pdfjs.");
       loadPdfjs().then(lib => {
         if (lib) {
           console.log("CvUploadSection: pdfjs pre-loaded and worker configured successfully.");
@@ -218,7 +192,6 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
       });
     }
   }, []);
-
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -253,33 +226,27 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
       setErrorMessage(null);
 
       try {
-        console.log(`handleFileChange: Attempting to extract text from: ${file.name} (Type: ${file.type})`);
         const extractedText = await extractTextFromFile(file);
 
-        if (extractedText) {
-          console.log(extractedText);
-        } else {
-          if (extractedText === null && file.type !== "application/pdf") {
-            if (file.type === "application/msword") {
-              toast({
-                title: t.toast?.docNotSupportedTitle || ".doc File Notice",
-                description: t.toast?.docNotSupportedDescription || "Client-side text extraction for .doc files is not supported. Please convert to DOCX, PDF, or TXT for content preview.",
-                variant: "warning",
-                duration: 8000,
-              });
-            } else {
-              toast({
-                title: t.toast?.extractionUnavailableTitle || "Text Extraction Not Available",
-                description: t.toast?.extractionUnavailableDescription || "Could not automatically extract text from this file type for console logging.",
-                variant: "info",
-                duration: 7000,
-              });
-            }
+        if (extractedText === null && file.type !== "application/pdf") {
+          if (file.type === "application/msword") {
+            toast({
+              title: t.toast?.docNotSupportedTitle || ".doc File Notice",
+              description: t.toast?.docNotSupportedDescription || "Client-side text extraction for .doc files is not supported. Please convert to DOCX, PDF, or TXT for content preview.",
+              variant: "warning",
+              duration: 8000,
+            });
+          } else {
+            toast({
+              title: t.toast?.extractionUnavailableTitle || "Text Extraction Not Available",
+              description: t.toast?.extractionUnavailableDescription || "Could not automatically extract text from this file type for console logging.",
+              variant: "info",
+              duration: 7000,
+            });
           }
         }
         setStatus("fileSelected");
       } catch (error) {
-        console.error("handleFileChange: Error extracting text from file:", error);
         const errorMsg = error instanceof Error ? error.message : "Unknown error during text extraction.";
         if (errorMsg !== "PDF processing library (pdfjs-dist) not available.") {
           toast({
