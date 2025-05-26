@@ -175,6 +175,7 @@ interface CvUploadSectionProps {
 
 export function CvUploadSection({ translations: t, locale }: CvUploadSectionProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [cvText, setCvText] = useState<string | null>(null);
   const [status, setStatus] = useState<UploadStatus>("idle");
   const [generatedSiteUrl, setGeneratedSiteUrl] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -193,18 +194,29 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     }
   }, []);
 
+  useEffect(() => {
+    if (!selectedFile) {
+      setCvText(null);
+    }
+  }, [selectedFile]);
+
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+
+    setSelectedFile(null);
+    setCvText(null);
+    setGeneratedSiteUrl(null);
+    setErrorMessage(null);
+    setStatus("idle");
+
     if (file) {
-      const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain", "application/msword"];
+      const allowedTypes = ["application/pdf"];
       if (!allowedTypes.includes(file.type)) {
         toast({
           title: t.toast?.unsupportedTypeTitle || "Unsupported file type",
-          description: t.toast?.unsupportedTypeDescription || "Please upload a PDF, DOCX, or text file.",
+          description: t.toast?.unsupportedTypeDescription || "Please upload a PDF file.",
           variant: "destructive",
         });
-        setSelectedFile(null);
-        setStatus("idle");
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
@@ -214,40 +226,28 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
           description: t.toast?.fileTooLargeDescription || "Maximum allowed size is 5MB.",
           variant: "destructive",
         });
-        setSelectedFile(null);
-        setStatus("idle");
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
 
       setSelectedFile(file);
       setStatus("processing");
-      setGeneratedSiteUrl(null);
-      setErrorMessage(null);
 
       try {
         const extractedText = await extractTextFromFile(file);
-        console.log(extractedText);
 
-        if (extractedText === null && file.type !== "application/pdf") {
-          if (file.type === "application/msword") {
-            toast({
-              title: t.toast?.docNotSupportedTitle || ".doc File Notice",
-              description: t.toast?.docNotSupportedDescription || "Client-side text extraction for .doc files is not supported. Please convert to DOCX, PDF, or TXT for content preview.",
-              variant: "warning",
-              duration: 8000,
-            });
-          } else {
-            toast({
-              title: t.toast?.extractionUnavailableTitle || "Text Extraction Not Available",
-              description: t.toast?.extractionUnavailableDescription || "Could not automatically extract text from this file type for console logging.",
-              variant: "info",
-              duration: 7000,
-            });
-          }
+        if (extractedText === null) {
+          toast({
+            title: t.toast?.extractionUnavailableTitle || "Text Extraction Not Available",
+            description: t.toast?.extractionUnavailableDescription || "Could not automatically extract text from this file type for console logging.",
+            variant: "info",
+            duration: 7000,
+          });
         }
-        setStatus("fileSelected");
+
+        setCvText(extractedText);
       } catch (error) {
+        setCvText(null);
         const errorMsg = error instanceof Error ? error.message : "Unknown error during text extraction.";
         if (errorMsg !== "PDF processing library (pdfjs-dist) not available.") {
           toast({
@@ -262,11 +262,9 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
             variant: "destructive",
           });
         }
+      } finally {
         setStatus("fileSelected");
       }
-    } else {
-      setSelectedFile(null);
-      setStatus("idle");
     }
   };
 
@@ -284,20 +282,38 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     setGeneratedSiteUrl(null);
     setErrorMessage(null);
 
-    toast({
-      title: t.toast?.backendProcessingSkippedTitle || "Backend Processing Not Implemented",
-      description: t.toast?.backendProcessingSkippedDescription || "The step to create a profile on the server has been removed or is not configured in this version.",
-      variant: "info",
-      duration: 5000,
-    });
+    try {
+      const apiResponse = await new Promise<{ success: boolean; data?: { profileUrl: string }; error?: string }>((resolve) => {
+        setTimeout(() => {
 
-    setTimeout(() => {
-      setStatus("idle");
-      setSelectedFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
+          if (cvText && cvText.length > 20) {
+            resolve({ success: true, data: { profileUrl: `https://example.com/profile/${selectedFile.name.split('.')[0]}-${Date.now()}` } });
+          } else {
+            resolve({ success: false, error: "Simulated API Error: CV text is too short or invalid." });
+          }
+        }, 2000);
+      });
+
+      if (apiResponse.success && apiResponse.data) {
+        setGeneratedSiteUrl(apiResponse.data.profileUrl);
+        setStatus("success");
+        toast({
+          title: t.toast?.profileCreatedTitle || "Profile Created!",
+          description: t.toast?.profileCreatedDescription || "Your professional profile has been successfully created.",
+        });
+      } else {
+        throw new Error(apiResponse.error || "Unknown error from API.");
       }
-    }, 1500);
+    } catch (error) {
+      const apiErrorMsg = error instanceof Error ? error.message : "Failed to process CV on the server.";
+      setErrorMessage(apiErrorMsg);
+      setStatus("error");
+      toast({
+        title: t.toast?.apiErrorTitle || "Processing Failed",
+        description: apiErrorMsg,
+        variant: "destructive",
+      });
+    }
   };
 
   const triggerFileInput = () => {
