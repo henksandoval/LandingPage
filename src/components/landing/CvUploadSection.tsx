@@ -44,7 +44,7 @@ async function loadPdfjs() {
       const cdnWorkerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
 
       try {
-        new URL(cdnWorkerSrc); // Validate CDN URL
+        new URL(cdnWorkerSrc);
         console.log(`loadPdfjs: Attempting to set workerSrc to CDN: ${cdnWorkerSrc}`);
         pdfjs.GlobalWorkerOptions.workerSrc = cdnWorkerSrc;
       } catch (urlError) {
@@ -71,12 +71,12 @@ const readFileAsArrayBuffer = (file: File): Promise<ArrayBuffer> => {
       if (e.target?.result && e.target.result instanceof ArrayBuffer) {
         resolve(e.target.result);
       } else {
-        reject(new Error("Error al leer el archivo como ArrayBuffer o el resultado no es un ArrayBuffer."));
+        reject(new Error("Error reading file as ArrayBuffer or result is not an ArrayBuffer."));
       }
     };
     reader.onerror = (e) => {
       console.error("FileReader error (ArrayBuffer):", e.target?.error);
-      reject(new Error("Error de FileReader (ArrayBuffer): " + e.target?.error?.message));
+      reject(new Error("FileReader error (ArrayBuffer): " + e.target?.error?.message));
     };
     reader.readAsArrayBuffer(file);
   });
@@ -89,114 +89,107 @@ const readFileAsText = (file: File): Promise<string> => {
       if (typeof e.target?.result === 'string') {
         resolve(e.target.result);
       } else {
-        reject(new Error("Error al leer el archivo como texto o el resultado no es una cadena."));
+        reject(new Error("Error reading file as text or result is not a string."));
       }
     };
     reader.onerror = (e) => {
       console.error("FileReader error (Text):", e.target?.error);
-      reject(new Error("Error de FileReader (Text): " + e.target?.error?.message));
+      reject(new Error("FileReader error (Text): " + e.target?.error?.message));
     };
     reader.readAsText(file);
   });
 };
 
 const extractTextFromFile = async (file: File): Promise<string | null> => {
-  const MIN_PROCESSING_DURATION_MS = 5000; // 5 segundos
-  // const TARGET_MAX_PROCESSING_DURATION_MS = 10000; // 10 segundos (no se usa para truncar, solo como referencia)
+  const MIN_PROCESSING_DURATION_MS = 5000;
 
   const startTime = Date.now();
 
-  // Función interna para realizar la extracción real del texto
   const performActualExtraction = async (): Promise<string | null> => {
     const { type } = file;
-    const pdfjsLib = await loadPdfjs(); // Carga la librería PDF.js
+    const pdfjsLib = await loadPdfjs();
 
     if (type === "application/pdf") {
       if (!pdfjsLib) {
-        // Este toast se mostrará inmediatamente, lo cual está bien para errores de configuración.
-        toast({ title: "Error", description: "No se pudo cargar la librería para leer PDFs.", variant: "destructive" });
+        toast({ title: "Error", description: "Could not load the library to read PDFs.", variant: "destructive" });
         throw new Error("PDF processing library (pdfjs-dist) not available.");
       }
-      console.log("extractTextFromFile: Librería PDF.js cargada, procesando PDF...");
+      console.log("extractTextFromFile: PDF.js library loaded, processing PDF...");
 
       try {
         const arrayBuffer = await readFileAsArrayBuffer(file);
         const typedArray = new Uint8Array(arrayBuffer);
-        console.log("extractTextFromFile: Intentando obtener el documento desde los datos del PDF...");
+        console.log("extractTextFromFile: Attempting to get document from PDF data...");
         const pdfDoc = await pdfjsLib.getDocument({ data: typedArray }).promise;
-        console.log(`extractTextFromFile: Documento PDF cargado. Número de páginas: ${pdfDoc.numPages}`);
+        console.log(`extractTextFromFile: PDF document loaded. Number of pages: ${pdfDoc.numPages}`);
         let textContent = "";
         for (let i = 1; i <= pdfDoc.numPages; i++) {
           const page = await pdfDoc.getPage(i);
           const text = await page.getTextContent();
-          // Asegura que 'item.str' exista y sea una cadena antes de unir
           textContent += text.items.map(item => (item && 'str' in item && typeof item.str === 'string' ? item.str : '')).join(" ") + "\n";
         }
         return textContent.trim();
       } catch (error) {
-        console.error("extractTextFromFile: Error durante el procesamiento del PDF:", error);
-        throw error; // Relanza para que el catch exterior lo maneje y aplique el retardo
+        console.error("extractTextFromFile: Error during PDF processing:", error);
+        throw error;
       }
 
     } else if (type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-      console.log("extractTextFromFile: Procesando DOCX con Mammoth...");
+      console.log("extractTextFromFile: Processing DOCX with Mammoth...");
       try {
         const arrayBuffer = await readFileAsArrayBuffer(file);
-        // @ts-ignore // Asume que mammoth está disponible globalmente o importado correctamente
+
         const result = await mammoth.extractRawText({ arrayBuffer });
         return result.value;
       } catch (error) {
-        console.error("Error analizando DOCX con mammoth:", error);
+        console.error("Error parsing DOCX with mammoth:", error);
         throw error;
       }
     } else if (type === "text/plain") {
-      console.log("extractTextFromFile: Procesando archivo de texto plano...");
+      console.log("extractTextFromFile: Processing plain text file...");
       try {
         return await readFileAsText(file);
       } catch (error) {
-        console.error("Error leyendo archivo de texto:", error);
+        console.error("Error reading text file:", error);
         throw error;
       }
     } else if (type === "application/msword") {
-      console.warn("Los archivos .doc no son compatibles directamente para la extracción de texto en el lado del cliente.");
-      return null; // Devuelve null como antes
+      console.warn(".doc files are not directly supported for client-side text extraction.");
+      return null;
     }
 
-    console.warn(`Tipo de archivo no compatible para extracción de texto en el cliente: ${type}`);
-    return null; // Devuelve null para tipos no compatibles
+    console.warn(`Unsupported file type for client-side text extraction: ${type}`);
+    return null;
   };
 
-  // Bloque principal try-catch para manejar la extracción y la lógica de retardo
   try {
-    const extractedText = await performActualExtraction(); // Ejecuta la extracción
+    const extractedText = await performActualExtraction();
 
     const elapsedTime = Date.now() - startTime;
-    console.log(`La extracción real del texto tomó ${elapsedTime}ms.`);
+    console.log(`Actual text extraction took ${elapsedTime}ms.`);
 
     if (elapsedTime < MIN_PROCESSING_DURATION_MS) {
       const delayRequired = MIN_PROCESSING_DURATION_MS - elapsedTime;
-      console.log(`Esperando ${delayRequired}ms adicionales para alcanzar la duración mínima de ${MIN_PROCESSING_DURATION_MS}ms.`);
+      console.log(`Waiting an additional ${delayRequired}ms to reach the minimum duration of ${MIN_PROCESSING_DURATION_MS}ms.`);
       await new Promise(resolve => setTimeout(resolve, delayRequired));
     }
-    // Si elapsedTime es >= MIN_PROCESSING_DURATION_MS, no se añade retardo.
-    // Si la operación dura más de 10s, simplemente toma ese tiempo. No la acortamos.
 
-    console.log(`Duración total (con posible retardo): ${Date.now() - startTime}ms.`);
+    console.log(`Total duration (with possible delay): ${Date.now() - startTime}ms.`);
     return extractedText;
 
   } catch (error) {
-    console.error("Error en el proceso de extracción de texto:", error);
+    console.error("Error in the text extraction process:", error);
     const elapsedTime = Date.now() - startTime;
-    console.log(`La extracción falló después de ${elapsedTime}ms (tiempo real).`);
+    console.log(`Extraction failed after ${elapsedTime}ms (real time).`);
 
     if (elapsedTime < MIN_PROCESSING_DURATION_MS) {
       const delayRequired = MIN_PROCESSING_DURATION_MS - elapsedTime;
-      console.log(`Esperando ${delayRequired}ms adicionales antes de propagar el error (para cumplir duración mínima).`);
+      console.log(`Waiting an additional ${delayRequired}ms before propagating the error (to meet minimum duration).`);
       await new Promise(resolve => setTimeout(resolve, delayRequired));
     }
 
-    console.log(`Duración total (con error y posible retardo): ${Date.now() - startTime}ms.`);
-    throw error; // Relanza el error original después de asegurar la duración mínima
+    console.log(`Total duration (with error and possible delay): ${Date.now() - startTime}ms.`);
+    throw error;
   }
 };
 
