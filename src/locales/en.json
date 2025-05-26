@@ -54,7 +54,7 @@
     "dropzone": {
       "dragAndDrop": "Drag and drop your CV here",
       "clickToSelect": "or click to select",
-      "fileTypes": "(PDF, DOCX, TXT - Max 5MB)",
+      "fileTypes": "(PDF - Max 5MB)",
       "fileSelected": "File: {fileName}",
       "fileSize": "({fileSize} MB)",
       "readyToProcess": "Ready to process!"
@@ -78,7 +78,7 @@
     },
     "toast": {
       "unsupportedTypeTitle": "Unsupported file type",
-      "unsupportedTypeDescription": "Please upload a PDF, DOCX, or text file.",
+      "unsupportedTypeDescription": "Please upload a PDF file.",
       "fileTooLargeTitle": "File too large",
       "fileTooLargeDescription": "The maximum allowed size is 5MB.",
       "noFileSelectedTitle": "No file selected",

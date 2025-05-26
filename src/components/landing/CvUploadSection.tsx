@@ -354,7 +354,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
         </p>
         <p className="text-muted-foreground/80">{t.dropzone?.clickToSelect || "or click to select"}</p>
         <p className="text-xs text-muted-foreground/60 mt-3">
-          {t.dropzone?.fileTypes || "(PDF, DOCX, TXT - Max 5MB)"}
+          {t.dropzone?.fileTypes || "(PDF - Max 5MB)"}
         </p>
       </>
     );
@@ -387,7 +387,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
               ref={fileInputRef}
               onChange={handleFileChange}
               className="hidden"
-              accept=".pdf,.doc,.docx,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              accept=".pdf"
               disabled={status === "processing"}
             />
             <div
