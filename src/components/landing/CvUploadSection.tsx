@@ -227,6 +227,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
 
       try {
         const extractedText = await extractTextFromFile(file);
+        console.log(extractedText);
 
         if (extractedText === null && file.type !== "application/pdf") {
           if (file.type === "application/msword") {
