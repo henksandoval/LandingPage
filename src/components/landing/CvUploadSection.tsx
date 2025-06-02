@@ -278,25 +278,39 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
       return;
     }
 
+    if (!cvText || cvText.trim() === "") {
+      toast({
+        title: t.toast?.noTextExtractedTitle || "No Text Extracted",
+        description: t.toast?.noTextExtractedDescription || "Could not extract text from the file, or the file is empty. Please try another file.",
+        variant: "destructive",
+      });
+      setStatus("idle");
+      return;
+    }
+
     setStatus("processing");
     setGeneratedSiteUrl(null);
     setErrorMessage(null);
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT + "v0.1/profile";
+    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT + "v1/profile/create-from-cv";
 
     if (!process.env.NEXT_PUBLIC_API_ENDPOINT) {
       setErrorMessage("API configuration error (base URL). Please contact support.");
       setStatus("error");
-      toast({
-        title: "Configuration Error",
-        description: "The API base endpoint is not configured.",
-        variant: "destructive",
-      });
       return;
     }
 
     const formData = new FormData();
-    formData.append('cvFile', selectedFile, selectedFile.name);
+
+    const originalFileNameWithoutExtension = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || selectedFile.name;
+    const textFileName = `${originalFileNameWithoutExtension}.txt`;
+
+    const textFileObject = new File([cvText], textFileName, {
+      type: "text/plain",
+      lastModified: new Date().getTime()
+    });
+
+    formData.append('cvFile', textFileObject);
 
     try {
       const response = await fetch(apiUrl, {
@@ -309,7 +323,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
         try {
           errorData = await response.json();
         } catch (e) {
-            errorData = { message: "Failed to parse error response from the server.", error: e };
+          errorData = { message: "Failed to parse error response from the server.", error: e };
         }
         throw new Error(errorData?.message || errorData?.error || `API request failed with status ${response.status}`);
       }
