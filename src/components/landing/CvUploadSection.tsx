@@ -330,14 +330,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
 
       const result = await response.json();
 
-      if (result.success && result.data?.profileUrl) {
-        setGeneratedSiteUrl(result.data.profileUrl);
-        setStatus("success");
-        toast({
-          title: t.toast?.profileCreatedTitle || "Profile Created!",
-          description: t.toast?.profileCreatedDescription || "Your professional profile has been successfully created.",
-        });
-      } else if (result.profileUrl) {
+      if (result.profileUrl) {
         setGeneratedSiteUrl(result.profileUrl);
         setStatus("success");
         toast({
