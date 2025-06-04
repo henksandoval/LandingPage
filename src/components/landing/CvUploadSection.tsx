@@ -293,9 +293,16 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     setErrorMessage(null);
 
     const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT + "v1/profile/create-from-cv";
+    const cvViewerUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL;
 
     if (!process.env.NEXT_PUBLIC_API_ENDPOINT) {
       setErrorMessage("API configuration error (base URL). Please contact support.");
+      setStatus("error");
+      return;
+    }
+
+    if (!process.env.NEXT_PUBLIC_CV_VIEWER_URL) {
+      setErrorMessage("CV Viewer URL configuration error. Please contact support.");
       setStatus("error");
       return;
     }
@@ -331,7 +338,8 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
       const result = await response.json();
 
       if (result.profileUrl) {
-        setGeneratedSiteUrl(result.profileUrl);
+        const cvUrl = cvViewerUrl + result.profileUrl;
+        setGeneratedSiteUrl(cvUrl);
         setStatus("success");
         toast({
           title: t.toast?.profileCreatedTitle || "Profile Created!",
