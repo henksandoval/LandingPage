@@ -46,7 +46,8 @@
     "description": "Get more interviews. We turn your CV into a recruiter-impressing web profile, fast.",
     "imageAlt": "Example of a professional public profile created with Job Magnetic",
     "subscriptionButton": "Sign Up & Be The First! 🚀",
-    "subscriptionPlaceholder": "Enter your email here"
+    "subscriptionPlaceholder": "Enter your email here",
+    "sampleProfileButtonText": "See Sample Profile ✨"
   },
   "cvUpload": {
     "title": "Upload CV: Get Your Pro Web Profile Now!",
@@ -97,7 +98,9 @@
       "backendProcessingSkippedDescription": "The step to create a profile on the server has been removed or is not configured in this version.",
       "criticalErrorTitle": "Critical Error",
       "criticalErrorDescription": "An unexpected issue occurred: {errorMsg}. Please contact support if the problem persists."
-    }
+    },
+    "demoPrompt": "Curious how your profile will look?",
+    "demoLinkText": "Check out our demo."
   },
   "howItWorks": {
     "sectionTitle": "Ready in 3 Steps? <span class=\"text-primary\">Here's How</span>",
@@ -108,7 +111,8 @@
     },
     "step2": {
       "title": "2. AI Builds Your Profile",
-      "description": "Watch as your info turns into a sleek, professional web profile."
+      "description": "Watch as your info turns into a sleek, professional web profile.",
+      "demoLinkText": "See it in action!"
     },
     "step3": {
       "title": "3. Get Opportunities",

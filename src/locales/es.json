@@ -46,7 +46,8 @@
     "description": "Consigue más entrevistas. Convertimos tu CV en un perfil web que impresiona a reclutadores, rápido.",
     "imageAlt": "Ejemplo de perfil profesional público creado con Job Magnetic",
     "subscriptionButton": "¡Regístrate y Sé el Primero! 🚀",
-    "subscriptionPlaceholder": "Introduce tu email aquí"
+    "subscriptionPlaceholder": "Introduce tu email aquí",
+    "sampleProfileButtonText": "Ver Perfil de Muestra ✨"
   },
   "cvUpload": {
     "title": "Sube tu CV: ¡Tu Perfil Web Profesional Ahora!",
@@ -97,7 +98,9 @@
       "backendProcessingSkippedDescription": "El paso para crear un perfil en el servidor ha sido eliminado o no está configurado en esta versión.",
       "criticalErrorTitle": "Error Crítico",
       "criticalErrorDescription": "Hubo un problema inesperado: {errorMsg}. Por favor, contacta a soporte si el problema persiste."
-    }
+    },
+    "demoPrompt": "¿Tienes curiosidad por ver cómo quedará tu perfil?",
+    "demoLinkText": "Echa un vistazo a nuestra demo."
   },
   "howItWorks": {
     "sectionTitle": "¿Listo en 3 Pasos? <span class=\"text-primary\">Así Funciona</span>",
@@ -108,7 +111,8 @@
     },
     "step2": {
       "title": "2. IA Crea tu Perfil",
-      "description": "Mira cómo tu información se convierte en un perfil web profesional y atractivo."
+      "description": "Mira cómo tu información se convierte en un perfil web profesional y atractivo.",
+      "demoLinkText": "¡Míralo en acción!"
     },
     "step3": {
       "title": "3. Consigue Oportunidades",
