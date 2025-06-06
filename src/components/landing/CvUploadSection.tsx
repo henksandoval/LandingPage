@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, ChangeEvent, useRef, useEffect } from "react";
@@ -5,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {toast, useToast} from "@/hooks/use-toast";
-import { UploadCloud, Link as LinkIcon, FileText, AlertTriangle } from "lucide-react";
+import { UploadCloud, Link as LinkIconLucide, FileText, AlertTriangle, ExternalLink } from "lucide-react"; // Renamed Link to LinkIconLucide
 import Link from 'next/link';
 import { JobBotAnimation } from "./JobBotAnimation";
 import type { Dictionary } from '@/lib/translations';
@@ -16,7 +17,7 @@ import mammoth from 'mammoth';
 type UploadStatus = "idle" | "fileSelected" | "processing" | "success" | "error";
 
 interface CvUploadSectionProps {
-  translations: Dictionary;
+  translations: Dictionary; // This will be t.cvUpload from parent
   locale: Locale;
 }
 
@@ -168,10 +169,6 @@ const extractTextFromFile = async (file: File): Promise<string | null> => {
   }
 };
 
-interface CvUploadSectionProps {
-  translations: Dictionary;
-  locale: Locale;
-}
 
 export function CvUploadSection({ translations: t, locale }: CvUploadSectionProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -426,6 +423,13 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
               dangerouslySetInnerHTML={{ __html: t.description }}/>
           </CardHeader>
           <CardContent className="pt-2 pb-8 px-6 md:px-10">
+            <p className="text-sm text-muted-foreground mb-6">
+              {t.demoPrompt}{' '}
+              <Link href={`/${locale}/sample-profile`} className="text-primary hover:text-primary/80 underline font-medium inline-flex items-center">
+                {t.demoLinkText}
+                <ExternalLink className="ml-1.5 h-4 w-4" />
+              </Link>
+            </p>
             <Input
               type="file"
               ref={fileInputRef}
@@ -435,7 +439,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
               disabled={status === "processing"}
             />
             <div
-              className={`mt-6 mb-8 border-2 border-dashed rounded-xl p-8 md:p-12 transition-colors duration-300 bg-muted/10 group
+              className={`mb-8 border-2 border-dashed rounded-xl p-8 md:p-12 transition-colors duration-300 bg-muted/10 group
                 ${status === "processing" ? "border-primary/70 cursor-default" : "hover:border-primary/70 cursor-pointer border-muted-foreground/40"}
                 ${status === "error" ? "border-destructive/70" : ""}`}
               onClick={status !== "processing" ? triggerFileInput : undefined}
@@ -450,7 +454,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
             {status === "success" && generatedSiteUrl && (
               <div className="mt-6 mb-8 p-6 bg-green-50 dark:bg-green-900/20 border border-green-300 dark:border-green-700 rounded-lg text-left">
                 <h3 className="text-xl font-semibold text-green-700 dark:text-green-300 mb-2 flex items-center">
-                  <LinkIcon className="h-6 w-6 mr-2 text-green-600 dark:text-green-400" />
+                  <LinkIconLucide className="h-6 w-6 mr-2 text-green-600 dark:text-green-400" />
                   {t.status?.successTitle || "Your Profile is Ready!"}
                 </h3>
                 <p className="text-green-600 dark:text-green-400/90 mb-3">
@@ -502,3 +506,4 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   );
 }
 
+    

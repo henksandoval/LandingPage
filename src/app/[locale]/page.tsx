@@ -1,11 +1,14 @@
+
 import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import { Header } from '@/components/landing/Header';
 import { Footer } from '@/components/landing/Footer';
 import { SubscriptionForm } from '@/components/landing/SubscriptionForm';
 import { CvUploadSection } from '@/components/landing/CvUploadSection';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Eye, Sparkles, ThumbsUp, Briefcase, Users, Star, Wand2, FileText } from 'lucide-react';
+import { Eye, Sparkles, ThumbsUp, Briefcase, Users, Star, Wand2, FileText, ExternalLink } from 'lucide-react';
 import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
 
@@ -52,6 +55,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
       icon: <Wand2 className="h-10 w-10 text-primary" />,
       title: t.howItWorks.step2.title,
       description: t.howItWorks.step2.description,
+      demoLinkText: t.howItWorks.step2.demoLinkText,
       imageHint: "ai transforming cv"
     },
     {
@@ -112,6 +116,14 @@ export default async function HomePage({ params: params }: HomePageProps) {
                 translations={t.subscriptionForm}
               />
             </div>
+            <div className="mt-8 flex justify-center">
+              <Button variant="outline" asChild>
+                <Link href={`/${localeString}/sample-profile`}>
+                  {t.hero.sampleProfileButtonText}
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
             <div className="mt-16">
               <Image
                 src="https://placehold.co/1200x600.png"
@@ -150,7 +162,17 @@ export default async function HomePage({ params: params }: HomePageProps) {
                     <CardTitle className="font-heading text-2xl">{step.title}</CardTitle>
                   </CardHeader>
                   <CardContent className="flex-grow flex flex-col justify-between">
-                    <p className="text-muted-foreground mb-6">{step.description}</p>
+                    <div>
+                      <p className="text-muted-foreground mb-4">{step.description}</p>
+                      {step.demoLinkText && (
+                        <div className="mb-6 text-center">
+                          <Link href={`/${localeString}/sample-profile`} className="text-primary hover:text-primary/80 font-medium inline-flex items-center">
+                            {step.demoLinkText}
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                          </Link>
+                        </div>
+                      )}
+                    </div>
                     <Image 
                       src={`https://placehold.co/400x300.png`} 
                       alt={step.title}
@@ -254,3 +276,5 @@ export default async function HomePage({ params: params }: HomePageProps) {
     </div>
   );
 }
+
+    
