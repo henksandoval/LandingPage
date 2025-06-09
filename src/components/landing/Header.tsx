@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Languages, Settings, Sun, Moon } from 'lucide-react'; // Added Sun, Moon for direct use
+import { Menu, Languages, Sun, Moon } from 'lucide-react'; // Added Sun, Moon for direct use
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,14 +29,14 @@ interface HeaderProps {
 }
 
 const SpainFlagIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="20" height="15" className="mr-2">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="20" height="15">
     <rect width="3" height="2" fill="#c60b1e"/>
     <rect width="3" height="1" y="0.5" fill="#ffc400"/>
   </svg>
 );
 
 const UKFlagIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15" className="mr-2">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="20" height="15">
     <clipPath id="t">
       <path d="M30,15h30v15z v15h-30z h-30v-15z v-15h30z"/>
     </clipPath>
@@ -111,8 +111,8 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
           {/* Desktop Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="ml-2">
-                <Languages className="h-5 w-5" />
+              <Button variant="outline" size="sm" className="ml-2">
+                {locale === 'es' ? <SpainFlagIcon /> : <UKFlagIcon />}
                 <span className="sr-only">{tHeader.languageDropdownLabel || "Select Language"}</span>
               </Button>
             </DropdownMenuTrigger>
