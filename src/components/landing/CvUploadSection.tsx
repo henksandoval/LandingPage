@@ -179,6 +179,8 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
+  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL || `/${locale}/sample-profile`;
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       loadPdfjs().then(lib => {
@@ -433,7 +435,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
           <CardContent className="pt-2 pb-8 px-6 md:px-10">
             <p className="text-sm text-muted-foreground mb-6">
               {t.demoPrompt}{' '}
-              <Link href={`/${locale}/sample-profile`} className="text-primary hover:text-primary/80 underline font-medium inline-flex items-center">
+              <Link href={sampleProfileUrl} className="text-primary hover:text-primary/80 underline font-medium inline-flex items-center">
                 {t.demoLinkText}
                 <ExternalLink className="ml-1.5 h-4 w-4" />
               </Link>
@@ -513,5 +515,3 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     </section>
   );
 }
-
-    

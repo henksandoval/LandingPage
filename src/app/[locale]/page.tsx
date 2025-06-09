@@ -21,6 +21,8 @@ export default async function HomePage({ params: params }: HomePageProps) {
   const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(localeString);
 
+  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL || `/${localeString}/sample-profile`;
+
   const benefits = [
     {
       icon: <Sparkles className="h-8 w-8 text-primary mb-4" />,
@@ -143,7 +145,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
                       <p className="text-muted-foreground mb-4">{step.description}</p>
                       {step.demoLinkText && index === 1 && (
                         <div className="mb-6 text-center">
-                          <Link href={`/${localeString}/sample-profile`} className="text-primary hover:text-primary/80 font-medium inline-flex items-center">
+                          <Link href={sampleProfileUrl} className="text-primary hover:text-primary/80 font-medium inline-flex items-center">
                             {step.demoLinkText}
                             <ExternalLink className="ml-2 h-4 w-4" />
                           </Link>
@@ -247,11 +249,8 @@ export default async function HomePage({ params: params }: HomePageProps) {
                />
             </div>
              <div className="mt-8">
-                <Link href={`/${localeString}/sample-profile`} passHref>
-                  <Button 
-                    // variant="outline" // Removed to use default primary styling
-                    // className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary" // Removed custom classes
-                  >
+                <Link href={sampleProfileUrl} passHref>
+                  <Button>
                     {t.hero.sampleProfileButtonText}
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </Button>
