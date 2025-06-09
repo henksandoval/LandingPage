@@ -249,8 +249,8 @@ export default async function HomePage({ params: params }: HomePageProps) {
              <div className="mt-8">
                 <Link href={`/${localeString}/sample-profile`} passHref>
                   <Button 
-                    variant="outline" 
-                    className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary"
+                    // variant="outline" // Removed to use default primary styling
+                    // className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary" // Removed custom classes
                   >
                     {t.hero.sampleProfileButtonText}
                     <ExternalLink className="ml-2 h-4 w-4" />
