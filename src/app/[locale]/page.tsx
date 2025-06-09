@@ -11,6 +11,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Eye, Sparkles, ThumbsUp, Briefcase, Users, Star, Wand2, FileText, ExternalLink } from 'lucide-react';
 import { getDictionary, type Dictionary } from '@/lib/translations';
 import type { Locale } from '@/lib/i18n-config';
+import dropCvImage from '@/assets/images/DropCv.jpg'
+import getProfileImage from '@/assets/images/GetProfile.jpg'
+import shareImage from '@/assets/images/Share.jpg'
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -51,20 +54,23 @@ export default async function HomePage({ params: params }: HomePageProps) {
       icon: <FileText className="h-10 w-10 text-primary" />,
       title: t.howItWorks.step1.title,
       description: t.howItWorks.step1.description,
-      imageHint: "cv data extraction"
+      imageHint: "cv data extraction",
+      imageUrl: dropCvImage
     },
     {
       icon: <Wand2 className="h-10 w-10 text-primary" />,
       title: t.howItWorks.step2.title,
       description: t.howItWorks.step2.description,
       demoLinkText: t.howItWorks.step2.demoLinkText,
-      imageHint: "ai transforming cv"
+      imageHint: "ai transforming cv",
+      imageUrl: getProfileImage
     },
     {
       icon: <Briefcase className="h-10 w-10 text-primary" />,
       title: t.howItWorks.step3.title,
       description: t.howItWorks.step3.description,
-      imageHint: "networking connections"
+      imageHint: "networking connections",
+      imageUrl: shareImage
     },
   ];
 
@@ -153,7 +159,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
                       )}
                     </div>
                     <Image 
-                      src={`https://placehold.co/400x300.png`} 
+                      src={step.imageUrl}
                       alt={step.title}
                       width={400}
                       height={300}
