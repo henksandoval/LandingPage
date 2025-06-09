@@ -179,7 +179,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL || `/${locale}/sample-profile`;
+  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL ?? "";
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -421,7 +421,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
 
 
   return (
-    <section id="upload-cv" className="pb-16 md:pb-24 pt-6 md:pt-8 bg-gradient-to-br from-background via-secondary/20 to-background">
+    <section id="upload-cv" className="pb-16 md:pb-24 pt-0 md:pt-0 bg-gradient-to-br from-background via-secondary/20 to-background">
       <div className="container mx-auto px-4 md:px-6">
         <Card className="max-w-3xl mx-auto text-center shadow-2xl hover:shadow-light-primary-glow-xl dark:hover:shadow-dark-accent-glow-xl border-2 border-primary/10 hover:border-primary/30 transition-all duration-300 transform hover:scale-[1.01]">
           <CardHeader className="pb-4 pt-8">
@@ -435,7 +435,11 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
           <CardContent className="pt-2 pb-8 px-6 md:px-10">
             <p className="text-sm text-muted-foreground mb-6">
               {t.demoPrompt}{' '}
-              <Link href={sampleProfileUrl} className="text-primary hover:text-primary/80 underline font-medium inline-flex items-center">
+              <Link 
+                href={sampleProfileUrl} 
+                className="text-primary hover:text-primary/80 underline font-medium inline-flex items-center"
+                {...{ target: "_blank", rel: "noopener noreferrer" } }
+              >
                 {t.demoLinkText}
                 <ExternalLink className="ml-1.5 h-4 w-4" />
               </Link>
@@ -517,4 +521,3 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     </section>
   );
 }
-

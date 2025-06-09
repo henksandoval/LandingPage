@@ -24,7 +24,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
   const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(localeString);
 
-  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL || `/${localeString}/sample-profile`;
+  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL ?? "";
 
   const benefits = [
     {
@@ -151,7 +151,11 @@ export default async function HomePage({ params: params }: HomePageProps) {
                       <p className="text-muted-foreground mb-4">{step.description}</p>
                       {step.demoLinkText && index === 1 && (
                         <div className="mb-6 text-center">
-                          <Link href={sampleProfileUrl} className="text-primary hover:text-primary/80 font-medium inline-flex items-center">
+                          <Link 
+                            href={sampleProfileUrl} 
+                            className="text-primary hover:text-primary/80 font-medium inline-flex items-center"
+                            {...{ target: "_blank", rel: "noopener noreferrer" } }
+                          >
                             {step.demoLinkText}
                             <ExternalLink className="ml-2 h-4 w-4" />
                           </Link>
@@ -255,7 +259,11 @@ export default async function HomePage({ params: params }: HomePageProps) {
                />
             </div>
              <div className="mt-8">
-                <Link href={sampleProfileUrl} passHref>
+                <Link 
+                  href={sampleProfileUrl} 
+                  passHref
+                  {...{ target: "_blank", rel: "noopener noreferrer" } }
+                >
                   <Button>
                     {t.hero.sampleProfileButtonText}
                     <ExternalLink className="ml-2 h-4 w-4" />
