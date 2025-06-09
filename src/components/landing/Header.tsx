@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Menu, Languages, Sun, Moon } from 'lucide-react'; // Added Sun, Moon for direct use
+import { Menu, Languages, Sun, Moon } from 'lucide-react'; 
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,8 +24,8 @@ import * as React from 'react';
 
 interface HeaderProps {
   locale: Locale;
-  tHeader: Dictionary; // Corresponds to dictionary.header
-  tThemeToggle: Dictionary; // Corresponds to dictionary.themeToggle
+  tHeader: Dictionary; 
+  tThemeToggle: Dictionary; 
 }
 
 const SpainFlagIcon = () => (
@@ -64,11 +64,11 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
   const getLocalizedPath = (targetLocale: string) => {
     if (!pathname) return `/${targetLocale}`;
     const segments = pathname.split('/');
-    segments[1] = targetLocale; // Assumes locale is always the first segment after /
+    segments[1] = targetLocale; 
     return segments.join('/');
   };
 
-  const languageSubMenuContent = (
+  const languageSubMenuContentForMobile = (
     <DropdownMenuSubContent>
       {locales.map((loc) => (
         <DropdownMenuItem key={loc} asChild className={locale === loc ? "bg-accent font-semibold" : ""}>
@@ -81,6 +81,13 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
       ))}
     </DropdownMenuSubContent>
   );
+
+  const nextLocale = locale === 'es' ? 'en' : 'es';
+  const currentLocaleFlag = locale === 'es' ? <SpainFlagIcon /> : <UKFlagIcon />;
+  const srSwitchLanguageText = locale === 'es' 
+    ? (tHeader.switchToEnglish || "Switch to English") 
+    : (tHeader.switchToSpanish || "Switch to Spanish");
+  const pathForNextLocale = getLocalizedPath(nextLocale);
 
   return (
     <header className="py-6 sticky top-0 z-50 bg-background/80 backdrop-blur-md shadow-sm">
@@ -108,28 +115,15 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
             <Link href={`/${locale}/#cta`}>{tHeader.nav.joinNow}</Link>
           </Button>
           
-          {/* Desktop Language Selector */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="ml-2">
-                {locale === 'es' ? <SpainFlagIcon /> : <UKFlagIcon />}
-                <span className="sr-only">{tHeader.languageDropdownLabel || "Select Language"}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{tHeader.languageDropdownLabel || "Language"}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {locales.map((loc) => (
-                <DropdownMenuItem key={loc} asChild className={locale === loc ? "bg-accent font-semibold" : ""}>
-                  <Link href={getLocalizedPath(loc)} className="flex items-center gap-2">
-                    {loc === 'es' ? <SpainFlagIcon /> : <UKFlagIcon />}
-                    <span>{loc.toUpperCase()}</span>
-                    {locale === loc && <span className="ml-auto text-xs text-muted-foreground">({tHeader.currentLanguage || "Current"})</span>}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Desktop Language Switcher Button */}
+          <Button asChild variant="outline" size="sm" className="ml-2 w-11 h-9 px-0">
+            <Link href={pathForNextLocale} aria-label={srSwitchLanguageText}>
+              <div className="flex items-center justify-center w-full h-full">
+                {currentLocaleFlag}
+              </div>
+              <span className="sr-only">{srSwitchLanguageText}</span>
+            </Link>
+          </Button>
 
           {/* Desktop Theme Toggle Button */}
           <ThemeToggleButton translations={tThemeToggle} />
@@ -170,7 +164,7 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
                   <Languages className="mr-2 h-4 w-4" />
                   <span>{tHeader.languageDropdownLabel || "Language"}</span>
                 </DropdownMenuSubTrigger>
-                {languageSubMenuContent}
+                {languageSubMenuContentForMobile}
               </DropdownMenuSub>
               <ThemeToggleButton translations={tThemeToggle} asMenuItem={true} />
             </DropdownMenuContent>
@@ -180,3 +174,5 @@ export function Header({ locale, tHeader, tThemeToggle }: HeaderProps) {
     </header>
   );
 }
+
+    

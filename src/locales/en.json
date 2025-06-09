@@ -17,7 +17,9 @@
     "settingsDropdownTitle": "Settings",
     "languageDropdownLabel": "Language",
     "themeDropdownLabel": "Theme",
-    "currentLanguage": "Current"
+    "currentLanguage": "Current",
+    "switchToSpanish": "Switch to Spanish",
+    "switchToEnglish": "Switch to English"
   },
   "footer": {
     "copyright": "© {year} Job Magnetic. All rights reserved."
@@ -189,7 +191,7 @@
       {
         "title": "2. Intellectual Property",
         "content": [
-          "The Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of Job Magnetic and its licensors. Service is protected by copyright, trademark, and other laws. Our trademarks may not be used in connection with any product or service without the prior written consent of Job Magnetic."
+          "The Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of Job Magnetic and its licensors. Service is protected by copyright, trademark, and other laws. Our trademarks may not be used in connection with any product or service without востоprior written consent of Job Magnetic."
         ]
       },
       {
