@@ -1,8 +1,7 @@
-
 {
   "metadata": {
-    "title": "Job Magnetic - Your CV: Instant Pro Website!",
-    "description": "Job Magnetic turns your CV into a stunning web profile that gets you noticed by recruiters."
+    "title": "Job Magnetic - Your Pro Website, One Click Away.",
+    "description": "Upload your CV and get a recruiter-impressing web profile, effortlessly."
   },
   "header": {
     "appName": "Job Magnetic",
@@ -42,18 +41,18 @@
     "toastNetworkErrorDescription": "Could not connect to the server. Check your connection."
   },
   "hero": {
-    "titlePart1": "Transform Your CV: ",
-    "titleHighlight": "Instant Pro Website!",
+    "titlePart1": "",
+    "titleHighlight": "Your Pro Website, Done in a Click.",
     "titlePart2": "",
-    "description": "Get more interviews. We turn your CV into a recruiter-impressing web profile, fast.",
+    "description": "Upload your CV, we do the magic. Get a profile that impresses recruiters, effortlessly.",
     "imageAlt": "Example of a professional public profile created with Job Magnetic",
     "subscriptionButton": "Sign Up & Be The First! 🚀",
     "subscriptionPlaceholder": "Enter your email here",
     "sampleProfileButtonText": "See Sample Profile ✨"
   },
   "cvUpload": {
-    "title": "Upload CV: Get Your Pro Web Profile Now!",
-    "description": "Let our <span class=\"font-semibold text-primary\">AI</span> build your pro web profile. Upload your CV & stand out with a <span class=\"font-semibold text-accent\">modern, optimized</span> design in minutes. Your next job awaits!",
+    "title": "Let the Magic Begin ✨",
+    "description": "Let our <span class=\"font-semibold text-primary\">AI</span> build your pro web profile. Upload your CV & stand out with a <span class=\"font-semibold text-accent\">modern, optimized</span> design instantly.",
     "dropzone": {
       "dragAndDrop": "Drag and drop your CV here",
       "clickToSelect": "or click to select",
@@ -63,7 +62,7 @@
       "readyToProcess": "Ready to create your profile!"
     },
     "button": {
-      "createProfile": "Create My Profile Now ✨",
+      "createProfile": "Start the Magic ✨",
       "selectFirst": "Select a CV First",
       "uploadAnother": "Upload Another CV"
     },
@@ -109,39 +108,39 @@
     "demoLinkText": "Check out our demo."
   },
   "howItWorks": {
-    "sectionTitle": "Ready in 3 Steps? <span class=\"text-primary\">Here's How</span>",
-    "sectionDescription": "Turn your CV into a stunning web profile. It's fast, easy, and effective.",
+    "sectionTitle": "Your Profile in Seconds. <span class=\"text-primary\">It's That Easy.</span>",
+    "sectionDescription": "Forget about complicated processes. This is all you have to do:",
     "step1": {
-      "title": "1. Upload Your CV",
-      "description": "Just provide your CV. Our AI reads and extracts the essentials."
+      "title": "1. Drop Your CV",
+      "description": "That's it. We handle the rest."
     },
     "step2": {
-      "title": "2. AI Builds Your Profile",
-      "description": "Watch as your info turns into a sleek, professional web profile.",
+      "title": "2. Get Your Profile",
+      "description": "Our AI designs it for you in an instant.",
       "demoLinkText": "See it in action!"
     },
     "step3": {
-      "title": "3. Get Opportunities",
-      "description": "Share your new profile and attract recruiters with your best look."
+      "title": "3. Share & Get Hired",
+      "description": "Use your new link to impress recruiters."
     }
   },
   "benefits": {
-    "sectionTitle": "Why <span class=\"text-primary\">Job Magnetic</span>?",
+    "sectionTitle": "Maximum Gain. <span class=\"text-primary\">Minimum Effort.</span>",
     "benefit1": {
-      "title": "Your Pro Website, Instantly",
-      "description": "From a plain CV to a stunning website in minutes. No hassle."
+      "title": "From a Dull PDF to a Pro Website",
+      "description": "Zero design work. Professional result, instantly."
     },
     "benefit2": {
-      "title": "Get Seen by Recruiters",
-      "description": "Your online profile makes you visible to the right people, boosting your chances."
+      "title": "Stop Being Invisible to Recruiters",
+      "description": "More visibility. More opportunities."
     },
     "benefit3": {
-      "title": "Unlock Job Offers",
-      "description": "Attract job offers that truly match your profile and skills."
+      "title": "Receive Relevant Offers",
+      "description": "Attract job offers you want, without searching."
     },
     "benefit4": {
-      "title": "Simple & Fast",
-      "description": "No tech headaches. Focus on your career, we'll handle your profile."
+      "title": "Focus on Your Career",
+      "description": "You do what matters, we'll handle your profile."
     }
   },
   "testimonials": {
@@ -150,7 +149,7 @@
     "user1": {
       "name": "Ana Pérez",
       "role": "UX/UI Designer",
-      "quote": "Job Magnetic transformed my job search! In minutes I had a professional online profile that truly stands out. I've already received two offers!"
+      "quote": "Job Magnetic transformed my job search! In minutes I had a professional online profile that truly stands out. <strong>I've already received two offers!</strong>"
     },
     "user2": {
       "name": "Carlos López",
@@ -164,8 +163,8 @@
     }
   },
   "cta": {
-    "title": "Ready for Your Next Career Leap?",
-    "description": "Don't get left behind. Sign up now and transform your job search with Job Magnetic.",
+    "title": "Your Next Career Leap, Made Effortless.",
+    "description": "Sign up and let the opportunities find you.",
     "button": "Sign Me Up Now! 🚀",
     "placeholder": "Enter your email"
   },
