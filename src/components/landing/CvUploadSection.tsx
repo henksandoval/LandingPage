@@ -470,9 +470,11 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
                 <p className="text-green-600 dark:text-green-400/90 mb-3">
                   {t.status?.successMessage || "We have generated your professional profile. You can view it here:"}
                 </p>
-                <Link href={generatedSiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-medium underline hover:text-primary/80 break-all">
-                  {generatedSiteUrl}
-                </Link>
+                <div>
+                  <Link href={generatedSiteUrl} target="_blank" rel="noopener noreferrer" className="text-primary font-medium underline hover:text-primary/80 break-all">
+                    {generatedSiteUrl}
+                  </Link>
+                </div>
                  <Button onClick={() => { setStatus("idle"); setSelectedFile(null); setGeneratedSiteUrl(null); if (fileInputRef.current) fileInputRef.current.value = ""; }} className="mt-4 w-full md:w-auto">
                   {t.button?.uploadAnother || "Upload another CV"}
                 </Button>
@@ -515,3 +517,4 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     </section>
   );
 }
+
