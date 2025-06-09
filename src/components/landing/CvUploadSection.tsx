@@ -14,7 +14,7 @@ import type { Locale } from '@/lib/i18n-config';
 
 import mammoth from 'mammoth';
 
-type UploadStatus = "idle" | "fileSelected" | "processing" | "success" | "error";
+type UploadStatus = "idle" | "fileSelected" | "analyzing" | "creatingProfile" | "success" | "error";
 
 interface CvUploadSectionProps {
   translations: Dictionary; // This will be t.cvUpload from parent
@@ -228,7 +228,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
       }
 
       setSelectedFile(file);
-      setStatus("processing");
+      setStatus("analyzing");
 
       try {
         const extractedText = await extractTextFromFile(file);
@@ -241,8 +241,8 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
             duration: 7000,
           });
         }
-
         setCvText(extractedText);
+        setStatus("fileSelected");
       } catch (error) {
         setCvText(null);
         const errorMsg = error instanceof Error ? error.message : "Unknown error during text extraction.";
@@ -259,8 +259,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
             variant: "destructive",
           });
         }
-      } finally {
-        setStatus("fileSelected");
+        setStatus("fileSelected"); // Or "idle" if we want to fully reset
       }
     }
   };
@@ -281,11 +280,11 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
         description: t.toast?.noTextExtractedDescription || "Could not extract text from the file, or the file is empty. Please try another file.",
         variant: "destructive",
       });
-      setStatus("idle");
+      setStatus("fileSelected"); // Revert to fileSelected to allow retry or new file
       return;
     }
 
-    setStatus("processing");
+    setStatus("creatingProfile");
     setGeneratedSiteUrl(null);
     setErrorMessage(null);
 
@@ -339,7 +338,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
         setGeneratedSiteUrl(cvUrl);
         setStatus("success");
         toast({
-          title: t.toast?.profileCreatedTitle || "Profile Created!",
+          title: t.toast?.profileCreatedSuccessTitle || "Profile Created!", // Use a more specific success key if available
           description: t.toast?.profileCreatedDescription || "Your professional profile has been successfully created.",
         });
       } else {
@@ -350,7 +349,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
       setErrorMessage(apiErrorMsg);
       setStatus("error");
       toast({
-        title: t.toast?.apiErrorTitle || "Processing Failed",
+        title: t.toast?.apiErrorTitle || "Processing Failed", // More generic API error
         description: apiErrorMsg,
         variant: "destructive",
       });
@@ -361,13 +360,24 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     fileInputRef.current?.click();
   };
 
+  const isProcessing = status === "analyzing" || status === "creatingProfile";
+
   const renderDropZoneContent = () => {
-    if (status === "processing") {
+    if (status === "analyzing") {
       return (
         <>
           <JobBotAnimation containerClassName="mx-auto mb-4" botClassName="h-32 w-32 text-primary" />
-          <p className="text-primary font-medium text-lg">{t.status?.processingTitle || "Our JobBot is in action..."}</p>
-          <p className="text-muted-foreground/80">{t.status?.processingDescription || "Creating your unique professional profile."}</p>
+          <p className="text-primary font-medium text-lg">{t.status?.analyzingTitle || "JobBot is Reviewing Your CV..."}</p>
+          <p className="text-muted-foreground/80">{t.status?.analyzingDescription || "Getting everything ready to build your profile. One moment!"}</p>
+        </>
+      );
+    }
+    if (status === "creatingProfile") {
+      return (
+        <>
+          <JobBotAnimation containerClassName="mx-auto mb-4" botClassName="h-32 w-32 text-primary" />
+          <p className="text-primary font-medium text-lg">{t.status?.processingTitle || "JobBot is Working its Magic!"}</p>
+          <p className="text-muted-foreground/80">{t.status?.processingDescription || "Transforming your CV into an impactful web profile."}</p>
         </>
       );
     }
@@ -434,16 +444,16 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
               onChange={handleFileChange}
               className="hidden"
               accept=".pdf"
-              disabled={status === "processing"}
+              disabled={isProcessing}
             />
             <div
               className={`mb-8 border-2 border-dashed rounded-xl p-8 md:p-12 transition-colors duration-300 bg-muted/10 group
-                ${status === "processing" ? "border-primary/70 cursor-default" : "hover:border-primary/70 cursor-pointer border-muted-foreground/40"}
+                ${isProcessing ? "border-primary/70 cursor-default" : "hover:border-primary/70 cursor-pointer border-muted-foreground/40"}
                 ${status === "error" ? "border-destructive/70" : ""}`}
-              onClick={status !== "processing" ? triggerFileInput : undefined}
-              role={status !== "processing" ? "button" : undefined}
-              tabIndex={status !== "processing" ? 0 : undefined}
-              onKeyPress={(e) => status !== "processing" && e.key === 'Enter' && triggerFileInput()}
+              onClick={!isProcessing ? triggerFileInput : undefined}
+              role={!isProcessing ? "button" : undefined}
+              tabIndex={!isProcessing ? 0 : undefined}
+              onKeyPress={(e) => !isProcessing && e.key === 'Enter' && triggerFileInput()}
               aria-label={t.dropzone?.dragAndDrop || "Drag and drop your CV here or click to select"}
             >
               {renderDropZoneContent()}
@@ -474,7 +484,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
                   {t.status?.errorTitle || "Processing Error"}
                 </h3>
                 <p className="text-red-600 dark:text-red-400/90 text-sm">{errorMessage}</p>
-                <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile} className="mt-4 mr-2">
+                <Button variant="outline" onClick={handleUploadAndProcess} disabled={!selectedFile || !cvText} className="mt-4 mr-2">
                   {t.status?.tryAgainButton || "Try Again"}
                 </Button>
                  <Button variant="secondary" onClick={() => { setStatus("idle"); setSelectedFile(null); setErrorMessage(null); if (fileInputRef.current) fileInputRef.current.value = "";}} className="mt-4">
@@ -503,3 +513,5 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     </section>
   );
 }
+
+    
