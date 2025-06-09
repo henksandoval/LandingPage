@@ -24,8 +24,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
   const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(localeString);
 
-  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL || `/${localeString}/sample-profile`;
-  const isExternalSampleProfile = !!(process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL && (process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL.startsWith('http://') || process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL.startsWith('https://')));
+  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL ?? "";
 
   const benefits = [
     {
@@ -155,7 +154,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
                           <Link 
                             href={sampleProfileUrl} 
                             className="text-primary hover:text-primary/80 font-medium inline-flex items-center"
-                            {...(isExternalSampleProfile ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                            {...{ target: "_blank", rel: "noopener noreferrer" } }
                           >
                             {step.demoLinkText}
                             <ExternalLink className="ml-2 h-4 w-4" />
@@ -263,7 +262,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
                 <Link 
                   href={sampleProfileUrl} 
                   passHref
-                  {...(isExternalSampleProfile ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...{ target: "_blank", rel: "noopener noreferrer" } }
                 >
                   <Button>
                     {t.hero.sampleProfileButtonText}

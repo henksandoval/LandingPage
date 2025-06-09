@@ -179,8 +179,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL || `/${locale}/sample-profile`;
-  const isExternalSampleProfile = !!(process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL && (process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL.startsWith('http://') || process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL.startsWith('https://')));
+  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL ?? "";
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -439,7 +438,7 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
               <Link 
                 href={sampleProfileUrl} 
                 className="text-primary hover:text-primary/80 underline font-medium inline-flex items-center"
-                {...(isExternalSampleProfile ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                {...{ target: "_blank", rel: "noopener noreferrer" } }
               >
                 {t.demoLinkText}
                 <ExternalLink className="ml-1.5 h-4 w-4" />
