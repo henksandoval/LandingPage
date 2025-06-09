@@ -101,7 +101,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
       <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow">
         {/* Main Page Title and Description */}
-        <section className="py-12 md:py-16 text-center">
+        <section className="pt-12 md:pt-16 pb-6 md:pb-8 text-center">
           <div className="container mx-auto px-4 md:px-6">
             <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4 text-foreground">
               {t.hero.titlePart1}
@@ -261,5 +261,3 @@ export default async function HomePage({ params: params }: HomePageProps) {
     </div>
   );
 }
-
-    
