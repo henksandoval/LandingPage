@@ -100,45 +100,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
     <div className="flex flex-col min-h-screen bg-background">
       <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="py-20 md:py-32 bg-gradient-to-br from-secondary via-background to-background">
-          <div className="container mx-auto px-4 md:px-6 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 text-foreground leading-tight">
-              {t.hero.titlePart1}<span className="text-primary">{t.hero.titleHighlight}</span>{t.hero.titlePart2}
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-              {t.hero.description}
-            </p>
-            <div className="flex justify-center">
-              <SubscriptionForm 
-                buttonText={t.hero.subscriptionButton}
-                placeholderText={t.hero.subscriptionPlaceholder}
-                translations={t.subscriptionForm}
-              />
-            </div>
-            <div className="mt-8 flex justify-center">
-              <Button variant="outline" asChild>
-                <Link href={`/${localeString}/sample-profile`}>
-                  {t.hero.sampleProfileButtonText}
-                  <ExternalLink className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-            <div className="mt-16">
-              <Image
-                src="https://placehold.co/1200x600.png"
-                alt={t.hero.imageAlt}
-                width={1200}
-                height={600}
-                className="rounded-xl shadow-2xl mx-auto"
-                priority
-                data-ai-hint="professional website cv"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* CV Upload Section */}
+        {/* CV Upload Section - Now the first section */}
         <CvUploadSection translations={t.cvUpload} locale={localeString} />
 
         {/* How It Works Section */}
@@ -164,7 +126,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
                   <CardContent className="flex-grow flex flex-col justify-between">
                     <div>
                       <p className="text-muted-foreground mb-4">{step.description}</p>
-                      {step.demoLinkText && (
+                      {step.demoLinkText && index === 1 && ( // Only show for the second step
                         <div className="mb-6 text-center">
                           <Link href={`/${localeString}/sample-profile`} className="text-primary hover:text-primary/80 font-medium inline-flex items-center">
                             {step.demoLinkText}
@@ -276,5 +238,3 @@ export default async function HomePage({ params: params }: HomePageProps) {
     </div>
   );
 }
-
-    
