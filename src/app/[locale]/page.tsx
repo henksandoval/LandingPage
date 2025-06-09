@@ -19,7 +19,7 @@ interface HomePageProps {
 export default async function HomePage({ params: params }: HomePageProps) {
   const { locale } = await params;
   const localeString = locale as Locale;
-  const t: Dictionary = await getDictionary(locale);
+  const t: Dictionary = await getDictionary(localeString);
 
   const benefits = [
     {
@@ -100,49 +100,26 @@ export default async function HomePage({ params: params }: HomePageProps) {
     <div className="flex flex-col min-h-screen bg-background">
       <Header locale={localeString} tHeader={t.header} tThemeToggle={t.themeToggle} />
       <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="py-20 md:py-32 bg-gradient-to-br from-secondary via-background to-background">
-          <div className="container mx-auto px-4 md:px-6 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold font-heading mb-6 text-foreground leading-tight">
-              {t.hero.titlePart1}<span className="text-primary">{t.hero.titleHighlight}</span>{t.hero.titlePart2}
+        {/* Main Page Title and Description */}
+        <section className="pt-12 md:pt-16 pb-6 md:pb-8 text-center">
+          <div className="container mx-auto px-4 md:px-6">
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4 text-foreground">
+              {t.hero.titlePart1}
+              <span className="text-primary">{t.hero.titleHighlight}</span>
+              {t.hero.titlePart2}
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-              {t.hero.description}
-            </p>
-            <div className="flex justify-center">
-              <SubscriptionForm 
-                buttonText={t.hero.subscriptionButton}
-                placeholderText={t.hero.subscriptionPlaceholder}
-                translations={t.subscriptionForm}
-              />
-            </div>
-            <div className="mt-8 flex justify-center">
-              <Button variant="outline" asChild>
-                <Link href={`/${localeString}/sample-profile`}>
-                  {t.hero.sampleProfileButtonText}
-                  <ExternalLink className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
-            <div className="mt-16">
-              <Image
-                src="https://placehold.co/1200x600.png"
-                alt={t.hero.imageAlt}
-                width={1200}
-                height={600}
-                className="rounded-xl shadow-2xl mx-auto"
-                priority
-                data-ai-hint="professional website cv"
-              />
-            </div>
+            <p 
+              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8"
+              dangerouslySetInnerHTML={{ __html: t.cvUpload.description }}
+            />
           </div>
         </section>
 
-        {/* CV Upload Section */}
+        {/* CV Upload Section - Now the first interactive section */}
         <CvUploadSection translations={t.cvUpload} locale={localeString} />
 
         {/* How It Works Section */}
-        <section id="como-funciona" className="py-16 md:py-24">
+        <section id="how-it-works" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-4"
                 dangerouslySetInnerHTML={{ __html: t.howItWorks.sectionTitle }} />
@@ -164,7 +141,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
                   <CardContent className="flex-grow flex flex-col justify-between">
                     <div>
                       <p className="text-muted-foreground mb-4">{step.description}</p>
-                      {step.demoLinkText && (
+                      {step.demoLinkText && index === 1 && (
                         <div className="mb-6 text-center">
                           <Link href={`/${localeString}/sample-profile`} className="text-primary hover:text-primary/80 font-medium inline-flex items-center">
                             {step.demoLinkText}
@@ -189,7 +166,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
         </section>
 
         {/* Key Benefits Section */}
-        <section id="beneficios" className="py-16 md:py-24 bg-secondary/50">
+        <section id="benefits" className="py-16 md:py-24 bg-secondary/50">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-12 md:mb-16"
                 dangerouslySetInnerHTML={{ __html: t.benefits.sectionTitle }} />
@@ -209,7 +186,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonios" className="py-16 md:py-24">
+        <section id="testimonials" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-4"
                 dangerouslySetInnerHTML={{ __html: t.testimonials.sectionTitle }} />
@@ -269,6 +246,17 @@ export default async function HomePage({ params: params }: HomePageProps) {
                  translations={t.subscriptionForm}
                />
             </div>
+             <div className="mt-8">
+                <Link href={`/${localeString}/sample-profile`} passHref>
+                  <Button 
+                    // variant="outline" // Removed to use default primary styling
+                    // className="text-primary-foreground border-primary-foreground hover:bg-primary-foreground hover:text-primary" // Removed custom classes
+                  >
+                    {t.hero.sampleProfileButtonText}
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
           </div>
         </section>
       </main>
@@ -276,5 +264,3 @@ export default async function HomePage({ params: params }: HomePageProps) {
     </div>
   );
 }
-
-    

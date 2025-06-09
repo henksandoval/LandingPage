@@ -17,7 +17,9 @@
     "settingsDropdownTitle": "Configuración",
     "languageDropdownLabel": "Idioma",
     "themeDropdownLabel": "Tema",
-    "currentLanguage": "Actual"
+    "currentLanguage": "Actual",
+    "switchToSpanish": "Cambiar a Español",
+    "switchToEnglish": "Cambiar a Inglés"
   },
   "footer": {
     "copyright": "© {year} Job Magnetic. Todos los derechos reservados."
