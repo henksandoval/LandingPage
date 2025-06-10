@@ -24,7 +24,9 @@ export default async function HomePage({ params: params }: HomePageProps) {
   const localeString = locale as Locale;
   const t: Dictionary = await getDictionary(localeString);
 
-  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL ?? "";
+  const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || "";
+  const viewerUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL || "";
+  const sampleProfileUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL + "es/john-doe-1a2b3c" || "";
 
   const benefits = [
     {
@@ -124,7 +126,11 @@ export default async function HomePage({ params: params }: HomePageProps) {
         </section>
 
         {/* CV Upload Section - Now the first interactive section */}
-        <CvUploadSection translations={t.cvUpload} locale={localeString} />
+        <CvUploadSection translations={t.cvUpload}
+                         locale={localeString}
+                         apiEndpoint={apiEndpoint}
+                         viewerUrl={viewerUrl}
+                         sampleUrl={sampleProfileUrl}/>
 
         {/* How It Works Section */}
         <section id="how-it-works" className="py-16 md:py-24">

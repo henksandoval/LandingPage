@@ -19,6 +19,9 @@ type UploadStatus = "idle" | "fileSelected" | "analyzing" | "creatingProfile" | 
 interface CvUploadSectionProps {
   translations: Dictionary; // This will be t.cvUpload from parent
   locale: Locale;
+  apiEndpoint: string;
+  viewerUrl: string;
+  sampleUrl: string;
 }
 
 let pdfjsLibModule: typeof import('pdfjs-dist') | null = null;
@@ -170,7 +173,7 @@ const extractTextFromFile = async (file: File): Promise<string | null> => {
 };
 
 
-export function CvUploadSection({ translations: t, locale }: CvUploadSectionProps) {
+export function CvUploadSection({ translations: t, locale, apiEndpoint, viewerUrl, sampleUrl}: CvUploadSectionProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [cvText, setCvText] = useState<string | null>(null);
   const [status, setStatus] = useState<UploadStatus>("idle");
@@ -179,9 +182,9 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT + "v1/profile/create-from-cv";
-  const cvViewerUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL;
-  const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL ?? "";
+  const apiUrl = apiEndpoint + "v1/profile/create-from-cv";
+  const cvViewerUrl = viewerUrl;
+  const sampleProfileUrl = sampleUrl;
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
