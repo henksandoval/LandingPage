@@ -19,7 +19,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  output: "standalone"
   // i18n configuration removed for App Router approach
 };
 
