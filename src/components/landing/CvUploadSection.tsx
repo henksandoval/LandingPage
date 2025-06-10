@@ -179,6 +179,8 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT + "v1/profile/create-from-cv";
+  const cvViewerUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL;
   const sampleProfileUrl = process.env.NEXT_PUBLIC_SAMPLE_PROFILE_URL ?? "";
 
   useEffect(() => {
@@ -290,16 +292,13 @@ export function CvUploadSection({ translations: t, locale }: CvUploadSectionProp
     setGeneratedSiteUrl(null);
     setErrorMessage(null);
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_ENDPOINT + "v1/profile/create-from-cv";
-    const cvViewerUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL;
-
-    if (!process.env.NEXT_PUBLIC_API_ENDPOINT) {
+    if (!apiUrl) {
       setErrorMessage("API configuration error (base URL). Please contact support.");
       setStatus("error");
       return;
     }
 
-    if (!process.env.NEXT_PUBLIC_CV_VIEWER_URL) {
+    if (!cvViewerUrl) {
       setErrorMessage("CV Viewer URL configuration error. Please contact support.");
       setStatus("error");
       return;
