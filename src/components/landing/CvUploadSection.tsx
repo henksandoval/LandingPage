@@ -338,7 +338,7 @@ export function CvUploadSection({ translations: t, locale, apiEndpoint, viewerUr
       const result = await response.json();
 
       if (result.profileUrl) {
-        const cvUrl = `${viewerUrl}${locale}/john-doe-1a2b3c`;
+        const cvUrl = `${viewerUrl}${locale}/${result.profileUrl}`;
         setGeneratedSiteUrl(cvUrl);
         setStatus("success");
         toast({
