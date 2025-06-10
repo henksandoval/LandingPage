@@ -26,7 +26,7 @@ export default async function HomePage({ params: params }: HomePageProps) {
 
   const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT || "";
   const viewerUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL || "";
-  const sampleProfileUrl = process.env.NEXT_PUBLIC_CV_VIEWER_URL + "es/john-doe-1a2b3c" || "";
+  const sampleProfileUrl = `${viewerUrl}${localeString}/john-doe-1a2b3c`;
 
   const benefits = [
     {
